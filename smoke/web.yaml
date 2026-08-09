@@ -1,0 +1,14 @@
+id: web
+title: "浏览器：视觉感知点击按钮并输入"
+instruction: >-
+  用 Microsoft Edge 打开本地网页文件 D:\Users\gf1913\Desktop\vision_test.html。
+  浏览器窗口标题为 "Vision Test Page"。
+  点击页面上的 "Click Me" 按钮，确认页面状态文本变为 "Button Clicked!"。
+  然后在页面输入框中输入文本 vision-ok，点击 "Show Text" 按钮，
+  确认页面显示 "You typed: vision-ok"。
+  全部确认后调用 success 工具。
+timeout_s: 300
+max_steps: 50
+checks:
+  - type: active_window
+    contains: Edge

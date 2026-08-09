@@ -1,0 +1,15 @@
+id: web_navigate
+title: "浏览器：搜索并点击结果跳转（纯视觉）"
+instruction: >-
+  用 Microsoft Edge 打开 DuckDuckGo 搜索页 https://duckduckgo.com。
+  在搜索输入框中输入 "python programming language"，按回车提交搜索。
+  等待搜索结果页面出现。
+  在搜索结果中，找到一个标题包含 "Python (programming language)" 的结果链接（通常是第一个结果），
+  点击它。
+  等待跳转到 Python 官网页面（窗口标题会变成类似 "Welcome to Python.org" 或 "Python.org"）。
+  确认新页面出现后，调用 success 报告完成了搜索并打开了 Python 官网。
+timeout_s: 300
+max_steps: 50
+checks:
+  - type: active_window
+    contains: Edge

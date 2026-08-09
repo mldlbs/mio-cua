@@ -1,0 +1,15 @@
+id: explorer
+title: "资源管理器：新建并重命名文件夹"
+instruction: >-
+  打开资源管理器（按 win+e），在左侧边栏点击"桌面"（Desktop）节点进入桌面。
+  进入后必须确认窗口标题包含"桌面"（active window 是"桌面 - 文件资源管理器"），
+  确认后再按 Ctrl+Shift+N 新建文件夹。
+  新建后文件夹名处于编辑状态（已选中），直接输入文件夹名 smoke_demo_folder
+  （不要先点击文件夹，不要按 element_id 的 type），按回车确认，然后调用 success 工具。
+timeout_s: 300
+max_steps: 50
+checks:
+  - type: active_window
+    contains: 桌面
+  - type: dir_exists
+    path: ~/Desktop/smoke_demo_folder

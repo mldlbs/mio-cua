@@ -1,0 +1,8 @@
+# Local model weights (OmniParser repo + ~1.3GB weights), download not committed
+models/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/

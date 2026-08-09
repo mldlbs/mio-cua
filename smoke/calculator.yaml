@@ -1,0 +1,13 @@
+id: calculator
+title: "计算器：计算 123*456"
+instruction: >-
+  打开计算器程序，用键盘逐个按键输入表达式 123*456=：
+  依次 key(keys="1")、key(keys="2")、key(keys="3")、key(keys="*")、
+  key(keys="4")、key(keys="5")、key(keys="6")、key(keys="=")。
+  每按一键后确认计算器显示区更新，按完 = 后确认显示 56088，然后调用 success 工具。
+  （不要点击计算器按钮，元素 id 可能逐帧漂移；键盘输入更可靠。）
+timeout_s: 240
+max_steps: 40
+checks:
+  - type: active_window
+    contains: 计算器

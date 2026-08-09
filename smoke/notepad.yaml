@@ -1,0 +1,16 @@
+id: notepad
+title: "记事本：输入并保存"
+instruction: >-
+  打开记事本程序，输入文本 hello world，按下 Ctrl+S，
+  在保存对话框中输入文件名 smoke_notepad_demo.txt，按回车确认保存，
+  然后调用 success 工具。
+timeout_s: 240
+max_steps: 40
+checks:
+  - type: active_window
+    contains: 记事本
+  - type: file_exists
+    path: ~/Desktop/smoke_notepad_demo.txt
+  - type: file_contains
+    path: ~/Desktop/smoke_notepad_demo.txt
+    contains: hello world

@@ -1,0 +1,19 @@
+id: organizer
+title: "桌面整理：按类型归档文件"
+instruction: >-
+  整理目录 D:\Users\gf1913\Desktop 下的文件。步骤：
+  1. 先 list_dir(path="D:\Users\gf1913\Desktop") 查看全部文件和文件夹。
+  2. 一次建好分类文件夹（make_dir），不要重复建：
+     - 文档：pdf/docx/xlsx/xmind/md/txt/csv 等
+     - 图片：jpg/jpeg/png/svg/gif
+     - 安装包：exe/apk/zip/jar/msi 等
+     - 项目配置：.env/.yaml/.vue/.js/.py/.json/.log/.bat/.html 等代码配置
+     - 临时文件：杂乱难归类的一次性文件
+  3. 按扩展名归类，用 move_files 批量移动：把同一分类的所有文件路径放进一个 files 列表，
+     一次 move_files(files=[...], dest="D:\Users\gf1913\Desktop\对应分类文件夹")。
+     每个分类只需 1 次调用，不要逐文件 move_file，也不要反复 list_dir 确认。
+  4. 不要动已经存在的目录（.claude/.swarm/lib/workbuddy 等）和 .lnk 快捷键。
+  5. 全部完成后调用 success 报告移动了多少个文件。
+timeout_s: 600
+max_steps: 200
+checks: []
