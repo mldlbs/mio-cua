@@ -106,7 +106,15 @@ python scripts/run_smoke_vdesk.py --only explorer --model deepseek-v4-flash --ba
 
 ### MCP 集成（2026-08-09）
 
-**23. MCP server（`edf1bcd`）**：mio-cua 封装为 MCP server（`mio-cua-mcp`，FastMCP stdio）——暴露 10 个工具（文件 list_dir/make_dir/move_file/move_files、窗口 launch/focus_window/get_active_window、输入 click/type/key），让 Claude/Cursor/ChatGPT 等任意 MCP 客户端控制 Windows 桌面。`pip install --user` 后命令可用，stdio 握手 + list_tools + call_tool 端到端验证通过。接入指南见 MCP.md。通往 MCP Registry 官方市场上架的第一步。
+**23. MCP server（`edf1bcd`）**：mio-cua 封装为 MCP server（`mio-cua-mcp`，FastMCP stdio）——暴露 10 个工具（文件 list_dir/make_dir/move_file/move_files、窗口 launch/focus_window/get_active_window、输入 click/type/key），让 Claude/Cursor/ChatGPT 等任意 MCP 客户端控制 Windows 桌面。`pip install --user` 后命令可用，stdio 握手 + list_tools + call_tool 端到端验证通过。接入指南见 MCP.md。
+
+### 发布到官方市场（2026-08-09）
+
+**24. 发布 mio-cua 到 GitHub / PyPI / MCP Registry**：
+- **GitHub**：`github.com/mldlbs/mio-cua`（public）。仓库创建**纯视觉完成**（mio-cua 操作 Chrome 填表单：感知 → 定位 Repository name 框 → 输入 → 验证 "mio-cua is available" → 点击 Create）。
+- **PyPI**：`mio-cua` 0.1.2（`pip install mio-cua` 轻量可用；OCR/视觉为可选 `[vision]` extra）。pyproject 补 `readme` 字段使 METADATA 含 `mcp-name`（Registry 所有权验证）。
+- **MCP Registry**：`io.github.mldlbs/mio-cua` v0.1.2（active / latest）。用 `mcp-publisher login github --token` 免交互认证 + `publish`。
+- 建仓库视觉操作、推代码走 git（代理 64231）、PyPI 用 twine、Registry 用 mcp-publisher。
 
 ### 功能研发（2026-08-08）
 

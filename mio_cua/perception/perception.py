@@ -1,4 +1,5 @@
 ﻿import logging
+import os
 import time
 from copy import copy
 
@@ -49,6 +50,8 @@ class Perception:
         self.screenshot_dir = screenshot_dir
         self.dpi_scale = dpi_scale
         self._ocr_cache = None  # (signature, ocr_elements)
+        self._web_cache = None  # (signature, web_nodes)
+        self._last_signature = None
 
     def observe(self) -> Observation:
         try:
@@ -63,6 +66,7 @@ class Perception:
             logger.debug("get_active_window failed: %s", e, exc_info=True)
         img = capture_rect(rect)
         sig = (active_window, rect, _content_signature(img))
+        self._last_signature = sig
         ocr_elements = []
         if self._ocr_cache is not None and self._ocr_cache[0] == sig:
             # window and content unchanged since last OCR: reuse cached text layer
@@ -101,21 +105,33 @@ class Perception:
 
     def _build_scene(self, elements, active_window, img, rect):
         regions = self._detect_regions(img, rect)
-        web_nodes = self._detect_web_controls(active_window, img, rect)
+        web_nodes = self._detect_web_controls(active_window, img, rect, elements)
         return build_scene(elements, active_window, regions=regions, web_nodes=web_nodes)
 
     def _is_browser_window(self, title: str) -> bool:
         t = (title or "").lower()
         return any(k in t for k in _WEB_BROWSER_KEYWORDS)
 
-    def _detect_web_controls(self, active_window, img, rect):
-        """OmniParser web controls for browser windows; [] otherwise.
+    def _detect_web_controls(self, active_window, img, rect, elements):
+        """OmniParser web/UI controls for the active window.
+
+        Runs for ANY window (not just browsers): OmniParser also understands
+        plain desktop UIs, so buttons/inputs in Electron apps, tool windows and
+        dialogs benefit too. Disable via env MIO_CUA_WEB_EVERYWHERE=0 to keep
+        the old browser-title gate.
+
+        Reuses the same content signature as the OCR cache, so a window whose
+        content hasn't changed skips the model entirely (both layers are
+        invalidated together).
 
         Nodes get ids past the merged-element range so they never collide with
         the element ids InputController resolves.
         """
-        if not self._is_browser_window(active_window):
+        if os.environ.get("MIO_CUA_WEB_EVERYWHERE", "1") == "0" \
+                and not self._is_browser_window(active_window):
             return []
+        if self._web_cache is not None and self._web_cache[0] == self._last_signature:
+            return list(self._web_cache[1])
         try:
             from mio_cua.scene.omniparser import parse
             nodes = parse(img)
@@ -128,6 +144,7 @@ class Perception:
             l, t, w, h = n.bbox
             n.bbox = (l + dx, t + dy, w, h)
             n.id = base + i
+        self._web_cache = (self._last_signature, nodes)
         return nodes
 
     def _detect_regions(self, img, rect):

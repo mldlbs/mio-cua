@@ -7,6 +7,8 @@
 ```bash
 cd desktop-agent
 pip install -e .          # 安装 mio-cua 和 mio-cua-mcp 命令
+pip install -e ".[vision]"  # 可选：OCR 依赖（rapidocr）
+pip install -e ".[gpu]"     # 可选：onnxruntime-directml，GPU 加速感知推理
 ```
 
 ## 接入 Claude Desktop / Claude Code
@@ -57,6 +59,24 @@ pip install -e .          # 安装 mio-cua 和 mio-cua-mcp 命令
 | `mio_click` | 屏幕坐标点击 |
 | `mio_type` | 向聚焦控件输入文本 |
 | `mio_key` | 发送按键/组合键（enter、ctrl+s 等） |
+| `mio_observe_scene` | 感知活动窗口：元素列表（文本/类型/坐标/src/conf） |
+| `mio_analyze_page` | 纯视觉解析网页为交互元素（OmniParser，无需 DOM/扩展） |
+| `mio_vdesk` | 管理虚拟桌面隔离（ensure/close/left/right/num） |
+| `mio_screenshot` | 保存活动窗口截图 PNG |
+| `mio_ocr_text` | OCR 读取活动窗口可见文本（坐标） |
+| `mio_list_windows` | 列出所有可见窗口标题 |
+| `mio_close_window` | 按标题优雅关闭窗口（WM_CLOSE） |
+| `mio_get_cursor` | 获取鼠标坐标 |
+| `mio_move_mouse` | 移动鼠标（不点击，hover 用） |
+| `mio_scroll` | 活动窗口滚动（正下负上） |
+| `mio_clipboard_get` | 读取剪贴板文本 |
+| `mio_clipboard_set` | 设置剪贴板文本（配合 ctrl+v 粘贴） |
+| `mio_notify` | 桌面通知 |
+| `mio_list_processes` | 列出运行进程（PID/名称/内存，可过滤） |
+| `mio_kill_process` | 结束进程（按名称/PID，可选强制） |
+| `mio_get_screen_info` | 显示器布局与 DPI scale |
+| `mio_drag` | 从 A 拖到 B（移动图标/选范围/滑条） |
+| `mio_sleep` | 等待 N 秒（应用加载/异步窗口） |
 
 ## 安全提示
 

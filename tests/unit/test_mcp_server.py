@@ -16,6 +16,11 @@ def test_mcp_lists_expected_tools():
     assert "mio_move_files" in tool_names
     assert "mio_launch" in tool_names
     assert "mio_key" in tool_names
+    assert "mio_observe_scene" in tool_names
+    assert "mio_screenshot" in tool_names
+    assert "mio_ocr_text" in tool_names
+    assert "mio_analyze_page" in tool_names
+    assert "mio_vdesk" in tool_names
 
 
 def test_mcp_list_dir(tmp_path):
@@ -57,3 +62,62 @@ def test_mcp_missing_path_errors(tmp_path):
     from mio_cua.mcp_server import mcp
     content, _ = _run(mcp.call_tool("mio_list_dir", {"path": str(tmp_path / "nope")}))
     assert "Error" in content[0].text
+
+
+def test_mcp_observe_scene_returns_window_and_elements():
+    from mio_cua.mcp_server import mcp
+    content, _ = _run(mcp.call_tool("mio_observe_scene", {"max_elements": 5}))
+    text = content[0].text
+    assert "Active window" in text
+    # either has elements or reports none gracefully
+    assert ("id=" in text) or ("no elements" in text)
+
+
+def test_mcp_screenshot_returns_path(tmp_path):
+    from mio_cua.mcp_server import mcp
+    out = tmp_path / "shot.png"
+    content, _ = _run(mcp.call_tool("mio_screenshot", {"path": str(out)}))
+    text = content[0].text
+    assert "saved screenshot" in text
+    assert out.exists()
+
+
+def test_mcp_observe_scene_reports_source_and_confidence():
+    from mio_cua.mcp_server import mcp
+    content, _ = _run(mcp.call_tool("mio_observe_scene", {"max_elements": 3}))
+    text = content[0].text
+    # the enhanced output should either show src=/conf= or degrade gracefully
+    if "id=" in text:
+        assert "src=" in text
+
+
+def test_mcp_analyze_page_graceful_without_omniparser(tmp_path):
+    """analyze_page must not crash when OmniParser is unavailable; it should
+    return a helpful message. Force-unset the env and clear the cached parser
+    so the heavy model is NEVER loaded during this unit test (CPU-only runs
+    would otherwise peg the machine)."""
+    import os
+    from mio_cua.mcp_server import mcp
+    from mio_cua.scene import omniparser
+    os.environ["OMNIPARSER_DIR"] = str(tmp_path / "no_such_weights")
+    omniparser._parser = None  # drop cached (already-loaded) parser
+    content, _ = _run(mcp.call_tool("mio_analyze_page", {"max_elements": 3}))
+    text = content[0].text
+    # parser is None -> tool must never block on model load; it either reports
+    # the cold-load hint or degrades gracefully.
+    assert ("still loading" in text) or ("no interactive" in text) or ("Error" in text)
+
+
+def test_mcp_vdesk_uses_script_module():
+    """mio_vdesk must locate scripts/vdesk.py (needs to exist for import)"""
+    import importlib.util
+    import os
+    from mio_cua import mcp_server
+    v_path = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(mcp_server.__file__))), "scripts", "vdesk.py")
+    assert os.path.isfile(v_path)
+    spec = importlib.util.spec_from_file_location("_mio_vdesk_check", v_path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert callable(getattr(mod, "ensure_test_desktop", None))
+    assert callable(mod.close_desktop)

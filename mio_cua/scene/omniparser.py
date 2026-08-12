@@ -34,6 +34,29 @@ logger = logging.getLogger(__name__)
 # the first parse does not stall on an unreachable HF CDN connection.
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
 
+
+def _limit_torch_threads():
+    """Cap torch CPU thread pools BEFORE any model load.
+
+    Florence-2 is loaded on CPU by transformers/torch (the icon-detect YOLO
+    runs on onnx/DML). With torch's default thread pool (= core count) the
+    cold-start load spins every core to ~100% for 10-25s, freezing the machine.
+    Limiting to 1-2 threads keeps the system responsive during load at a small
+    cost in load latency. Must run before the caption model is constructed.
+    """
+    try:
+        import torch
+        if torch.get_num_threads() > 2:
+            torch.set_num_threads(2)
+        try:
+            if torch.get_num_interop_threads() > 2:
+                torch.set_num_interop_threads(2)
+        except Exception:
+            pass  # interop must be set before any parallel work; best-effort
+    except Exception:
+        pass
+
+
 _parser = None
 
 # Project-local model home (default). Can be overridden via OMNIPARSER_DIR.
@@ -56,6 +79,7 @@ def _load():
     global _parser
     if _parser is not None:
         return _parser
+    _limit_torch_threads()  # before any torch import/model construction
     cfg = _config()
     if not os.path.isfile(cfg["som_model_path"]):
         logger.warning("OmniParser weights not found (%s); web controls disabled",

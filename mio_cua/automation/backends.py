@@ -80,6 +80,20 @@ def _dispatch(action: Action):
         direction = params.get("direction", "down")
         delta = -120 * amount if direction == "down" else 120 * amount
         win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, delta, 0)
+
+    elif typ == "drag":
+        x1, y1 = params["x1"], params["y1"]
+        x2, y2 = params["x2"], params["y2"]
+        win32api.SetCursorPos((int(x1), int(y1)))
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+        # smooth drag so the OS registers an actual move-drag gesture
+        steps = 20
+        for i in range(1, steps + 1):
+            mx = int(x1 + (x2 - x1) * i / steps)
+            my = int(y1 + (y2 - y1) * i / steps)
+            win32api.SetCursorPos((mx, my))
+            win32api.Sleep(8)
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
     else:
         raise RuntimeError(f"unsupported action type: {typ}")
 
@@ -157,5 +171,10 @@ def _dispatch_pyautogui(action: Action):
         direction = params.get("direction", "down")
         delta = -amount if direction == "down" else amount
         pyautogui.scroll(delta)
+    elif typ == "drag":
+        pyautogui.moveTo(params["x1"], params["y1"])
+        pyautogui.mouseDown()
+        pyautogui.moveTo(params["x2"], params["y2"], duration=0.2)
+        pyautogui.mouseUp()
     else:
         raise RuntimeError(f"unsupported action type: {typ}")

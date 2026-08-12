@@ -3,12 +3,12 @@
   "name": "io.github.mldlbs/mio-cua",
   "title": "Mio Computer-Use Agent",
   "description": "Control this Windows desktop from any MCP client: files, windows, keyboard and mouse.",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "mio-cua",
-      "version": "0.1.2",
+      "version": "0.1.5",
       "transport": {
         "type": "stdio"
       }
