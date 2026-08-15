@@ -79,3 +79,29 @@ def test_low_risk_skips_confirmation():
     result = reg.call("click", {"x": 1}, ctx)
     assert result.success is True
     assert confirm.calls == []
+
+
+def test_high_risk_name_fallback_without_marker():
+    """A tool whose schema omits risk:'high' but whose name is in the HIGH_RISK
+    list must still be confirmed (name-based safety net)."""
+    confirm = FakeConfirm(False)
+    reg = ToolRegistry(confirmation=confirm)
+    # schema has NO risk marker -> old logic would skip confirmation
+    reg.register("kill_process", _tool, {"type": "function", "function": {
+        "name": "kill_process"}})
+    ctx = ToolContext(controller=None, perception=None, config=None, events=None)
+    result = reg.call("kill_process", {"name": "notepad"}, ctx)
+    assert result.success is False
+    assert result.retryable is False
+    assert "user rejected" in result.message
+    assert confirm.calls == [("kill_process", {"name": "notepad"})]
+
+
+def test_low_risk_name_not_confirmed_even_with_any_schema():
+    confirm = FakeConfirm(False)
+    reg = ToolRegistry(confirmation=confirm)
+    reg.register("click", _tool, {"type": "function", "function": {"name": "click"}})
+    ctx = ToolContext(controller=None, perception=None, config=None, events=None)
+    result = reg.call("click", {"x": 1}, ctx)
+    assert result.success is True
+    assert confirm.calls == []

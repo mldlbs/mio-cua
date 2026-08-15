@@ -24,6 +24,11 @@ class ToolRegistry:
         return func(ctx, **params)
 
     def _needs_confirmation(self, name: str) -> bool:
+        # Name-based fallback: even if a schema forgets the risk:"high" marker,
+        # a tool whose name is in the HIGH_RISK list still gets confirmed.
+        from mio_cua.safety.risk import is_high_risk
+        if is_high_risk(name):
+            return True
         _, schema = self._tools.get(name, (None, None))
         fn = (schema or {}).get("function", {})
         return fn.get("risk") == "high"
