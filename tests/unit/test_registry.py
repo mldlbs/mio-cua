@@ -1,6 +1,7 @@
 ﻿from mio_cua.tools.registry import ToolRegistry
 from mio_cua.tools.context import ToolContext
 from mio_cua.models.action_result import ActionResult
+from mio_cua.safety.confirm import Confirmation
 
 
 def test_register_and_call():
@@ -29,3 +30,52 @@ def test_call_unknown_raises():
         assert False
     except KeyError:
         pass
+
+
+class FakeConfirm:
+    def __init__(self, answer):
+        self.answer = answer
+        self.calls = []
+
+    def confirm(self, name, params):
+        self.calls.append((name, params))
+        return self.answer
+
+
+def _tool(ctx, **kwargs):
+    return ActionResult(action_id="a-1", success=True, message="ran")
+
+
+def test_high_risk_denied_returns_failure_no_retry():
+    confirm = FakeConfirm(False)
+    reg = ToolRegistry(confirmation=confirm)
+    reg.register("delete", _tool, {"type": "function", "function": {
+        "name": "delete", "risk": "high"}})
+    ctx = ToolContext(controller=None, perception=None, config=None, events=None)
+    result = reg.call("delete", {"target": "x.txt"}, ctx)
+    assert result.success is False
+    assert result.retryable is False
+    assert "user rejected" in result.message
+    assert confirm.calls == [("delete", {"target": "x.txt"})]
+
+
+def test_high_risk_approved_runs_tool():
+    confirm = FakeConfirm(True)
+    reg = ToolRegistry(confirmation=confirm)
+    reg.register("delete", _tool, {"type": "function", "function": {
+        "name": "delete", "risk": "high"}})
+    ctx = ToolContext(controller=None, perception=None, config=None, events=None)
+    result = reg.call("delete", {"target": "x.txt"}, ctx)
+    assert result.success is True
+    assert result.message == "ran"
+    assert confirm.calls == [("delete", {"target": "x.txt"})]
+
+
+def test_low_risk_skips_confirmation():
+    confirm = FakeConfirm(False)  # would deny, but must never be asked
+    reg = ToolRegistry(confirmation=confirm)
+    reg.register("click", _tool, {"type": "function", "function": {"name": "click"}})
+    ctx = ToolContext(controller=None, perception=None, config=None, events=None)
+    result = reg.call("click", {"x": 1}, ctx)
+    assert result.success is True
+    assert confirm.calls == []
