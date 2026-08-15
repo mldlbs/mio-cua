@@ -3,6 +3,10 @@
   "name": "io.github.mldlbs/mio-cua",
   "title": "Mio Computer-Use Agent",
   "description": "Control this Windows desktop from any MCP client: files, windows, keyboard and mouse.",
+  "repository": {
+    "url": "https://github.com/mldlbs/mio-cua",
+    "source": "github"
+  },
   "version": "0.1.5",
   "packages": [
     {
