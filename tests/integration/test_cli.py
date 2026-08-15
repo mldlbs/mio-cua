@@ -36,3 +36,27 @@ def test_run_with_config_and_provider_flags_parse():
     args = p.parse_args(["run", "open calc", "--config", "cfg.yaml", "--provider", "deepseek"])
     assert args.config == "cfg.yaml"
     assert args.provider == "deepseek"
+
+
+def test_gen_scenario_subcommand_parses():
+    p = build_parser()
+    args = p.parse_args(["gen-scenario", "--image", "shot.png", "--name", "calc", "-o", "out.yaml"])
+    assert args.cmd == "gen-scenario"
+    assert args.image == "shot.png"
+    assert args.name == "calc"
+    assert args.output == "out.yaml"
+
+
+def test_gen_scenario_capture_parses():
+    p = build_parser()
+    args = p.parse_args(["gen-scenario", "--capture", "-o", "out.yaml"])
+    assert args.cmd == "gen-scenario"
+    assert args.capture is True
+    assert args.output == "out.yaml"
+
+
+def test_run_simulate_scenario_parses():
+    p = build_parser()
+    args = p.parse_args(["run", "open calc", "--simulate-scenario", "scene.yaml"])
+    assert args.cmd == "run"
+    assert args.simulate_scenario == "scene.yaml"

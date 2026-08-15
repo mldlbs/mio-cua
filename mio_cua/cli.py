@@ -15,6 +15,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--simulate", action="store_true", help="run loop on a scripted desktop, no real input")
     run.add_argument("--simulate-full", action="store_true", help="run full loop against a stateful mock desktop")
     run.add_argument("--scenario", default="notepad", help="mock scenario for --simulate-full: notepad|calculator|explorer")
+    run.add_argument("--simulate-scenario", help="path to a scenario YAML to replay offline (no real input)")
 
     resume = sub.add_parser("resume", help="Resume a previous task")
     resume.add_argument("task_id")
@@ -24,6 +25,12 @@ def build_parser() -> argparse.ArgumentParser:
     replay.add_argument("--full", action="store_true", help="include action params and result metadata")
 
     sub.add_parser("providers", help="List available providers")
+
+    gen = sub.add_parser("gen-scenario", help="Generate a YAML scenario from a screenshot")
+    gen.add_argument("--image", help="path to a PNG screenshot (OCR-only)")
+    gen.add_argument("--capture", action="store_true", help="capture the active window (merged OCR+UIA)")
+    gen.add_argument("--name", default="", help="scenario name (default: file basename)")
+    gen.add_argument("-o", "--output", required=True, help="output YAML path")
 
     history = sub.add_parser("history", help="Show task history")
     history.add_argument("task_id", nargs="?")
@@ -35,6 +42,9 @@ def main():
     args = build_parser().parse_args()
     if args.cmd == "providers":
         print("openai")
+        return
+    if args.cmd == "gen-scenario":
+        _gen_scenario_command(args)
         return
     if args.cmd == "run":
         _run_command(args)
@@ -148,6 +158,40 @@ def _simulate_command(config, task):
         print(f"  [plan] {a.type} {a.params}")
     if not plan.actions:
         print("  (no actions planned)")
+
+
+def _gen_scenario_command(args):
+    """Generate a YAML scenario from a screenshot (--image) or the active window (--capture)."""
+    import os
+    import sys
+    from mio_cua.scenario import scenario_to_yaml
+
+    name = args.name or (os.path.splitext(os.path.basename(args.image))[0] if args.image else "capture")
+    if args.image:
+        if not os.path.isfile(args.image):
+            print(f"error: image not found: {args.image}")
+            sys.exit(1)
+        from PIL import Image
+        from mio_cua.vision import ocr as ocr_module
+        img = Image.open(args.image)
+        elements = list(ocr_module.get_elements(img))
+        source = "ocr"
+        active_window = ""
+    elif args.capture:
+        from mio_cua.perception import Perception
+        obs = Perception().observe()
+        elements = obs.elements
+        active_window = obs.active_window or ""
+        source = "merged"
+    else:
+        print("error: provide --image <path> or --capture")
+        sys.exit(1)
+
+    yaml_text = scenario_to_yaml(elements, active_window=active_window, name=name, source=source)
+    os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+    with open(args.output, "w", encoding="utf8") as f:
+        f.write(yaml_text)
+    print(f"wrote scenario '{name}' ({len(elements)} elements) -> {args.output}")
 
 
 def _simulate_full_command(config, task, scenario="notepad"):
