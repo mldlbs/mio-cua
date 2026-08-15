@@ -127,6 +127,9 @@ def _run_command(args):
     if args.simulate_full:
         _simulate_full_command(config, task, args.scenario)
         return
+    if args.simulate_scenario:
+        _simulate_scenario_command(config, task, args.simulate_scenario)
+        return
 
     from mio_cua import Agent
     agent = Agent(config)
@@ -216,6 +219,38 @@ def _simulate_full_command(config, task, scenario="notepad"):
     print(f"[{scenario}] {result.status} steps={result.steps} duration={result.duration:.1f}s")
     print(f"mock completed: {desktop.completed}")
     for action in desktop.actions:
+        print(f"  [act] {action.type} {action.params}")
+
+
+def _simulate_scenario_command(config, task, scenario_path):
+    """Replay a scenario YAML through the loop with no real input."""
+    import os
+    import sys
+    from mio_cua.agent.safety import Safety
+    from mio_cua.events import EventBus
+    from mio_cua.prompts import DEFAULT_SYSTEM_PROMPT
+    from mio_cua.providers.openai_compat import OpenAICompatProvider
+    from mio_cua.scenario import load_scenario_yaml
+    from mio_cua.simulation import build_simulation
+    from mio_cua.tools.builtin import register_builtin_tools
+    from mio_cua.tools.registry import ToolRegistry
+
+    if not os.path.isfile(scenario_path):
+        print(f"error: scenario not found: {scenario_path}")
+        sys.exit(1)
+
+    obs = load_scenario_yaml(scenario_path)
+    provider = OpenAICompatProvider(config.base_url, config.api_key(), config.model)
+    registry = ToolRegistry()
+    register_builtin_tools(registry)
+    safety = Safety(max_steps=config.max_steps, timeout_s=config.task_timeout_s,
+                    emergency_key=config.emergency_key)
+    loop, controller = build_simulation(
+        provider, DEFAULT_SYSTEM_PROMPT, [obs], registry, safety, EventBus(), config,
+    )
+    result = loop.run(task)
+    print(f"[scenario] {result.status} steps={result.steps} duration={result.duration:.1f}s")
+    for action in controller.calls:
         print(f"  [act] {action.type} {action.params}")
 
 

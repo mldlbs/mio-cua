@@ -60,3 +60,24 @@ def test_run_simulate_scenario_parses():
     args = p.parse_args(["run", "open calc", "--simulate-scenario", "scene.yaml"])
     assert args.cmd == "run"
     assert args.simulate_scenario == "scene.yaml"
+
+
+def test_run_simulate_scenario_executes_offline(tmp_path):
+    """Replay a scenario YAML through the loop with no real input."""
+    from mio_cua.cli import _simulate_scenario_command
+    from mio_cua.config import AgentConfig
+    from mio_cua.models.task import Task
+
+    scene = tmp_path / "calc.yaml"
+    scene.write_text(
+        "name: calc\nactive_window: 计算器\nsource: ocr\n"
+        "elements:\n"
+        "  - {id: 0, text: '0', role: text, bbox: [400, 300, 240, 40], source: ocr}\n"
+        "  - {id: 1, text: '7', role: button, bbox: [400, 360, 50, 30], source: ocr}\n",
+        encoding="utf8",
+    )
+
+    import pytest
+    from mio_cua.cli import _simulate_scenario_command
+    with pytest.raises(SystemExit):
+        _simulate_scenario_command(AgentConfig(), Task(instruction="open calc"), str(tmp_path / "missing.yaml"))
