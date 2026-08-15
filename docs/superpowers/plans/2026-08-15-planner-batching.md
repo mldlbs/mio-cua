@@ -667,16 +667,24 @@ from mio_cua.agent.batch import verify_action
                     light_base = light
 ```
 
-5. 外层循环底部 `prev = obs` 改为（批次跑过则用最新轻量帧做下轮 diff 基线）：
+5. 外层循环底部 `prev = obs`（保持全量观察基线，避免 OCR-only 帧污染下轮 diff）：
 
 ```python
-                if batch_executed > 0 and config_batch_verify:
-                    prev = light_base
-                else:
-                    prev = obs
+                prev = obs
 ```
 
-（注：`config_batch_verify` 在批次变量初始化处定义，保持作用域可用；若 `batch_executed == 0` 则回退 `obs`。）
+> **实现期修正（code review 发现）**：原方案计划 `prev = light_base`，但 light 帧是 OCR-only，
+> 下轮 `compute_diff(prev, obs)` 会把全量帧的 UIA 节点全判为 "added" → diff 恒非空 →
+> `no_change` 恒为 0，抑制 "screen did not change" 与 completion hint。故改回 `prev = obs`。
+> `light_base` 仍仅用于批内 `verify_action` 链式验证。
+
+> **实现期修正（code review 发现）**：批内每步 `self.controller.current_observation = light`
+> 会让后续 `element_id` 动作解析到 OCR-only 帧（id 空间不同，可能点错/报 not found）。
+> 已删除该行——controller 保持指向 plan 时的完整 `obs`（`_make_ctx` 设置）。
+> 新增回归测试 `test_loop_batch_keeps_controller_on_plan_obs` 用 spy controller 断言
+> 批内所有 execute 都看到同一个 plan-time obs。
+
+> **实现期修正**：`pending` 提前初始化为 `None`，避免条件定义 + 短路引用的脆弱性。
 
 - [ ] **Step 4: 运行确认通过**
 
