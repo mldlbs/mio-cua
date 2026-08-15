@@ -103,3 +103,43 @@ def test_ocr_cache_invalidated_when_content_changes(monkeypatch, tmp_path):
     )
     p.observe()
     assert cap.calls == 2, "changed content should invalidate the OCR cache"
+
+
+def test_observe_light_skips_uia_and_web(monkeypatch, tmp_path):
+    """observe_light must be OCR-only: no UIA, no OmniParser, no regions,
+    and must not write a screenshot artifact."""
+    import mio_cua.scene.omniparser as omni_mod
+
+    calls = {"uia": 0, "omni": 0}
+
+    class BoomUIA:
+        def get_elements(self):
+            calls["uia"] += 1
+            raise AssertionError("observe_light must not call UIA")
+
+    def boom_parse(img):
+        calls["omni"] += 1
+        raise AssertionError("observe_light must not call OmniParser")
+
+    monkeypatch.setattr("mio_cua.perception.perception.capture_rect", _fake_capture)
+    monkeypatch.setattr("mio_cua.perception.perception.ocr_module", _FakeOCR())
+    monkeypatch.setattr("mio_cua.perception.perception.uia_module", BoomUIA())
+    monkeypatch.setattr(omni_mod, "parse", boom_parse)
+    monkeypatch.setattr(
+        "mio_cua.perception.perception.get_active_window", lambda: "Calc"
+    )
+    monkeypatch.setattr(
+        "mio_cua.perception.perception.get_active_window_rect",
+        lambda: (100, 50, 300, 200),
+    )
+
+    p = Perception(screenshot_dir=str(tmp_path))
+    obs = p.observe_light()
+
+    assert obs.screenshot_path is None, "light observe must not write artifacts"
+    assert calls["uia"] == 0
+    assert calls["omni"] == 0
+    scene = obs.scene
+    assert scene is not None and scene.nodes
+    assert all((n.source or "") == "ocr" for n in scene.nodes), \
+        "light scene must be OCR-only"

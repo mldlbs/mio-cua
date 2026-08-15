@@ -103,6 +103,41 @@ class Perception:
             scene=self._build_scene(elements, active_window, img, rect),
         )
 
+    def observe_light(self) -> Observation:
+        """OCR-only observation for in-batch verification.
+
+        Skips UIA, OmniParser web controls and layout regions -- the expensive
+        model layers. Returns a scene built from OCR text nodes only, with no
+        screenshot artifact and no SceneMemory push.
+        """
+        try:
+            rect = get_active_window_rect()
+        except Exception as e:
+            logger.debug("get_active_window_rect failed: %s", e, exc_info=True)
+            rect = (0, 0, 0, 0)
+        active_window = ""
+        try:
+            active_window = get_active_window()
+        except Exception as e:
+            logger.debug("get_active_window failed: %s", e, exc_info=True)
+        img = capture_rect(rect)
+        ocr_elements = []
+        try:
+            for e in ocr_module.get_elements(img):
+                e.bbox = _shift_bbox(e.bbox, rect[0], rect[1])
+                ocr_elements.append(e)
+        except Exception as e:
+            logger.debug("OCR extraction failed (light): %s", e, exc_info=True)
+        scene = build_scene(ocr_elements, active_window)
+        return Observation(
+            screenshot_path=None,
+            timestamp=time.time(),
+            active_window=active_window,
+            dpi_scale=self.dpi_scale,
+            elements=ocr_elements,
+            scene=scene,
+        )
+
     def _build_scene(self, elements, active_window, img, rect):
         regions = self._detect_regions(img, rect)
         web_nodes = self._detect_web_controls(active_window, img, rect, elements)
