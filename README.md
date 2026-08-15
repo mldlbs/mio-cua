@@ -68,7 +68,9 @@ mio-cua run "整理桌面上散落的文件，按类型归档"   # works with an
 
 ## 📸 Demo
 
-> **TODO:** add a short GIF showing a real task (e.g. Calculator `123*456=56088`). First-frame OCR ~20s on the web vision path; ~1.6s per OCR step with GPU.
+![mio-cua demo — perceive, decide, act, verify](promo/demo.gif)
+
+> Frames are real artifact screenshots from the verified Calculator run (`123*456=56088`). Regenerate with `python scripts/make_demo_gif.py`. First-frame OCR ~20s on the web vision path; ~1.6s per OCR step with GPU.
 
 Verified end-to-end on a real Windows 11 desktop:
 

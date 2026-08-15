@@ -1,0 +1,24 @@
+{
+  "project": {
+    "name": "mio-cua",
+    "type": "ai-agent",
+    "tagline": "Give your AI eyes, not APIs — a computer-use agent that sees your Windows screen and operates any app like a human.",
+    "description": "AI desktop automation agent for Windows: scene-graph perception (OCR + UIA), pure-vision web automation, MCP server. Works with cheap models.",
+    "language": "Python",
+    "license": "MIT",
+    "github_url": "https://github.com/mldlbs/mio-cua",
+    "features": [
+      "Scene Graph perception: OCR + UIA fused into a graph with verified action candidates",
+      "Web without DOM: pure-vision control via Regions + OmniParser, no extension",
+      "Cross-app workflows: one natural-language task spanning multiple apps",
+      "MCP server included: 27 tools for Claude / Cursor / ChatGPT",
+      "Safe by design: F9 emergency stop, audit trail, dry-run, virtual-desktop isolation"
+    ],
+    "competitors": [
+      "Traditional RPA (UiPath): drag-drop flows that break when the UI changes",
+      "Accessibility-only agents: depend on apps exposing UIA, break on custom-rendered UIs",
+      "Coordinate-guessing agents: no way to notice a missed click"
+    ]
+  },
+  "topics": ["desktop-automation", "computer-use", "ai-agent", "llm-agent", "windows", "automation", "rpa", "ocr", "computer-vision", "mcp", "mcp-server", "python", "gui-automation"]
+}
