@@ -29,7 +29,10 @@ def _get_engine():
         from rapidocr_onnxruntime import RapidOCR
 
         kwargs = {}
-        if os.environ.get("mio_cua_OCR_DEVICE", "dml").lower() == "dml":
+        want_dml = os.environ.get("mio_cua_OCR_DEVICE", "dml").lower() == "dml"
+        # mio_cua_GPU=0 forces every GPU path (OCR/Regions) to CPU, so the
+        # onnxruntime/DirectML sessions do not run concurrently and spike VRAM.
+        if want_dml and os.environ.get("mio_cua_GPU", "1") != "0":
             kwargs = {"det_use_dml": True, "cls_use_dml": True, "rec_use_dml": True}
         try:
             _engine = RapidOCR(**kwargs)

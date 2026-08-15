@@ -35,7 +35,8 @@ def _load():
         logger.debug("rapid_layout not available: %s", e)
         return None
     try:
-        _model = RapidLayout(engine_cfg={"use_dml": True})
+        use_dml = os.environ.get("mio_cua_GPU", "1") != "0"
+        _model = RapidLayout(engine_cfg={"use_dml": use_dml})
         _model_type = "pp_layout_cdla"
     except Exception as e:
         logger.warning("rapid_layout init failed (%s); disabling regions", e)
