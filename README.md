@@ -164,6 +164,7 @@ Traditional RPA automates *the flow you script*. mio-cua automates *what you des
 - Screenshot-per-step audit trail (`~/.mio_cua/artifacts/`)
 - `--dry-run` to preview plans without executing
 - File moves refuse to overwrite existing files
+- High-risk actions (delete / kill / close) ask for **on-screen confirmation** before running (`MIO_CUA_CONFIRM_OFF=1` to disable)
 - Test scenarios run in an **isolated virtual desktop** — your real desktop is untouched
 
 > ⚠️ Run a small smoke task first (e.g. "open Notepad, type hello") and confirm F9 works. It moves your real mouse and keyboard.
@@ -175,7 +176,7 @@ Traditional RPA automates *the flow you script*. mio-cua automates *what you des
 - [ ] **Demo GIF + screenshots** in README (conversion)
 - [ ] Publish to PyPI (`pip install mio-cua`)
 - [ ] Linux / macOS support (vision-only fallback)
-- [ ] On-screen notification + confirmation for high-risk actions
+- [x] **On-screen notification + confirmation for high-risk actions** ✅ (v0.2)
 - [x] **Planner improvements: multi-step batching with live re-verification** ✅ (v0.2)
 - [ ] Community: issues, contribution guide, Discord/WeChat group
 - [ ] CHANGELOG
