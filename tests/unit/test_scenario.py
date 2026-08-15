@@ -85,3 +85,18 @@ def test_load_scenario_yaml_bad_syntax_raises(tmp_path):
     p.write_text("name: [unclosed\n", encoding="utf8")
     with pytest.raises(ValueError):
         load_scenario_yaml(str(p))
+
+
+def test_load_scenario_yaml_null_element_fields_tolerated(tmp_path):
+    """id/bbox being null in hand-edited YAML must not crash (default to 0)."""
+    p = tmp_path / "s.yaml"
+    p.write_text(
+        "name: x\nactive_window: w\nsource: ocr\n"
+        "elements:\n"
+        "  - {id: null, text: 'ok', role: text, bbox: null}\n",
+        encoding="utf8",
+    )
+    obs = load_scenario_yaml(str(p))
+    assert len(obs.elements) == 1
+    assert obs.elements[0].id == 0
+    assert obs.elements[0].bbox == (0, 0, 0, 0)

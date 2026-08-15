@@ -75,10 +75,10 @@ def load_scenario_yaml(path) -> Observation:
         source = item.get("source") or data.get("source") or "merged"
         bbox = tuple(int(v) for v in (item.get("bbox") or [0, 0, 0, 0]))
         elements.append(Element(
-            id=int(item.get("id", 0)),
+            id=int(item.get("id") or 0),
             source=source,
-            text=item.get("text", "") or "",
-            role=item.get("role", "unknown") or "unknown",
+            text=item.get("text") or "",
+            role=item.get("role") or "unknown",
             bbox=bbox,
         ))
     return Observation(
