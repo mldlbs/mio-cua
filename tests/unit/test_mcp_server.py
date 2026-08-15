@@ -176,3 +176,17 @@ def test_mcp_low_risk_skips_confirmation(monkeypatch):
     monkeypatch.setattr(mcp_server, "CONFIRMATION", fake)
     content, _ = _run(mcp.call_tool("mio_list_dir", {"path": "."}))
     assert fake.calls == []
+
+
+def test_mcp_high_risk_alias_table_is_valid():
+    """Every MCP high-risk alias must map to a real HIGH_RISK semantic key,
+    so a tool can never silently skip confirmation via a bad key."""
+    from mio_cua.mcp_server import _MCP_HIGH_RISK
+    from mio_cua.safety.risk import HIGH_RISK
+
+    assert _MCP_HIGH_RISK, "alias table must not be empty"
+    for mcp_name, key in _MCP_HIGH_RISK.items():
+        assert key in HIGH_RISK, f"{mcp_name} -> unknown key {key!r}"
+    # the two known destructive tools must be covered
+    assert "mio_kill_process" in _MCP_HIGH_RISK
+    assert "mio_close_window" in _MCP_HIGH_RISK

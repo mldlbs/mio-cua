@@ -72,16 +72,7 @@ class _StubCtx:
 
 
 def _run(func, *args, **kwargs):
-    """Call a mio-cua tool and return its ActionResult message.
-
-    High-risk tools (see _MCP_HIGH_RISK) are confirmed first; a denial returns
-    a rejection message and the tool never runs.
-    """
-    name = getattr(func, "__name__", "")
-    key = _MCP_HIGH_RISK.get(name)
-    if key is not None:
-        if not CONFIRMATION.confirm(key, kwargs):
-            return f"Rejected by user: {name}"
+    """Call a mio-cua tool and return its ActionResult message."""
     res = func(_StubCtx(), *args, **kwargs)
     if res.success:
         return res.message

@@ -418,8 +418,14 @@ git commit -m "feat: confirm high-risk tools in ToolRegistry"
 ### Task 4: MCP 拦截
 
 **Files:**
-- Modify: `mio_cua/mcp_server.py:46-59`
+- Modify: `mio_cua/mcp_server.py`
 - Test: `tests/unit/test_mcp_server.py`
+
+> **实现期修正（code review 发现）**：原方案设想所有 MCP 工具都经 `_run` 转发，但
+> `mio_kill_process` / `mio_close_window` 是内联 `async def`（`mcp_server.py:413` / `:477`），
+> **不经过 `_run`**，直接由 `mcp.call_tool` 调用。因此把确认放在 `_run` 里是死代码。
+> 修正：确认检查直接写进这两个 async 工具函数内部（保持 `_run` 的防御性确认以覆盖
+> 未来经 `_run` 转发的高风险工具）。
 
 - [ ] **Step 1: 写失败测试**
 
@@ -429,7 +435,8 @@ git commit -m "feat: confirm high-risk tools in ToolRegistry"
 from mio_cua.models.action_result import ActionResult
 ```
 
-追加测试：
+追加测试（直接用真实的 async 工具函数 `mio_kill_process` / `mio_close_window`，
+monkeypatch `CONFIRMATION` 后经 `mcp.call_tool` 走真实路径）：
 
 ```python
 class _FakeMCPConfirm:
@@ -442,60 +449,65 @@ class _FakeMCPConfirm:
         return self.answer
 
 
-def test_mcp_high_risk_rejected_before_running(monkeypatch):
+def _run(coro):
+    import asyncio
+    return asyncio.run(coro)
+
+
+def test_mcp_kill_process_rejected_before_running(monkeypatch):
     from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
 
     monkeypatch.setattr(mcp_server, "CONFIRMATION", _FakeMCPConfirm(False))
-    ran = []
-
-    def kill(ctx, **kw):
-        ran.append(kw)
-        return ActionResult("x", True, "killed")
-
-    kill.__name__ = "mio_kill_process"
-    out = mcp_server._run(kill, pid=1)
-    assert out == "Rejected by user: mio_kill_process"
-    assert ran == [], "the tool must NOT run when rejected"
+    content, _ = _run(mcp.call_tool(
+        "mio_kill_process", {"name": "notepad.exe", "pid": 0, "force": False}))
+    text = content[0].text
+    assert "Rejected by user: mio_kill_process" in text
 
 
-def test_mcp_high_risk_approved_runs(monkeypatch):
+def test_mcp_kill_process_approved_runs(monkeypatch):
     from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
 
     monkeypatch.setattr(mcp_server, "CONFIRMATION", _FakeMCPConfirm(True))
+    content, _ = _run(mcp.call_tool(
+        "mio_kill_process", {"name": "no_such_proc_xyz", "pid": 0, "force": False}))
+    text = content[0].text
+    assert "Error" in text or "killed" in text  # confirm passed -> tool ran
 
-    def kill(ctx, **kw):
-        return ActionResult("x", True, "killed")
 
-    kill.__name__ = "mio_kill_process"
-    out = mcp_server._run(kill, pid=1)
-    assert out == "killed"
+def test_mcp_close_window_requires_confirm(monkeypatch):
+    from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
+
+    fake = _FakeMCPConfirm(False)
+    monkeypatch.setattr(mcp_server, "CONFIRMATION", fake)
+    content, _ = _run(mcp.call_tool("mio_close_window", {"title": "anything"}))
+    text = content[0].text
+    assert "Rejected by user: mio_close_window" in text
+    assert fake.calls, "close_window must be confirmed"
 
 
 def test_mcp_low_risk_skips_confirmation(monkeypatch):
     from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
 
     fake = _FakeMCPConfirm(False)  # would deny, but must never be asked
     monkeypatch.setattr(mcp_server, "CONFIRMATION", fake)
-
-    def focus(ctx, **kw):
-        return ActionResult("x", True, "focused")
-
-    focus.__name__ = "mio_focus_window"
-    out = mcp_server._run(focus, title="Calc")
-    assert out == "focused"
+    content, _ = _run(mcp.call_tool("mio_list_dir", {"path": "."}))
     assert fake.calls == []
 ```
 
 - [ ] **Step 2: 运行确认失败**
 
-Run: `python -m pytest tests/unit/test_mcp_server.py::test_mcp_high_risk_rejected_before_running -v`
-Expected: FAIL（`mcp_server.CONFIRMATION` 不存在，AttributeError）。
+Run: `python -m pytest tests/unit/test_mcp_server.py::test_mcp_kill_process_rejected_before_running -v`
+Expected: FAIL（kill 未确认直接执行，返回 "Error: ..." 而非 "Rejected by user"）。
 
 - [ ] **Step 3: 实现**
 
 修改 `mio_cua/mcp_server.py`：
 
-1. 顶部（`_prewarm_omniparser` 之后）新增模块级确认器与别名表：
+1. 在 `_prewarm_omniparser()` 调用之后新增：
 
 ```python
 from mio_cua.safety.confirm import Confirmation
@@ -508,43 +520,39 @@ _MCP_HIGH_RISK = {
     "mio_kill_process": "kill_process",
     "mio_close_window": "close_window",
 }
+
+
+def _confirm_mcp_tool(tool_name: str, params: dict) -> bool:
+    """Return True if the tool is not high-risk, or the user confirmed it."""
+    key = _MCP_HIGH_RISK.get(tool_name)
+    if key is None:
+        return True
+    return CONFIRMATION.confirm(key, params)
 ```
 
-2. 将现有 `_run`：
+2. `mio_close_window` 函数体开头（docstring 之后、try 之前）插入：
 
 ```python
-def _run(func, *args, **kwargs):
-    """Call a mio-cua tool and return its ActionResult message."""
-    res = func(_StubCtx(), *args, **kwargs)
-    if res.success:
-        return res.message
-    return f"Error: {res.message}"
+    if not _confirm_mcp_tool("mio_close_window", {"title": title}):
+        return "Rejected by user: mio_close_window"
 ```
 
-替换为：
+3. `mio_kill_process` 函数体开头（docstring 之后、`import subprocess` 之前）插入：
 
 ```python
-def _run(func, *args, **kwargs):
-    """Call a mio-cua tool and return its ActionResult message.
-
-    High-risk tools (see _MCP_HIGH_RISK) are confirmed first; a denial returns
-    a rejection message and the tool never runs.
-    """
-    name = getattr(func, "__name__", "")
-    key = _MCP_HIGH_RISK.get(name)
-    if key is not None:
-        if not CONFIRMATION.confirm(key, kwargs):
-            return f"Rejected by user: {name}"
-    res = func(_StubCtx(), *args, **kwargs)
-    if res.success:
-        return res.message
-    return f"Error: {res.message}"
+    if not _confirm_mcp_tool("mio_kill_process",
+                             {"name": name, "pid": pid, "force": force}):
+        return "Rejected by user: mio_kill_process"
 ```
+
+4. `_run` 恢复为纯转发包装（去掉其中的高风险确认逻辑——`_run` 收到的底层
+   工具函数 `__name__` 与 `_MCP_HIGH_RISK` 的键永远不匹配，该确认是死代码；
+   真实保护在 `mio_kill_process` / `mio_close_window` 内联的 `_confirm_mcp_tool` 调用）。
 
 - [ ] **Step 4: 运行确认通过**
 
 Run: `python -m pytest tests/unit/test_mcp_server.py -v`
-Expected: 全部 PASS（含既有 11 个）。
+Expected: 全部 PASS（既有 + 4 个新）。
 
 - [ ] **Step 5: Commit**
 
