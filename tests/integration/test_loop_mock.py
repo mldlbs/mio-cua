@@ -582,3 +582,67 @@ def test_loop_inline_verified_click_skips_pending_verify():
     # clicks 1-2 were inline-verified (no pending), only the tail click (3)
     # deferred to _pending_verify -> exactly one _verify_pending call.
     assert loop.pending_checks == 1, loop.pending_checks
+
+
+def test_loop_batch_keeps_controller_on_plan_obs():
+    """element_id resolution during a batch must use the plan-time full obs,
+    NOT the OCR-only light frame (whose ids live in a different space)."""
+    from mio_cua.models.action_result import RawResult
+
+    class SpyController:
+        def __init__(self):
+            self.current_observation = None
+            self.seen = []
+
+        def execute(self, action):
+            self.seen.append(self.current_observation)
+            return RawResult(sent=True)
+
+    class ResolvingRegistry:
+        def __init__(self):
+            self.names = []
+
+        def call(self, name, params, ctx):
+            self.names.append(name)
+            if name == "click":
+                r = ctx.controller.execute(Action(
+                    id=ctx.current_action_id, type="click", params=params))
+                return ActionResult(ctx.current_action_id, r.sent,
+                                    r.error or "clicked", retryable=not r.sent)
+            return ActionResult(ctx.current_action_id, True)
+
+        def schemas(self):
+            return []
+
+    plan_obs = []
+
+    class ThreeThenSuccess:
+        def __init__(self):
+            self.calls = 0
+
+        def plan(self, task, obs, diff, tools, history=None, hints=None):
+            plan_obs.append(obs)
+            self.calls += 1
+            if self.calls == 1:
+                return Plan(actions=[Action("a-1", "click", {"element_id": 1}),
+                                     Action("a-2", "click", {"element_id": 1}),
+                                     Action("a-3", "click", {"element_id": 1})])
+            return Plan(actions=[Action("a-4", "success", {"result": "done"})])
+
+    controller = SpyController()
+    loop = AgentLoop(
+        perception=ChangingPerception(),
+        planner=ThreeThenSuccess(),
+        registry=ResolvingRegistry(),
+        events=EventBus(),
+        safety=FakeSafety(),
+        config=AgentConfig(),
+        controller=controller,
+    )
+    result = loop.run(Task(instruction="click thrice"))
+    assert result.status == "SUCCESS"
+    assert plan_obs, "planner must have been called"
+    target = plan_obs[0]
+    assert controller.seen, "controller.execute must have been called"
+    assert all(o is target for o in controller.seen), \
+        "controller.current_observation must stay the plan-time full obs"

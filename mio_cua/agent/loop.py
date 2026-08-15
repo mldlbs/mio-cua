@@ -223,6 +223,7 @@ class AgentLoop:
                     # Capture the expected on-screen change (clicks with an
                     # element_id that maps to an affordance).
                     expected = None
+                    pending = None
                     if action.type == "click":
                         pending = self._capture_expected(obs, action)
                         expected = pending[1] if pending else None
@@ -237,7 +238,6 @@ class AgentLoop:
                         break
                     # --- in-batch light verification (do NOT set _pending_verify) ---
                     light = light_observe()
-                    self.controller.current_observation = light
                     ok, detail = verify_action(light_base, light, action, expected)
                     if not ok:
                         if self.history is not None:
@@ -247,10 +247,7 @@ class AgentLoop:
                     light_base = light
                 if finished_status in ("SUCCESS", "FAIL"):
                     break
-                if batch_executed > 0 and config_batch_verify:
-                    prev = light_base
-                else:
-                    prev = obs
+                prev = obs
         except Exception as e:
             finished_status = "FAIL"
             finished_summary = f"loop error: {e}"
