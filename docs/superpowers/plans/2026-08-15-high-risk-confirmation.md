@@ -249,7 +249,7 @@ class Confirmation:
     def __init__(self, timeout_s: float = 30.0, enabled: bool = None):
         self.timeout_s = timeout_s
         if enabled is None:
-            enabled = os.environ.get("MIO_CUA_CONFIRM_OFF", "1") != "1"
+            enabled = os.environ.get("MIO_CUA_CONFIRM_OFF", "0") != "1"
         self.enabled = enabled
 
     def confirm(self, tool_name: str, params=None) -> bool:
@@ -274,6 +274,10 @@ class Confirmation:
 
 Run: `python -m pytest tests/unit/test_confirm.py -v`
 Expected: PASS。
+
+> **实现期修正**：`MIO_CUA_CONFIRM_OFF` 的默认值应为 `"0"`（未设置 → 启用确认，与
+> spec「默认启用、`=1` 显式关闭」及 `test_env_unset_enables` 一致）。原计划写成 `"1"`
+> 会让未设置时误判为关闭。
 
 - [ ] **Step 5: Commit**
 
