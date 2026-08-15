@@ -43,6 +43,18 @@ def _prewarm_omniparser():
 _prewarm_omniparser()
 
 
+from mio_cua.safety.confirm import Confirmation
+
+CONFIRMATION = Confirmation()
+
+# MCP tool name -> HIGH_RISK semantic key. New high-risk tools MUST be added
+# here (and mirror destructiveHint: True on the @mcp.tool annotation).
+_MCP_HIGH_RISK = {
+    "mio_kill_process": "kill_process",
+    "mio_close_window": "close_window",
+}
+
+
 class _StubCtx:
     """Minimal context satisfying mio-cua's tool signatures."""
 
@@ -52,7 +64,16 @@ class _StubCtx:
 
 
 def _run(func, *args, **kwargs):
-    """Call a mio-cua tool and return its ActionResult message."""
+    """Call a mio-cua tool and return its ActionResult message.
+
+    High-risk tools (see _MCP_HIGH_RISK) are confirmed first; a denial returns
+    a rejection message and the tool never runs.
+    """
+    name = getattr(func, "__name__", "")
+    key = _MCP_HIGH_RISK.get(name)
+    if key is not None:
+        if not CONFIRMATION.confirm(key, kwargs):
+            return f"Rejected by user: {name}"
     res = func(_StubCtx(), *args, **kwargs)
     if res.success:
         return res.message

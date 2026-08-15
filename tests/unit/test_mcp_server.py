@@ -2,6 +2,7 @@ import asyncio
 import sys
 
 import pytest
+from mio_cua.models.action_result import ActionResult
 
 
 def _run(coro):
@@ -121,3 +122,57 @@ def test_mcp_vdesk_uses_script_module():
     spec.loader.exec_module(mod)
     assert callable(getattr(mod, "ensure_test_desktop", None))
     assert callable(mod.close_desktop)
+
+
+class _FakeMCPConfirm:
+    def __init__(self, answer):
+        self.answer = answer
+        self.calls = []
+
+    def confirm(self, name, params):
+        self.calls.append((name, params))
+        return self.answer
+
+
+def test_mcp_high_risk_rejected_before_running(monkeypatch):
+    from mio_cua import mcp_server
+
+    monkeypatch.setattr(mcp_server, "CONFIRMATION", _FakeMCPConfirm(False))
+    ran = []
+
+    def kill(ctx, **kw):
+        ran.append(kw)
+        return ActionResult("x", True, "killed")
+
+    kill.__name__ = "mio_kill_process"
+    out = mcp_server._run(kill, pid=1)
+    assert out == "Rejected by user: mio_kill_process"
+    assert ran == [], "the tool must NOT run when rejected"
+
+
+def test_mcp_high_risk_approved_runs(monkeypatch):
+    from mio_cua import mcp_server
+
+    monkeypatch.setattr(mcp_server, "CONFIRMATION", _FakeMCPConfirm(True))
+
+    def kill(ctx, **kw):
+        return ActionResult("x", True, "killed")
+
+    kill.__name__ = "mio_kill_process"
+    out = mcp_server._run(kill, pid=1)
+    assert out == "killed"
+
+
+def test_mcp_low_risk_skips_confirmation(monkeypatch):
+    from mio_cua import mcp_server
+
+    fake = _FakeMCPConfirm(False)  # would deny, but must never be asked
+    monkeypatch.setattr(mcp_server, "CONFIRMATION", fake)
+
+    def focus(ctx, **kw):
+        return ActionResult("x", True, "focused")
+
+    focus.__name__ = "mio_focus_window"
+    out = mcp_server._run(focus, title="Calc")
+    assert out == "focused"
+    assert fake.calls == []
