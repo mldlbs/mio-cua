@@ -100,6 +100,8 @@ Low-cost models (e.g. `deepseek-v4-flash`) are enough for all five scenarios.
 ```bash
 mio-cua run "打开计算器，计算 3*4" --model gpt-4o
 mio-cua run "删除所有文件" --dry-run        # plan only, nothing is touched
+mio-cua gen-scenario --image shot.png -o calculator.yaml   # screenshot -> YAML scene
+mio-cua run "计算 3*4" --simulate-scenario calculator.yaml  # replay offline, no real input
 mio-cua resume <task_id>                     # continue an interrupted task
 mio-cua replay <task_id>                     # debug: replay every step from artifacts
 mio-cua providers
