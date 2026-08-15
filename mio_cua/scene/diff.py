@@ -69,9 +69,10 @@ def diff(prev, curr) -> list:
             changes.append(SceneChange(
                 "moved", c.id, f"node {c.id} moved {p.bbox} -> {c.bbox}",
             ))
-    curr_ids = {c.id for c in curr.nodes}
+    matched_ids = {m.id for m in matched.values()}
+    prev_ids = {p.id for p in prev.nodes}
     for c in curr.nodes:
-        if c.id not in matched.values() and c.id not in {p.id for p in prev.nodes}:
+        if c.id not in matched_ids and c.id not in prev_ids:
             changes.append(SceneChange("added", c.id, f"node {c.id} appeared"))
     return changes
 

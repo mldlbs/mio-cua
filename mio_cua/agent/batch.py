@@ -9,7 +9,7 @@ a batch.
 
 from mio_cua.agent.expected import ExpectedVerifier
 from mio_cua.scene.diff import diff as scene_diff
-from mio_cua.scene.graph import SceneGraph
+from mio_cua.scene.graph import SceneGraph, SceneNode
 
 # Action types whose purpose is to change the on-screen content. For these we
 # require an observable screen change when no explicit ``expected`` is present.
@@ -58,6 +58,29 @@ def _ocr_diff(prev_obs, curr_obs):
 
 
 def _ocr_nodes(obs):
+    """OCR-only projection of an observation.
+
+    Prefers the observation's element list (``source == "ocr"``): the merge
+    step preserves OCR elements alongside UIA ones, whereas the scene graph
+    *folds* overlapping OCR glyphs into the UIA node (source stays "uia"), so a
+    scene-node projection would silently drop those glyphs and a full frame
+    would always diff as "changed" against a light frame. Falls back to scene
+    nodes for observations without an element list.
+    """
+    els = getattr(obs, "elements", None) or []
+    ocr_els = [e for e in els if (getattr(e, "source", None) or "") == "ocr"]
+    if ocr_els:
+        nodes = []
+        for e in ocr_els:
+            l, t, w, h = (tuple(int(v) for v in e.bbox) if e.bbox else (0, 0, 0, 0))
+            nodes.append(SceneNode(
+                id=e.id, type="text", bbox=(l, t, w, h),
+                text=e.text or "", semantic=e.text or "",
+                confidence=float(getattr(e, "confidence", 1.0) or 1.0),
+                source="ocr", role="text",
+                state={"enabled": True, "visible": True, "focused": False},
+            ))
+        return nodes
     scene = getattr(obs, "scene", None)
     if scene is None:
         return []

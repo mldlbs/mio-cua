@@ -61,3 +61,19 @@ def test_compute_diff_prefers_scene_and_detects_display_change():
     d = compute_diff(_obs_scene(els0), _obs_scene(els1))
     assert any(c.kind == "text_changed" and "显示为 0" in c.description and "显示为 7" in c.description
                for c in d.changes)
+
+
+def test_scene_diff_rematched_node_not_added():
+    """A curr node matched to a prev node by bbox but with a DIFFERENT id must
+    not be reported as 'added' (regression: added-detection compared an int id
+    against SceneNode objects, so every id shift looked like a new node)."""
+    from mio_cua.scene.diff import diff
+    from mio_cua.scene.graph import SceneGraph, SceneNode
+
+    prev = SceneGraph(nodes=[SceneNode(id=1, type="text", bbox=(100, 300, 127, 48),
+                                       text="7", source="ocr")])
+    curr = SceneGraph(nodes=[SceneNode(id=0, type="text", bbox=(100, 300, 127, 48),
+                                       text="7", source="ocr")])
+    changes = diff(prev, curr)
+    assert not any(c.kind == "added" for c in changes), changes
+    assert not any(c.kind == "removed" for c in changes), changes

@@ -95,6 +95,24 @@ def test_ocr_projection_ignores_uia_noise():
     assert "did not change" in detail
 
 
+def test_ocr_projection_overlapping_uia_same_pixels_no_change():
+    """A full frame whose OCR glyph is folded into an overlapping UIA node must
+    still project to the OCR element (not be lost), so identical pixels between
+    a full prev and a light curr report NO change."""
+    prev_els = [
+        Element(0, "uia", text="一", role="button", bbox=(100, 300, 127, 48)),
+        Element(1, "ocr", text="7", role="unknown", bbox=(100, 300, 127, 48)),
+    ]
+    curr_els = [
+        Element(0, "ocr", text="7", role="unknown", bbox=(100, 300, 127, 48)),
+    ]
+    prev = _obs(prev_els)
+    curr = _obs(curr_els)
+    ok, detail = verify_action(prev, curr, _click(), None)
+    assert ok is False, "identical pixels must NOT be reported as changed"
+    assert "did not change" in detail
+
+
 # --- 非可见动作跳过 ---
 
 def test_non_visible_action_passes_without_diff():
