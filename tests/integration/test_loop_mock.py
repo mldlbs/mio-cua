@@ -1,5 +1,7 @@
-﻿from mio_cua.agent.loop import AgentLoop
+﻿from mio_cua.agent.batch import verify_action
+from mio_cua.agent.loop import AgentLoop
 from mio_cua.agent.recover import Recover
+from mio_cua.config import AgentConfig
 from mio_cua.memory.artifact import ArtifactStore
 from mio_cua.memory.state import TaskState, state_path
 from mio_cua.models.action import Action, Plan
@@ -8,6 +10,7 @@ from mio_cua.models.task import Task, TaskResult
 from mio_cua.models.observation import Observation
 from mio_cua.models.element import Element
 from mio_cua.events import EventBus, TaskFinished, ActionFinished
+from mio_cua.scene import build_scene
 
 
 class FakePerception:
@@ -136,32 +139,72 @@ def test_loop_verification_hint_on_missed_display_click():
     assert any("VERIFICATION" in h for h in hints_seen), hints_seen
 
 
-def test_loop_only_one_action_per_observation():
-    # Actions in a plan were decided against the SAME scene; executing them all
-    # without re-perceiving means later actions hit a stale screen. The loop
-    # must run one action, then re-observe + replan.
-    from mio_cua.agent.planner import Planner
-    from mio_cua.models.action import Plan, Action, ToolCall
+def _changing_scene_obs(count):
+    """OCR observation whose text reflects ``count`` (screen changing)."""
+    els = [
+        Element(0, "ocr", text="Calc", bbox=(10, 10, 40, 20)),
+        Element(1, "ocr", text=str(count), bbox=(10, 50, 40, 20)),
+    ]
+    sc = build_scene(els, active_window="Calc")
+    return Observation(None, 1.0, "Calc", 1.0, els, scene=sc)
 
-    calls = []
 
-    class CountingPlanner(Planner):
+class ChangingPerception:
+    """Full observe() and light observe() both advance the on-screen counter."""
+
+    def __init__(self):
+        self.count = 0
+        self.full = 0
+        self.light = 0
+
+    def _next(self):
+        obs = _changing_scene_obs(self.count)
+        self.count += 1
+        return obs
+
+    def observe(self):
+        self.full += 1
+        return self._next()
+
+    def observe_light(self):
+        self.light += 1
+        return self._next()
+
+
+def test_loop_batches_three_actions_one_plan():
+    """3 clicks in one plan run in a single batch (1 full observe for planning,
+    2 light observes between), then replan."""
+    full_plan_calls = []
+
+    class ThreeThenSuccess:
         def __init__(self):
-            self._counter = 0
+            self.calls = 0
 
         def plan(self, task, obs, diff, tools, history=None, hints=None):
-            calls.append(obs)
-            if len(calls) == 1:
+            full_plan_calls.append(obs)
+            self.calls += 1
+            if self.calls == 1:
                 return Plan(actions=[Action("a-1", "click", {"x": 1}),
-                                     Action("a-2", "success", {"result": "done"})])
-            return Plan(actions=[Action("a-2", "success", {"result": "done"})])
+                                     Action("a-2", "click", {"x": 2}),
+                                     Action("a-3", "click", {"x": 3})])
+            return Plan(actions=[Action("a-4", "success", {"result": "done"})])
 
-    loop = _loop([])
-    loop.planner = CountingPlanner()
-    result = loop.run(Task(instruction="open calc"))
+    registry = FakeRegistry()
+    perception = ChangingPerception()
+    loop = AgentLoop(
+        perception=perception,
+        planner=ThreeThenSuccess(),
+        registry=registry,
+        events=EventBus(),
+        safety=FakeSafety(),
+        config=AgentConfig(),  # batch_limit=3, batch_verify=True
+    )
+    result = loop.run(Task(instruction="click three times"))
     assert result.status == "SUCCESS"
-    # click ran on the first observation, success on a SECOND observation
-    assert len(calls) == 2
+    assert registry.names.count("click") == 3
+    assert perception.full == 2, "1 full observe to plan + 1 to replan"
+    assert perception.light == 2, "one light verify between the 3 clicks"
+    assert len(full_plan_calls) == 2, "LLM planned exactly twice"
 
 
 def test_loop_fail_path():
@@ -365,3 +408,177 @@ def test_loop_recovers_retryable_failure():
     click_result = [r for r in recovered if r.metadata.get("recovered")][0]
     assert click_result.success is True
     assert click_result.message == "recovered ok"
+
+
+def test_loop_aborts_batch_on_verify_failure():
+    """3 clicks planned; the 2nd inline verify fails (screen stops changing)
+    -> whole batch aborted, history records a verify failure, then replan."""
+    from mio_cua.memory.history import History
+
+    plan_calls = []
+
+    class ClickClickClickThenSuccess:
+        def __init__(self):
+            self.calls = 0
+
+        def plan(self, task, obs, diff, tools, history=None, hints=None):
+            plan_calls.append(hints or [])
+            self.calls += 1
+            if self.calls == 1:
+                return Plan(actions=[Action("a-1", "click", {"x": 1}),
+                                     Action("a-2", "click", {"x": 2}),
+                                     Action("a-3", "click", {"x": 3})])
+            return Plan(actions=[Action("a-4", "success", {"result": "done"})])
+
+    class StopsChangingPerception(ChangingPerception):
+        def _next(self):
+            # full observe -> "0", every light observe after -> "1":
+            # click1 ("0"->"1") passes, click2 ("1"->"1") fails verification.
+            snap = min(self.count, 1)
+            self.count += 1
+            return _changing_scene_obs(snap)
+
+    history = History()
+    registry = FakeRegistry()
+    loop = AgentLoop(
+        perception=StopsChangingPerception(),
+        planner=ClickClickClickThenSuccess(),
+        registry=registry,
+        events=EventBus(),
+        safety=FakeSafety(),
+        config=AgentConfig(),
+        history=history,
+    )
+    result = loop.run(Task(instruction="click three times"))
+    assert result.status == "SUCCESS"
+    assert len(plan_calls) == 2, "batch aborted -> replanned"
+    assert any("verify: " in e.get("message", "") for e in history.entries), \
+        "verify failure must land in history"
+    assert any("aborted because" in (h or "")
+               for h in plan_calls[1]), "GUIDANCE hint must reach the replan"
+
+
+def test_loop_batch_verify_disabled_one_action_per_obs():
+    """batch_verify=False keeps the old one-action-per-observation behavior."""
+    class BatchPerception(ChangingPerception):
+        def observe_light(self):
+            raise AssertionError("observe_light must not be called when batch_verify=False")
+
+    class OneClickPerPlanThenSuccess:
+        def __init__(self):
+            self.calls = 0
+
+        def plan(self, task, obs, diff, tools, history=None, hints=None):
+            self.calls += 1
+            if self.calls in (1, 2):
+                return Plan(actions=[Action(f"a-{self.calls}", "click", {"x": self.calls})])
+            return Plan(actions=[Action("a-3", "success", {"result": "done"})])
+
+    registry = FakeRegistry()
+    loop = AgentLoop(
+        perception=BatchPerception(),
+        planner=OneClickPerPlanThenSuccess(),
+        registry=registry,
+        events=EventBus(),
+        safety=FakeSafety(),
+        config=AgentConfig(batch_verify=False),
+    )
+    result = loop.run(Task(instruction="click twice"))
+    assert result.status == "SUCCESS"
+    # one click per plan, both plans ran (one full observe each)
+    assert registry.names.count("click") == 2, "both clicks still ran"
+
+
+def test_loop_success_verifies_previous_inline():
+    """plan=[click, success]: click is verified inline before success runs."""
+    class ClickThenSuccess:
+        def __init__(self):
+            self.calls = 0
+
+        def plan(self, task, obs, diff, tools, history=None, hints=None):
+            self.calls += 1
+            if self.calls == 1:
+                return Plan(actions=[Action("a-1", "click", {"x": 1}),
+                                     Action("a-2", "success", {"result": "done"})])
+            return Plan(actions=[Action("a-3", "success", {"result": "done"})])
+
+    perception = ChangingPerception()
+    loop = AgentLoop(
+        perception=perception,
+        planner=ClickThenSuccess(),
+        registry=FakeRegistry(),
+        events=EventBus(),
+        safety=FakeSafety(),
+        config=AgentConfig(),
+    )
+    result = loop.run(Task(instruction="click then done"))
+    assert result.status == "SUCCESS"
+    assert perception.light >= 1, "click must be inline-verified before success"
+
+
+def test_loop_inline_verified_click_skips_pending_verify():
+    """A click verified inline must NOT also set _pending_verify (no double check).
+
+    Clicks target element_id=0 (a calculator digit with an ``expected``
+    display change), so _capture_expected returns non-None and the batch-tail
+    click WOULD defer to _pending_verify -- but the two inline-verified clicks
+    must not. Only the batch-tail click runs _verify_pending once.
+    """
+    class SpyLoop(AgentLoop):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            self.pending_checks = 0
+
+        def _verify_pending(self, obs):
+            self.pending_checks += 1
+            return super()._verify_pending(obs)
+
+    class CalcPerception:
+        """Calculator-like scene: display advances on every observe/light."""
+
+        def __init__(self):
+            self.count = 0
+
+        def _next(self):
+            els = [
+                Element(0, "uia", text="7", role="button", bbox=(100, 300, 127, 48)),
+                Element(1, "uia", text=str(self.count), role="text", bbox=(100, 10, 400, 80)),
+            ]
+            for i, e in enumerate(els):
+                e.id = i
+            sc = build_scene(els, active_window="Calculator")
+            sc.display_ids = [1]
+            self.count += 1
+            return Observation(None, 1.0, "Calculator", 1.0, els, scene=sc)
+
+        def observe(self):
+            return self._next()
+
+        def observe_light(self):
+            return self._next()
+
+    class ThreeClicksThenSuccess:
+        def __init__(self):
+            self.calls = 0
+
+        def plan(self, task, obs, diff, tools, history=None, hints=None):
+            self.calls += 1
+            if self.calls == 1:
+                return Plan(actions=[Action("a-1", "click", {"element_id": 0}),
+                                     Action("a-2", "click", {"element_id": 0}),
+                                     Action("a-3", "click", {"element_id": 0})])
+            return Plan(actions=[Action("a-4", "success", {"result": "done"})])
+
+    loop = SpyLoop(
+        perception=CalcPerception(),
+        planner=ThreeClicksThenSuccess(),
+        registry=FakeRegistry(),
+        events=EventBus(),
+        safety=FakeSafety(),
+        config=AgentConfig(),
+    )
+    result = loop.run(Task(instruction="click 7 thrice"))
+    assert result.status == "SUCCESS"
+    # clicks 1-2 were inline-verified (no pending), only the tail click (3)
+    # deferred to _pending_verify -> exactly one _verify_pending call.
+    assert loop.pending_checks == 1, loop.pending_checks

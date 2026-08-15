@@ -3,6 +3,7 @@ import os
 import time
 import uuid
 
+from mio_cua.agent.batch import verify_action
 from mio_cua.agent.diff import compute_diff
 from mio_cua.automation.input_controller import InputController
 from mio_cua.events import ObservationCreated, ActionStarted, ActionFinished, TaskFinished
@@ -112,6 +113,7 @@ class AgentLoop:
             self._recent_sigs = deque(maxlen=8)
             self._verifier = ExpectedVerifier()
             self._pending_verify = None  # (node_id, expected, prev_scene) awaiting the next observation
+            self._batch_failed = None
             while not self.safety.should_stop():
                 obs = self.perception.observe()
                 self.events.publish(ObservationCreated(obs))
@@ -146,6 +148,11 @@ class AgentLoop:
                 finish_hint = self._completion_hint(no_change)
                 if finish_hint:
                     hints.append(finish_hint)
+                if self._batch_failed:
+                    hints.append("GUIDANCE: the last batch was aborted because "
+                                 f"{self._batch_failed}; re-inspect the screen "
+                                 "and pick a fresh action, do NOT blindly repeat.")
+                    self._batch_failed = None
                 if len(self._recent_sigs) >= 4 and self._recent_sigs.count(self._recent_sigs[-1]) >= 4:
                     hints.append(f"you have called `{self._recent_sigs[-1]}` repeatedly with no effect. STOP repeating it and choose a different action now.")
                 if hints:
@@ -154,8 +161,12 @@ class AgentLoop:
                 if not plan.actions:
                     break
                 ctx = self._make_ctx(obs)
+                config_batch_limit = getattr(self.config, "batch_limit", 3) if self.config else 3
+                config_batch_verify = getattr(self.config, "batch_verify", True) if self.config else True
+                batch_executed = 0
+                light_base = obs
                 for i, action in enumerate(plan.actions):
-                    if self.safety.should_stop():
+                    if batch_executed >= config_batch_limit or self.safety.should_stop():
                         break
                     self.events.publish(ActionStarted(action))
                     ctx.current_action_id = action.id
@@ -165,25 +176,16 @@ class AgentLoop:
                         result = ActionResult(action.id, success=False, message=str(e), retryable=True)
                     if not result.success and result.retryable and self.recover is not None:
                         result = self.recover(action, result, ctx)
-                    if result.success and action.type == "click":
-                        self._pending_verify = self._capture_expected(obs, action)
                     self._save_artifact(obs, action, result)
                     self.events.publish(ActionFinished(result))
                     if self.history is not None:
                         self.history.record(action.id, action.type, result.success, result.message)
                     self.safety.record_step()
                     steps += 1
-                    if action.type not in ("success", "fail"):
-                        sig = f"{action.type}({sorted(action.params.items())})"
-                        if self._recent_sigs and self._recent_sigs[-1] == sig:
-                            repeat_count += 1
-                        else:
-                            repeat_count = 1
-                        self._recent_sigs.append(sig)
-                        if repeat_count >= 6:
-                            finished_status = "FAIL"
-                            finished_summary = f"stuck: repeated {sig} {repeat_count} times with no effect"
-                            break
+                    if not result.success:
+                        # action failed (recover exhausted) -> abort the whole batch
+                        self._batch_failed = result.message or "action failed"
+                        break
                     if action.type == "success":
                         blocker = self._unconfirmed_edit()
                         if blocker:
@@ -206,15 +208,49 @@ class AgentLoop:
                         finished_status = "FAIL"
                         finished_summary = str(action.params.get("reason", ""))
                         break
-                    # Only ONE action per observation: the screen changes after
-                    # every action, so subsequent actions in the same plan were
-                    # decided against a stale scene. Re-observe + replan first.
-                    # (Terminal success/fail already broke above.)
-                    if i + 1 < len(plan.actions):
+                    if action.type not in ("success", "fail"):
+                        sig = f"{action.type}({sorted(action.params.items())})"
+                        if self._recent_sigs and self._recent_sigs[-1] == sig:
+                            repeat_count += 1
+                        else:
+                            repeat_count = 1
+                        self._recent_sigs.append(sig)
+                        if repeat_count >= 6:
+                            finished_status = "FAIL"
+                            finished_summary = f"stuck: repeated {sig} {repeat_count} times with no effect"
+                            break
+                    batch_executed += 1
+                    # Capture the expected on-screen change (clicks with an
+                    # element_id that maps to an affordance).
+                    expected = None
+                    if action.type == "click":
+                        pending = self._capture_expected(obs, action)
+                        expected = pending[1] if pending else None
+                    light_observe = getattr(self.perception, "observe_light", None)
+                    has_successor = (i + 1 < len(plan.actions)) and (batch_executed < config_batch_limit)
+                    if not has_successor or not config_batch_verify or light_observe is None:
+                        # Batch tail, verification disabled, or perception has no
+                        # light observe: defer to the next full observation via the
+                        # existing _pending_verify hint.
+                        if action.type == "click" and pending is not None:
+                            self._pending_verify = pending
                         break
+                    # --- in-batch light verification (do NOT set _pending_verify) ---
+                    light = light_observe()
+                    self.controller.current_observation = light
+                    ok, detail = verify_action(light_base, light, action, expected)
+                    if not ok:
+                        if self.history is not None:
+                            self.history.record(action.id, action.type, False, f"verify: {detail}")
+                        self._batch_failed = detail
+                        break
+                    light_base = light
                 if finished_status in ("SUCCESS", "FAIL"):
                     break
-                prev = obs
+                if batch_executed > 0 and config_batch_verify:
+                    prev = light_base
+                else:
+                    prev = obs
         except Exception as e:
             finished_status = "FAIL"
             finished_summary = f"loop error: {e}"
