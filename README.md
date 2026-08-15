@@ -45,10 +45,12 @@ mio-cua flips the approach: instead of writing an interface for the AI, it gives
 ### 1. Install
 
 ```bash
-pip install -e .            # core (Windows; run terminal as admin recommended)
-pip install -e ".[vision]"  # + OCR (rapidocr)
-pip install -e ".[gpu]"     # + DirectML GPU acceleration
+pip install mio-cua          # core (Windows; run terminal as admin recommended)
+pip install "mio-cua[vision]" # + OCR (rapidocr)
+pip install "mio-cua[gpu]"    # + DirectML GPU acceleration
 ```
+
+> Dev install from source instead: `pip install -e .` (add `-e ".[vision]"` / `-e ".[gpu]"` for extras).
 
 ### 2. Set your LLM key
 
