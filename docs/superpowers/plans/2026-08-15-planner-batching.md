@@ -214,7 +214,9 @@ def _ocr_els(*texts):
 
 
 def _uia_els(*texts):
-    return [Element(i, "uia", text=t, bbox=(i * 60, 0, 50, 20))
+    # ids/boxes offset so UIA elements never collide with OCR elements
+    # (NodeBuilder would fold an overlapping OCR text into the UIA node).
+    return [Element(i + 100, "uia", text=t, bbox=(i * 60 + 1000, 0, 50, 20))
             for i, t in enumerate(texts)]
 
 
@@ -352,9 +354,7 @@ def verify_action(prev_obs, curr_obs, action, expected):
         prev_scene = getattr(prev_obs, "scene", None)
         curr_scene = getattr(curr_obs, "scene", None)
         if prev_scene is not None and curr_scene is not None:
-            ok, detail = ExpectedVerifier().verify(prev_scene, curr_scene, expected)
-            if not ok:
-                return False, detail
+            return ExpectedVerifier().verify(prev_scene, curr_scene, expected)
     if action.type not in VISIBLE_TYPES:
         return True, "no visible expectation"
     changes = _ocr_diff(prev_obs, curr_obs)
