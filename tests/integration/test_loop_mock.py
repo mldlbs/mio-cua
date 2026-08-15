@@ -81,6 +81,10 @@ def _loop(plans, safety=None):
     )
 
 
+def _ok_tool(ctx, **kwargs):
+    return ActionResult(ctx.current_action_id, True, "ok")
+
+
 def test_loop_completes_via_success_tool():
     loop = _loop([Plan(actions=[Action("a-1", "click", {"x": 1})]), Plan(actions=[Action("a-2", "success", {"result": "done"})])])
     finished = []
@@ -646,3 +650,57 @@ def test_loop_batch_keeps_controller_on_plan_obs():
     assert controller.seen, "controller.execute must have been called"
     assert all(o is target for o in controller.seen), \
         "controller.current_observation must stay the plan-time full obs"
+
+
+def test_loop_high_risk_denied_aborts_batch_no_retry():
+    """A high-risk action the user rejects returns retryable=False; the loop
+    must not recover it, must abort the batch, and must surface a GUIDANCE
+    hint on the replan."""
+    from mio_cua.tools.registry import ToolRegistry
+
+    class FakeConfirm:
+        def confirm(self, name, params):
+            return False
+
+    ran = []
+
+    def delete(ctx, target=None):
+        ran.append(target)
+        return ActionResult(ctx.current_action_id, True, "deleted")
+
+    registry = ToolRegistry(confirmation=FakeConfirm())
+    registry.register("delete", delete, {"type": "function", "function": {
+        "name": "delete", "risk": "high"}})
+    # also register the tools the loop may reach (click after delete, success/fail)
+    registry.register("click", _ok_tool, {"type": "function", "function": {"name": "click"}})
+    registry.register("success", _ok_tool, {"type": "function", "function": {"name": "success"}})
+    registry.register("fail", _ok_tool, {"type": "function", "function": {"name": "fail"}})
+
+    hints_seen = []
+
+    class DeleteThenSuccess:
+        def __init__(self):
+            self.calls = 0
+
+        def plan(self, task, obs, diff, tools, history=None, hints=None):
+            hints_seen.append(hints or [])
+            self.calls += 1
+            if self.calls == 1:
+                return Plan(actions=[Action("a-1", "delete", {"target": "x.txt"}),
+                                     Action("a-2", "click", {"x": 1})])
+            return Plan(actions=[Action("a-3", "success", {"result": "done"})])
+
+    loop = AgentLoop(
+        perception=ChangingPerception(),
+        planner=DeleteThenSuccess(),
+        registry=registry,
+        events=EventBus(),
+        safety=FakeSafety(),
+        config=AgentConfig(),
+        history=None,
+    )
+    result = loop.run(Task(instruction="delete x.txt"))
+    assert result.status == "SUCCESS"
+    assert ran == [], "the rejected delete must never run"
+    assert any("aborted because" in (h or "") for h in hints_seen[1]), \
+        "GUIDANCE hint must reach the replan"
