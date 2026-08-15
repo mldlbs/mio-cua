@@ -178,19 +178,19 @@ Traditional RPA automates *the flow you script*. mio-cua automates *what you des
 ## 🗺️ Roadmap
 
 - [x] **Demo GIF + screenshots** in README ✅
+- [x] **Planner improvements: multi-step batching with live re-verification** ✅ (v0.2)
+- [x] **On-screen notification + confirmation for high-risk actions** ✅ (v0.2)
+- [x] **Screenshot → YAML scenario** + offline replay ✅ (v0.2)
+- [x] **CHANGELOG** ✅
 - [ ] Publish to PyPI (`pip install mio-cua`) — build & twine upload pending
 - [ ] Linux / macOS support (vision-only fallback)
-- [x] **On-screen notification + confirmation for high-risk actions** ✅ (v0.2)
-- [x] **Planner improvements: multi-step batching with live re-verification** ✅ (v0.2)
-- [x] **Screenshot → YAML scenario** + offline replay ✅ (v0.2)
-- [ ] Community: issues, contribution guide, Discord/WeChat group
-- [x] **CHANGELOG** ✅
+- [ ] Community: Discord/WeChat group (issues + CONTRIBUTING are live)
 
 ---
 
 ## 🤝 Contributing
 
-Found a bug, or an app it can't operate yet? Open an issue or PR — every new scenario added to `smoke/` is a win for everyone.
+Found a bug, or an app it can't operate yet? Open an issue or PR — every new scenario added to `smoke/` is a win for everyone. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, safety rules, and how to add smoke scenarios.
 
 ---
 
