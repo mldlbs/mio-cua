@@ -315,7 +315,7 @@ class FakeConfirm:
         return self.answer
 
 
-def _tool(ctx, value=None):
+def _tool(ctx, **kwargs):
     return ActionResult(action_id="a-1", success=True, message="ran")
 
 
