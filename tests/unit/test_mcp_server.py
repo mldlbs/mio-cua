@@ -2,7 +2,7 @@ import asyncio
 import sys
 
 import pytest
-from mio_cua.models.action_result import ActionResult
+from mio_cua.mcp_server import mcp
 
 
 def _run(coro):
@@ -134,45 +134,45 @@ class _FakeMCPConfirm:
         return self.answer
 
 
-def test_mcp_high_risk_rejected_before_running(monkeypatch):
+def test_mcp_kill_process_rejected_before_running(monkeypatch):
     from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
 
     monkeypatch.setattr(mcp_server, "CONFIRMATION", _FakeMCPConfirm(False))
-    ran = []
-
-    def kill(ctx, **kw):
-        ran.append(kw)
-        return ActionResult("x", True, "killed")
-
-    kill.__name__ = "mio_kill_process"
-    out = mcp_server._run(kill, pid=1)
-    assert out == "Rejected by user: mio_kill_process"
-    assert ran == [], "the tool must NOT run when rejected"
+    content, _ = _run(mcp.call_tool(
+        "mio_kill_process", {"name": "notepad.exe", "pid": 0, "force": False}))
+    text = content[0].text
+    assert "Rejected by user: mio_kill_process" in text
 
 
-def test_mcp_high_risk_approved_runs(monkeypatch):
+def test_mcp_kill_process_approved_runs(monkeypatch):
     from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
 
     monkeypatch.setattr(mcp_server, "CONFIRMATION", _FakeMCPConfirm(True))
+    content, _ = _run(mcp.call_tool(
+        "mio_kill_process", {"name": "no_such_proc_xyz", "pid": 0, "force": False}))
+    text = content[0].text
+    assert "Error" in text or "killed" in text  # confirm passed -> tool ran
 
-    def kill(ctx, **kw):
-        return ActionResult("x", True, "killed")
 
-    kill.__name__ = "mio_kill_process"
-    out = mcp_server._run(kill, pid=1)
-    assert out == "killed"
+def test_mcp_close_window_requires_confirm(monkeypatch):
+    from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
+
+    fake = _FakeMCPConfirm(False)
+    monkeypatch.setattr(mcp_server, "CONFIRMATION", fake)
+    content, _ = _run(mcp.call_tool("mio_close_window", {"title": "anything"}))
+    text = content[0].text
+    assert "Rejected by user: mio_close_window" in text
+    assert fake.calls, "close_window must be confirmed"
 
 
 def test_mcp_low_risk_skips_confirmation(monkeypatch):
     from mio_cua import mcp_server
+    from mio_cua.mcp_server import mcp
 
     fake = _FakeMCPConfirm(False)  # would deny, but must never be asked
     monkeypatch.setattr(mcp_server, "CONFIRMATION", fake)
-
-    def focus(ctx, **kw):
-        return ActionResult("x", True, "focused")
-
-    focus.__name__ = "mio_focus_window"
-    out = mcp_server._run(focus, title="Calc")
-    assert out == "focused"
+    content, _ = _run(mcp.call_tool("mio_list_dir", {"path": "."}))
     assert fake.calls == []

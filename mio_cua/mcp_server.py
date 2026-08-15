@@ -55,6 +55,14 @@ _MCP_HIGH_RISK = {
 }
 
 
+def _confirm_mcp_tool(tool_name: str, params: dict) -> bool:
+    """Return True if the tool is not high-risk, or the user confirmed it."""
+    key = _MCP_HIGH_RISK.get(tool_name)
+    if key is None:
+        return True
+    return CONFIRMATION.confirm(key, params)
+
+
 class _StubCtx:
     """Minimal context satisfying mio-cua's tool signatures."""
 
@@ -414,6 +422,8 @@ async def mio_close_window(title: str = Field(..., description="Window title (or
     """Close the window whose title contains the given text. Safe if the window
     has unsaved changes, the app will prompt (text lost only if you then type
     confirm). Prefer for apps that respond to a close click."""
+    if not _confirm_mcp_tool("mio_close_window", {"title": title}):
+        return "Rejected by user: mio_close_window"
     try:
         from mio_cua.automation.windows import _top_level_windows, _window_text
         import ctypes
@@ -479,6 +489,9 @@ async def mio_kill_process(name: str = Field(default="", description="Process na
                            force: bool = Field(default=False, description="True = terminate immediately, False = ask app to close first")) -> str:
     """End a process by name or PID. Prefer closing windows via mio_close_window
     first (lets the app save); use this for hung apps or headless processes."""
+    if not _confirm_mcp_tool("mio_kill_process",
+                             {"name": name, "pid": pid, "force": force}):
+        return "Rejected by user: mio_kill_process"
     import subprocess
     target = pid if pid else name
     if not target:
