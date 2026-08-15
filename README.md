@@ -175,13 +175,14 @@ Traditional RPA automates *the flow you script*. mio-cua automates *what you des
 
 ## 🗺️ Roadmap
 
-- [ ] **Demo GIF + screenshots** in README (conversion)
-- [ ] Publish to PyPI (`pip install mio-cua`)
+- [x] **Demo GIF + screenshots** in README ✅
+- [ ] Publish to PyPI (`pip install mio-cua`) — build & twine upload pending
 - [ ] Linux / macOS support (vision-only fallback)
 - [x] **On-screen notification + confirmation for high-risk actions** ✅ (v0.2)
 - [x] **Planner improvements: multi-step batching with live re-verification** ✅ (v0.2)
+- [x] **Screenshot → YAML scenario** + offline replay ✅ (v0.2)
 - [ ] Community: issues, contribution guide, Discord/WeChat group
-- [ ] CHANGELOG
+- [x] **CHANGELOG** ✅
 
 ---
 
