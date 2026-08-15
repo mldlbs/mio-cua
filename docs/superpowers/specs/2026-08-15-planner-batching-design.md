@@ -137,8 +137,10 @@ for i, action in enumerate(plan.actions):
         break
 
     # --- 批内每步轻量验证（此动作不再设 _pending_verify，避免二次验证） ---
+    # 注意：不更新 controller.current_observation 为 light —— light 帧是 OCR-only，
+    # id 空间与完整 merged 帧不同（OCR 检测序 vs 位置重编号），后续 element_id 动作
+    # 必须仍按 plan 时的完整 obs 解析。controller 保持指向 _make_ctx(obs) 设置的全量 obs。
     light = self.perception.observe_light()
-    self.controller.current_observation = light           # 下个 action 的 element_id 用最新帧解析
     exp = expected[1] if expected else None
     ok, detail = verify_action(light_base, light, action, exp)
     if not ok:
@@ -244,5 +246,5 @@ for i, action in enumerate(plan.actions):
 |---|---|
 | 轻量 OCR 验证误报（屏幕动画/光标导致 diff 有变化但动作无效） | 验证只用于「中止批次」而非判定成功；即使误通过，下个动作仍基于新观察执行，外层还有 no_change/repeat hint 兜底 |
 | OCR 层 diff 太敏感（微小文本噪声） | diff 基于节点匹配（id + 最近 bbox），非像素级；只要求「有任何变化」 |
-| 批次内 element_id 指向旧 scene | 每步轻量 observe 后更新 `controller.current_observation`，解析用最新帧；找不到就抛 retryable → recover → 中止批 |
+| 批次内 element_id 指向旧 scene | controller 保持指向 plan 时的完整 obs（light 帧 id 空间不同，重指向会导致误点/not found）。若目标因屏幕变化失效，resolve 抛 retryable → recover → 中止批 |
 | 兼容性 | `batch_verify=False` / `batch_limit<=1` 完全保留旧行为，回归可测 |
