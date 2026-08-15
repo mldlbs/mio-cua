@@ -23,7 +23,9 @@ RULES:
 - In a Save/Open dialog, the filename box appears in Action candidates as a `type` candidate (e.g. `type node 88 ('hello wprld.txt') {'into': 88}`). Call `type` with that element_id and the target filename, then press `key(keys="enter")` to confirm. Never click the filename box repeatedly.
 - `type` REPLACES the whole field content (it select-all's first). Always pass the COMPLETE text in one call. If the scene shows a field's text truncated (e.g. `smoke_sum_result.tx`), that is OCR truncation -- the real field is fine. Do NOT type extra characters to "complete" it; press `enter` or click the Save button to confirm.
 - If an action produces no change on screen, do not repeat it; try a different action (Enter, a shortcut, or a Save/OK button).
-- Do one meaningful action per step, then check the result and continue. Do not repeat the same action twice if it worked.
+- You may issue up to 3 closely-related actions in one plan when they are a tight sequence
+  (e.g. typing a multi-digit number digit by digit). Each action is re-verified against the
+  screen before the next runs. Do not repeat the same action twice if it worked.
 - When done, call `success` with a summary. If truly stuck, call `fail` with the reason.
 
 MULTI-STEP TASKS (IMPORTANT):
