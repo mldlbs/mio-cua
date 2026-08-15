@@ -63,3 +63,25 @@ def test_load_scenario_yaml_missing_elements(tmp_path):
     p.write_text("name: x\n", encoding="utf8")
     obs = load_scenario_yaml(str(p))
     assert obs.elements == []
+
+
+def test_load_scenario_yaml_missing_file_raises(tmp_path):
+    import pytest
+    with pytest.raises(ValueError):
+        load_scenario_yaml(str(tmp_path / "nope.yaml"))
+
+
+def test_load_scenario_yaml_non_mapping_raises(tmp_path):
+    import pytest
+    p = tmp_path / "s.yaml"
+    p.write_text("- just\n- a\n- list\n", encoding="utf8")
+    with pytest.raises(ValueError):
+        load_scenario_yaml(str(p))
+
+
+def test_load_scenario_yaml_bad_syntax_raises(tmp_path):
+    import pytest
+    p = tmp_path / "s.yaml"
+    p.write_text("name: [unclosed\n", encoding="utf8")
+    with pytest.raises(ValueError):
+        load_scenario_yaml(str(p))

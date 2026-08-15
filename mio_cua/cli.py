@@ -224,7 +224,6 @@ def _simulate_full_command(config, task, scenario="notepad"):
 
 def _simulate_scenario_command(config, task, scenario_path):
     """Replay a scenario YAML through the loop with no real input."""
-    import os
     import sys
     from mio_cua.agent.safety import Safety
     from mio_cua.events import EventBus
@@ -235,11 +234,11 @@ def _simulate_scenario_command(config, task, scenario_path):
     from mio_cua.tools.builtin import register_builtin_tools
     from mio_cua.tools.registry import ToolRegistry
 
-    if not os.path.isfile(scenario_path):
-        print(f"error: scenario not found: {scenario_path}")
+    try:
+        obs = load_scenario_yaml(scenario_path)
+    except ValueError as e:
+        print(f"error: {e}")
         sys.exit(1)
-
-    obs = load_scenario_yaml(scenario_path)
     provider = OpenAICompatProvider(config.base_url, config.api_key(), config.model)
     registry = ToolRegistry()
     register_builtin_tools(registry)
