@@ -22,3 +22,15 @@ def test_api_key_from_env(tmp_path, monkeypatch):
     cfg = AgentConfig.from_yaml(str(tmp_path / "nope.yaml"))
     cfg.data["api_key_env"] = "MY_KEY"
     assert cfg.api_key() == "secret"
+
+
+def test_batch_defaults():
+    cfg = AgentConfig()
+    assert cfg.batch_limit == 3
+    assert cfg.batch_verify is True
+
+
+def test_batch_overrides():
+    cfg = AgentConfig(batch_limit=1, batch_verify=False)
+    assert cfg.batch_limit == 1
+    assert cfg.batch_verify is False

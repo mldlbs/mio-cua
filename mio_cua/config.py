@@ -13,6 +13,8 @@ DEFAULTS: Dict[str, Any] = {
     "emergency_key": "f9",
     "artifact_dir": os.path.expanduser("~/.mio_cua/artifacts"),
     "artifact_max_bytes": 200 * 1024 * 1024,
+    "batch_limit": 3,       # 一个 plan 内最多连续执行的非终止动作数
+    "batch_verify": True,   # 批次内每步做轻量实时验证；False 退化为「一观察一动作」
 }
 
 
