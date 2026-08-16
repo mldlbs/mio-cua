@@ -50,6 +50,9 @@ pip install -e ".[gpu]"     # 可选：onnxruntime-directml，GPU 加速感知�
 | 工具 | 说明 |
 | --- | --- |
 | `mio_list_dir` | 列出目录内容（文件优先） |
+| `mio_read_file` | 读取文本文件前 N 字符（默认 2000，可截断） |
+| `mio_write_file` | 写入文本文件（create/append/write；覆盖需 allow_overwrite） |
+| `mio_search_files` | 递归搜索文件（名称/扩展名/内容，上限 50 条） |
 | `mio_make_dir` | 创建目录（递归） |
 | `mio_move_file` | 移动单个文件到目录 |
 | `mio_move_files` | 批量移动多个文件到同一目录 |

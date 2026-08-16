@@ -35,7 +35,7 @@ mio-cua flips the approach: instead of writing an interface for the AI, it gives
 - 🧠 **Scene Graph perception** — OCR + UIA fused into a *scene graph*: every UI object is a node (text / type / state / bbox) with spatial relations, and the LLM picks from **verified action candidates** instead of guessing coordinates.
 - 🌐 **Web without DOM** — a browser tab is understood purely visually (Regions layout + OmniParser). No browser extension, no page source, no plugin.
 - 🔁 **Cross-app workflows** — read a file → compute in Calculator → save the result. One natural-language task spanning multiple apps.
-- 🧩 **MCP server included** — 27 tools exposed; plug it into Claude, Cursor, or ChatGPT and let your assistant control your desktop.
+- 🧩 **MCP server included** — 30 tools exposed; plug it into Claude, Cursor, or ChatGPT and let your assistant control your desktop.
 - 🔒 **Safe by design** — F9 emergency stop, step/time limits, screenshot-per-step artifacts, `--dry-run`, and optional isolated virtual-desktop testing.
 
 ---
@@ -127,7 +127,7 @@ Add to Claude / Cursor / ChatGPT (MCP-capable clients):
 { "mcpServers": { "mio-cua": { "command": "mio-cua-mcp", "args": [] } } }
 ```
 
-27 tools: file ops (`list_dir` / `make_dir` / `move_file` / `move_files`), windows (`launch` / `focus_window` / `get_active_window`), input (`click` / `type` / `key`), plus `observe_scene`, `analyze_page`, `vdesk`, clipboard, processes and more. See [MCP.md](MCP.md).
+30 tools: file ops (`list_dir` / `read_file` / `write_file` / `search_files` / `make_dir` / `move_file` / `move_files`), windows (`launch` / `focus_window` / `get_active_window`), input (`click` / `type` / `key`), plus `observe_scene`, `analyze_page`, `vdesk`, clipboard, processes and more. See [MCP.md](MCP.md).
 
 ### Docs
 
