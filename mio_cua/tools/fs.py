@@ -151,3 +151,50 @@ def write_file(ctx, path=None, content=None, mode="create", allow_overwrite=Fals
         return ActionResult(ctx.current_action_id, True, f"wrote {path}")
     except Exception as e:
         return ActionResult(ctx.current_action_id, False, str(e), retryable=True)
+
+
+def search_files(ctx, path=None, name=None, ext=None, pattern=None, max_results=50):
+    """Recursively search ``path`` for files.
+
+    Filters (all optional, combined with AND):
+      name    -> filename must CONTAIN this substring (case-insensitive)
+      ext     -> extension must equal this (no dot, e.g. 'txt')
+      pattern -> file CONTENT must contain this string (text files only)
+    Returns up to ``max_results`` matching paths (default 50).
+    """
+    if not path:
+        return ActionResult(ctx.current_action_id, False, "path required", retryable=True)
+    if not os.path.isdir(path):
+        return ActionResult(ctx.current_action_id, False, f"not a directory: {path}", retryable=True)
+    try:
+        limit = max(int(max_results or 50), 1)
+        name_l = (name or "").lower()
+        ext_l = (ext or "").lower().lstrip(".")
+        hits = []
+        more = 0
+        for root, _dirs, files in os.walk(path):
+            for fname in files:
+                if name_l and name_l not in fname.lower():
+                    continue
+                if ext_l:
+                    _, f_ext = os.path.splitext(fname)
+                    if f_ext.lstrip(".").lower() != ext_l:
+                        continue
+                if pattern is not None:
+                    fpath = os.path.join(root, fname)
+                    try:
+                        with open(fpath, "r", encoding="utf8", errors="ignore") as f:
+                            if pattern not in f.read():
+                                continue
+                    except OSError:
+                        continue
+                if len(hits) < limit:
+                    hits.append(os.path.join(root, fname))
+                else:
+                    more += 1
+        msg = "\n".join(hits)
+        if more:
+            msg += f"\n...and {more} more"
+        return ActionResult(ctx.current_action_id, bool(hits), msg, retryable=False)
+    except Exception as e:
+        return ActionResult(ctx.current_action_id, False, str(e), retryable=True)

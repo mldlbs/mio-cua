@@ -1,6 +1,6 @@
 ﻿import os
 
-from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file, write_file
+from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file, write_file, search_files
 
 
 class Ctx:
@@ -214,3 +214,69 @@ def test_write_file_requires_args():
     r2 = write_file(Ctx(), content="x")
     assert r2.success is False
     assert r2.retryable is True
+
+
+# --- search_files ---
+
+def test_search_by_name(tmp_path):
+    (tmp_path / "report_2026.txt").write_text("x", encoding="utf8")
+    (tmp_path / "other.md").write_text("y", encoding="utf8")
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "report_backup.txt").write_text("z", encoding="utf8")
+    r = search_files(Ctx(), path=str(tmp_path), name="report")
+    assert r.success is True
+    lines = r.message.splitlines()
+    assert any("report_2026.txt" in ln for ln in lines)
+    assert any("report_backup.txt" in ln for ln in lines)
+    assert not any("other.md" in ln for ln in lines)
+
+
+def test_search_by_ext(tmp_path):
+    (tmp_path / "a.txt").write_text("x", encoding="utf8")
+    (tmp_path / "b.md").write_text("y", encoding="utf8")
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "c.TXT").write_text("z", encoding="utf8")
+    r = search_files(Ctx(), path=str(tmp_path), ext="txt")
+    assert r.success is True
+    lines = r.message.splitlines()
+    assert any("a.txt" in ln for ln in lines)
+    assert any("c.TXT" in ln for ln in lines)
+    assert not any("b.md" in ln for ln in lines)
+
+
+def test_search_by_content_pattern(tmp_path):
+    (tmp_path / "a.txt").write_text("contains the magic word", encoding="utf8")
+    (tmp_path / "b.txt").write_text("nothing special", encoding="utf8")
+    r = search_files(Ctx(), path=str(tmp_path), pattern="magic")
+    assert r.success is True
+    lines = r.message.splitlines()
+    assert any("a.txt" in ln for ln in lines)
+    assert not any("b.txt" in ln for ln in lines)
+
+
+def test_search_combined_filters(tmp_path):
+    (tmp_path / "notes_2026.txt").write_text("project alpha", encoding="utf8")
+    (tmp_path / "notes_2026.md").write_text("project alpha", encoding="utf8")
+    (tmp_path / "other.txt").write_text("project alpha", encoding="utf8")
+    r = search_files(Ctx(), path=str(tmp_path), name="notes", ext="txt", pattern="alpha")
+    assert r.success is True
+    lines = r.message.splitlines()
+    assert any("notes_2026.txt" in ln for ln in lines)
+    assert not any("notes_2026.md" in ln for ln in lines)
+    assert not any("other.txt" in ln for ln in lines)
+
+
+def test_search_respects_max_results(tmp_path):
+    for i in range(10):
+        (tmp_path / f"f{i}.txt").write_text("x", encoding="utf8")
+    r = search_files(Ctx(), path=str(tmp_path), max_results=3)
+    assert r.success is True
+    lines = r.message.splitlines()
+    assert len(lines) == 4  # 3 matches + "... and 7 more"
+    assert "7 more" in r.message
+
+
+def test_search_requires_path():
+    r = search_files(Ctx())
+    assert r.success is False
+    assert r.retryable is True
