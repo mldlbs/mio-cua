@@ -34,6 +34,15 @@ _SCHEMAS = {
         "files": {"type": "array", "items": {"type": "string"}}, "dest": {"type": "string"}}, "required": ["files", "dest"]}}},
     "list_dir": {"type": "function", "function": {"name": "list_dir", "description": "List files and directories under a path (files first, one per line). Use to inventory a folder instead of reading Explorer icons -- more complete and reliable.", "parameters": {"type": "object", "properties": {
         "path": {"type": "string"}}, "required": ["path"]}}},
+    "read_file": {"type": "function", "function": {"name": "read_file", "description": "Read a text file's first N characters (default 2000). Use to retrieve file contents the agent needs (e.g. reading numbers from a data file before computing).", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}, "max_chars": {"type": "integer"}}, "required": ["path"]}}},
+    "write_file": {"type": "function", "function": {"name": "write_file", "description": "Write text to a file. mode=create makes a new file (refuses if it exists), append adds to the end, write overwrites (requires allow_overwrite=True). Creates parent dirs.", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}, "content": {"type": "string"},
+        "mode": {"type": "string", "enum": ["create", "append", "write"]},
+        "allow_overwrite": {"type": "boolean"}}, "required": ["path", "content"]}}},
+    "search_files": {"type": "function", "function": {"name": "search_files", "description": "Recursively search a directory for files by name substring, extension, and/or content pattern. Returns up to 50 paths.", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}, "name": {"type": "string"}, "ext": {"type": "string"},
+        "pattern": {"type": "string"}, "max_results": {"type": "integer"}}, "required": ["path"]}}},
 }
 
 
@@ -54,5 +63,8 @@ def register_builtin_tools(registry: ToolRegistry):
         ("move_file", fs.move_file),
         ("move_files", fs.move_files),
         ("list_dir", fs.list_dir),
+        ("read_file", fs.read_file),
+        ("write_file", fs.write_file),
+        ("search_files", fs.search_files),
     ]:
         registry.register(name, func, _SCHEMAS[name])

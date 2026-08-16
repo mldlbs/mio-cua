@@ -105,3 +105,13 @@ def test_low_risk_name_not_confirmed_even_with_any_schema():
     result = reg.call("click", {"x": 1}, ctx)
     assert result.success is True
     assert confirm.calls == []
+
+
+def test_builtin_registers_file_content_tools():
+    from mio_cua.tools.builtin import register_builtin_tools
+    reg = ToolRegistry(confirmation=Confirmation(enabled=False))
+    register_builtin_tools(reg)
+    names = set(reg.names())
+    assert "read_file" in names
+    assert "write_file" in names
+    assert "search_files" in names
