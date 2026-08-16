@@ -8,3 +8,6 @@ __pycache__/
 .pytest_cache/
 
 dist/
+
+# Pre-publish content drafts (release schedule, channel drafts) - not public
+publish/
