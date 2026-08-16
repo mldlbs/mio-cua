@@ -1,6 +1,6 @@
 ﻿import os
 
-from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir
+from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file
 
 
 class Ctx:
@@ -91,3 +91,51 @@ def test_move_files_skips_missing_and_exists(tmp_path):
     assert a.exists()  # a.txt not moved (exists in dest)
     assert (dest / "a.txt").read_text() == "keep"  # not overwritten
     assert "SKIP" in r.message
+
+
+# --- read_file ---
+
+def test_read_file_returns_content(tmp_path):
+    p = tmp_path / "a.txt"
+    p.write_text("hello world", encoding="utf8")
+    r = read_file(Ctx(), path=str(p))
+    assert r.success is True
+    assert r.message == "hello world"
+
+
+def test_read_file_truncates_with_notice(tmp_path):
+    p = tmp_path / "big.txt"
+    p.write_text("x" * 5000, encoding="utf8")
+    r = read_file(Ctx(), path=str(p), max_chars=100)
+    assert r.success is True
+    assert r.message.startswith("x" * 100)
+    assert "truncated" in r.message
+    assert "5000" in r.message
+
+
+def test_read_file_missing_fails(tmp_path):
+    r = read_file(Ctx(), path=str(tmp_path / "nope.txt"))
+    assert r.success is False
+    assert r.retryable is True
+
+
+def test_read_file_requires_path():
+    r = read_file(Ctx())
+    assert r.success is False
+    assert r.retryable is True
+
+
+def test_read_file_binary_fails(tmp_path):
+    p = tmp_path / "bin.dat"
+    p.write_bytes(b"\x00\x01\x02\xff\xfe")
+    r = read_file(Ctx(), path=str(p))
+    assert r.success is False
+    assert r.retryable is True
+
+
+def test_read_file_clamps_max_chars(tmp_path):
+    p = tmp_path / "a.txt"
+    p.write_text("hi", encoding="utf8")
+    r = read_file(Ctx(), path=str(p), max_chars=999999)
+    assert r.success is True
+    assert r.message == "hi"

@@ -86,3 +86,31 @@ def move_files(ctx, files=None, dest=None):
         return ActionResult(ctx.current_action_id, moved > 0, msg, retryable=False)
     except Exception as e:
         return ActionResult(ctx.current_action_id, False, str(e), retryable=True)
+
+
+_MAX_READ_CHARS = 100_000
+
+
+def read_file(ctx, path=None, max_chars=2000):
+    """Read a text file, returning the first ``max_chars`` characters.
+
+    Truncated files report how many chars were cut. Binary/unreadable files
+    fail with retryable=True (the caller may OCR the screen instead).
+    """
+    if not path:
+        return ActionResult(ctx.current_action_id, False, "path required", retryable=True)
+    if not os.path.isfile(path):
+        return ActionResult(ctx.current_action_id, False, f"file not found: {path}", retryable=True)
+    try:
+        limit = min(int(max_chars or 2000), _MAX_READ_CHARS)
+        with open(path, "r", encoding="utf8") as f:
+            text = f.read()
+    except UnicodeDecodeError:
+        return ActionResult(ctx.current_action_id, False,
+                            f"not a readable text file: {path}", retryable=True)
+    except Exception as e:
+        return ActionResult(ctx.current_action_id, False, str(e), retryable=True)
+    if len(text) > limit:
+        return ActionResult(ctx.current_action_id, True,
+                            text[:limit] + f"\n...(truncated, {len(text)} chars total)")
+    return ActionResult(ctx.current_action_id, True, text)
