@@ -60,18 +60,35 @@ def drag(ctx, x1=None, y1=None, x2=None, y2=None, element_id=None):
 ```
 
 后端 `automation/backends.py` 已有 `typ == "drag"` 的平滑拖拽实现（20 步），直接复用。
+`drag` 是纯坐标 primitive，不承诺文本选择语义。
 
 **`mio_cua/tools/clipboard.py`**（从 mcp_server 提取逻辑）
 
 ```python
 def clipboard_get(ctx):
-    """Return the current clipboard text ('' if none)."""
+    """Return the current clipboard text.
+
+    Structured result: text / has_text / length. Distinguishes:
+      - empty clipboard or no CF_UNICODETEXT  -> text="" (has_text=False)
+      - OpenClipboard failure                 -> tool error (retryable=True)
+    An empty read is NOT an error -- the caller decides whether to retry.
+    """
     # win32clipboard.OpenClipboard → CF_UNICODETEXT → GetClipboardData
+    # 返回 ActionResult(success=True, message=json.dumps({...}))
 
 def clipboard_set(ctx, text=None):
     """Put text on the clipboard. Combine with ctrl+v to paste without typing."""
     # OpenClipboard → EmptyClipboard → SetClipboardText(CF_UNICODETEXT)
 ```
+
+**clipboard_get 结构化结果**：
+
+```json
+{ "text": "some text", "has_text": true, "length": 9 }
+```
+
+- 正常空剪贴板 / 无 CF_UNICODETEXT → `text=""`、`has_text=false`（**不是错误**）
+- `OpenClipboard` 失败 → ActionResult(success=False, retryable=True)（**错误**，区别于空）
 
 ### 3.3 组合工具（Composite）
 
@@ -79,41 +96,58 @@ def clipboard_set(ctx, text=None):
 
 ```python
 def select_element(ctx, element_id=None):
-    """Select an element's text by dragging across its bbox.
+    """Select an element's text by dragging across its bbox (SINGLE-LINE text).
 
     Implemented as drag(left+2, mid_y) -> drag(right-2, mid_y). NOT Shift+Click
     (which depends on focus and behaves inconsistently across apps). The caller
     should copy (ctrl+c) and verify with clipboard_get.
+
+    Assumes a SINGLE-LINE text element (mid-height horizontal drag). Multi-line
+    text ranges are NOT supported in this version -- if field testing shows
+    long multi-line blocks, add a separate text_range/multi-segment capability
+    later instead of complicating this primitive.
     """
     if element_id is None:
         return ActionResult(... "element_id required", retryable=True)
     element = resolve element_id from ctx.current_observation
     left, top, width, height = element.bbox
-    return drag(ctx, x1=left + 2, y1=top + height // 2,
-                x2=left + width - 2, y2=top + height // 2)
+    x1 = left + 2
+    x2 = max(x1 + 1, left + width - 2)   # 保证 x1 < x2，width<=4 时最小跨度 1
+    y = top + height // 2
+    return drag(ctx, x1=x1, y1=y, x2=x2, y2=y)
 ```
 
-**关键定位**：select_element 只是 drag 的便捷封装（避免 agent 手算 bbox 内缩）。它不是
-"选中一定成功"的保证——真正的保障是**验证闭环**。
+**关键定位**：
+- select_element 是 drag 的便捷封装（单行文本假设），不是"选中一定成功"的保证。
+- 方向保证 `x1 < x2`（避免 RTL/异常布局导致反向拖拽）。
+- 宽度保护 `x2 = max(x1+1, right-2)`（width<=4 的边界元素仍可拖）。
+- 不自动复制、不自动验证——复制和验证是 Agent 层决策，**不新增 select_and_copy()**。
 
-### 3.4 验证闭环（核心）
+### 3.4 验证闭环（Agent 层行为，非工具行为）
 
 ```
-select_element(id)          # 尝试选中
-        ↓
-key(ctrl+c)                 # 复制
-        ↓
-clipboard_get()             # 读取剪贴板
-        ↓
-含预期文本？ ──是──> write_file() 保存
-        │否
-        ↓
-重新 drag / select_element  # 重选
+select_element      # 操作（工具）
+      ↓
+key(ctrl+c)         # 操作（工具）
+      ↓
+clipboard_get       # 观测（工具）
+      ↓
+semantic check      # 决策（Agent：clipboard 是否含预期文本）
+      ↓
+匹配? ──是──> write_file() 保存
+   │否
+   ↓
+retry selection     # 重新 drag / select_element
 ```
 
-- **clipboard_get 是闭环的关键**：没有它，agent 无法判断复制是否成功，也无法确认选中
-  的是否是正确内容（比如全选复制到了侧边栏）。
-- select_element 语义是"尝试选择"，不承诺选中正确文本；验证负责最终确认。
+**职责分层**：
+- `select_element` = 操作（选中尝试）
+- `clipboard_get` = 观测（拿到复制结果）
+- **Agent = 决策**（比对 clipboard 内容是否匹配，决定继续/重试）
+
+**不新增 `select_and_copy()`** 之类组合——否则会逐渐堆积
+`click_and_wait` / `find_and_click` / `copy_and_verify`，primitive/composite 边界失控。
+验证逻辑沉淀为 Agent 的 prompt/hints 行为，而非新工具。
 
 ### 3.5 注册
 
@@ -147,10 +181,13 @@ MCP 与 builtin 共享 `tools/drag.py` / `tools/clipboard.py` 单一实现。
 
 ### 6.1 单元（`tests/unit/test_clipboard.py`、`test_drag.py`、`test_selection.py`）
 
-- `clipboard_get/set`：设置后读取 round-trip；空剪贴板 → 空串。
-- `drag`：mock controller，验证 Action 参数透传（x1/y1/x2/y2）。
+- `clipboard_get/set`：设置后读取 round-trip；空剪贴板 → `text=""` / `has_text=false`
+  （**不是错误**，success=True）；`OpenClipboard` 失败 → success=False, retryable=True。
+- `drag`：mock controller，验证 Action 参数透传（x1/y1/x2/y2）；element_id 解析到 bbox。
 - `select_element`：mock observation 含元素，验证内部调用 drag 的 bbox 内缩参数
-  （left+2 → left+width-2，y 中）；element_id 缺失 → 失败。
+  （left+2 → max(left+1, left+width-2)，y 中）；**width<=4 的边界元素** → 仍能拖
+  （x1<x2 保证）；element_id 缺失 → 失败。
+- `select_element` 单行假设：不宣称多行选择（无多行测试，第一版不做）。
 
 ### 6.2 MCP（`tests/unit/test_mcp_server.py`）
 
@@ -160,12 +197,14 @@ MCP 与 builtin 共享 `tools/drag.py` / `tools/clipboard.py` 单一实现。
 ### 6.3 集成（`tests/integration/test_loop_mock.py`）
 
 - loop 中 select_element → clipboard_get 验证链路（fake registry 记录动作顺序）。
+- 验证闭环由 Agent 决策：测试断言 clipboard_get 返回结构化结果可被 agent 判读。
 
 ## 7. 不在范围内（YAGNI）
 
 - 不改 OmniParser（模型权重下载，非代码问题）。
-- select_element 不自动复制（保持单步职责，agent 自己 Ctrl+C）。
+- select_element 不自动复制、不自动验证（Agent 层决策；不新增 select_and_copy()）。
 - 不用 Shift+Click 实现选择（drag 是通用语义）。
+- **多行文本选择**（第一版单行假设；实测发现需要再加 text_range/多段选择）。
 - 不做"选中后直接返回文本"（侵入性强，破坏工具单一职责）。
 
 ## 8. 风险与缓解
@@ -173,6 +212,9 @@ MCP 与 builtin 共享 `tools/drag.py` / `tools/clipboard.py` 单一实现。
 | 风险 | 缓解 |
 |---|---|
 | drag 选中范围不准（含相邻文本） | 验证闭环兜底：clipboard_get 校验，不对重选 |
-| bbox 内缩不够（贴边选中失败） | left+2 / right-2 留边距；失败靠重试 |
-| 剪贴板被其他程序占用 | OpenClipboard 失败 → 失败重试 |
+| 多行元素中线横拖只选中一行 | 第一版明确单行假设；实测后加 text_range 多段选择 |
+| bbox 内缩不够 / width<=4 边界 | x2=max(x1+1, right-2) 保证可拖；失败靠重试 |
+| 空剪贴板被误判为"没选中" | clipboard_get 结构化返回（text/has_text/length），空≠错误 |
+| OpenClipboard 失败被吞成空串 | 区分：失败 → success=False retryable=True；空 → success=True |
+| 反向拖拽（RTL/异常布局） | select_element 保证 x1<x2 |
 | 提取后 MCP 行为回归 | 单元测试覆盖 mio_drag/clipboard 仍工作 |
