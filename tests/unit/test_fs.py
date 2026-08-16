@@ -1,6 +1,6 @@
 ﻿import os
 
-from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file
+from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file, write_file
 
 
 class Ctx:
@@ -139,3 +139,78 @@ def test_read_file_clamps_max_chars(tmp_path):
     r = read_file(Ctx(), path=str(p), max_chars=999999)
     assert r.success is True
     assert r.message == "hi"
+
+
+# --- write_file ---
+
+def test_write_file_create_new(tmp_path):
+    p = tmp_path / "new.txt"
+    r = write_file(Ctx(), path=str(p), content="hello")
+    assert r.success is True
+    assert p.read_text(encoding="utf8") == "hello"
+
+
+def test_write_file_create_refuses_existing(tmp_path):
+    p = tmp_path / "a.txt"
+    p.write_text("keep", encoding="utf8")
+    r = write_file(Ctx(), path=str(p), content="new")
+    assert r.success is False
+    assert r.retryable is False
+    assert "refusing" in r.message.lower()
+    assert p.read_text(encoding="utf8") == "keep"
+
+
+def test_write_file_append(tmp_path):
+    p = tmp_path / "a.txt"
+    p.write_text("one\n", encoding="utf8")
+    r = write_file(Ctx(), path=str(p), content="two", mode="append")
+    assert r.success is True
+    assert p.read_text(encoding="utf8") == "one\ntwo"
+
+
+def test_write_file_append_creates_missing(tmp_path):
+    p = tmp_path / "new.txt"
+    r = write_file(Ctx(), path=str(p), content="x", mode="append")
+    assert r.success is True
+    assert p.read_text(encoding="utf8") == "x"
+
+
+def test_write_file_write_needs_allow_overwrite(tmp_path):
+    p = tmp_path / "a.txt"
+    p.write_text("keep", encoding="utf8")
+    r = write_file(Ctx(), path=str(p), content="new", mode="write")
+    assert r.success is False
+    assert r.retryable is False
+    assert "refusing" in r.message.lower()
+    assert p.read_text(encoding="utf8") == "keep"
+
+
+def test_write_file_write_with_allow_overwrite(tmp_path):
+    p = tmp_path / "a.txt"
+    p.write_text("keep", encoding="utf8")
+    r = write_file(Ctx(), path=str(p), content="new", mode="write", allow_overwrite=True)
+    assert r.success is True
+    assert p.read_text(encoding="utf8") == "new"
+
+
+def test_write_file_creates_parent_dirs(tmp_path):
+    p = tmp_path / "x" / "y" / "a.txt"
+    r = write_file(Ctx(), path=str(p), content="hi")
+    assert r.success is True
+    assert p.read_text(encoding="utf8") == "hi"
+
+
+def test_write_file_invalid_mode(tmp_path):
+    p = tmp_path / "a.txt"
+    r = write_file(Ctx(), path=str(p), content="x", mode="bogus")
+    assert r.success is False
+    assert r.retryable is True
+
+
+def test_write_file_requires_args():
+    r = write_file(Ctx(), path="x")
+    assert r.success is False
+    assert r.retryable is True
+    r2 = write_file(Ctx(), content="x")
+    assert r2.success is False
+    assert r2.retryable is True

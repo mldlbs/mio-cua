@@ -114,3 +114,40 @@ def read_file(ctx, path=None, max_chars=2000):
         return ActionResult(ctx.current_action_id, True,
                             text[:limit] + f"\n...(truncated, {len(text)} chars total)")
     return ActionResult(ctx.current_action_id, True, text)
+
+
+_WRITE_MODES = ("create", "append", "write")
+
+
+def write_file(ctx, path=None, content=None, mode="create", allow_overwrite=False):
+    """Write ``content`` to ``path``.
+
+    mode:
+      create  -> only creates a NEW file; refuses if it already exists
+      append  -> appends to an existing file (creates if missing)
+      write   -> overwrites an existing file, but ONLY if ``allow_overwrite``
+    Parent directories are created as needed.
+    """
+    if not path or content is None:
+        return ActionResult(ctx.current_action_id, False, "path and content required", retryable=True)
+    if mode not in _WRITE_MODES:
+        return ActionResult(ctx.current_action_id, False,
+                            f"invalid mode: {mode} (create/append/write)", retryable=True)
+    try:
+        if os.path.exists(path) and mode == "create":
+            return ActionResult(ctx.current_action_id, False,
+                                f"refusing to overwrite: {path}", retryable=False)
+        if os.path.exists(path) and mode == "write" and not allow_overwrite:
+            return ActionResult(ctx.current_action_id, False,
+                                f"refusing to overwrite: {path} (set allow_overwrite=True)", retryable=False)
+        parent = os.path.dirname(os.path.abspath(path))
+        os.makedirs(parent, exist_ok=True)
+        if mode == "append":
+            with open(path, "a", encoding="utf8") as f:
+                f.write(str(content))
+            return ActionResult(ctx.current_action_id, True, f"appended to {path}")
+        with open(path, "w", encoding="utf8") as f:
+            f.write(str(content))
+        return ActionResult(ctx.current_action_id, True, f"wrote {path}")
+    except Exception as e:
+        return ActionResult(ctx.current_action_id, False, str(e), retryable=True)
