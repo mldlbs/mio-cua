@@ -1,4 +1,4 @@
-﻿"""Filesystem tools: create directories and move files.
+"""Filesystem tools: create directories and move files.
 
 These let the agent organize the desktop (or any folder) directly through the
 filesystem, instead of fragile click-and-drag on the Explorer UI. The agent
