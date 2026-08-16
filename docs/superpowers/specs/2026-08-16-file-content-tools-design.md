@@ -24,6 +24,31 @@
 | 写入安全 | `mode`（create/append/write）+ 覆盖已有文件需显式 `allow_overwrite=True` |
 | 代码组织 | 扩展现有 `mio_cua/tools/fs.py`（不新建模块） |
 | 返回值 | read_file 前 N 字符（默认 2000，可配 max_chars，超长附截断提示）；search_files 结果上限 50 条 |
+| 外部 SDK | **不引入** Claude Code / Codex 等 SDK 作为运行时依赖；仅借鉴其 API 语义（Read/Write/Glob/Grep），实现完全自研（几十行） |
+
+### 2.1 架构决策：抄 API，不抄实现
+
+参考 Claude Code / Codex 的 Read/Write/Glob/Grep 语义划分，但**不依赖任何外部 SDK**：
+
+- `read_file` ← Read 语义（读文本、可截断）
+- `write_file` ← Write 语义（写入、覆盖需显式允许）
+- `search_files` ← Glob（按名/扩展）+ Grep（按内容）合并
+
+理由：
+1. **场景不同**：Claude Code 是代码代理（工作空间 = 仓库）；mio-cua 是计算机使用代理
+   （工作空间 = 整个 Windows 桌面）。工具集不同源。
+2. **接口统一**：mio-cua 已有 `ToolRegistry → ActionResult → CLI/SDK/MCP` 单一抽象；
+   引入外部 SDK 会引入 `Claude ToolResult` / `Codex FileOperationResult` 等多套结果类型，
+   需写适配器。
+3. **安全模型不同**：mio-cua 用显式参数控制（`mode` + `allow_overwrite`）；
+   Claude Code 用 Diff 预览/确认流。绑定 SDK = 绑定其安全策略。
+4. **不被抽象绑架**：自研 `search_files` 的 `name/ext/pattern` 可自由演进为
+   `regex/exclude` 等，不受 SDK 版本限制。
+5. **SDK 不稳定**：Claude Code / Codex 均快速迭代（Read/Write/Edit →
+   ReadFile/WriteFile/PatchFile）。核心能力不应绑定外部项目版本节奏。
+
+**实现成本极低**：read_file ≈20 行、write_file ≈30 行、search_files ≈50 行，
+总计 <100 行自研代码。为了省这点代码引入外部 SDK，不划算。
 
 ## 3. 架构与组件
 
@@ -173,6 +198,7 @@ search_files(path, name?, ext?, pattern?, max_results=50)
 - delete 工具（SP2 已明确不做）
 - write 走确认弹窗（用户选参数级保护）
 - 路径通配符/glob 搜索（固定 name/ext/pattern 语义足够）
+- **不引入** Claude Code / Codex / OpenHands 等外部 SDK 作为运行时依赖（见 §2.1）
 
 ## 8. 风险与缓解
 
