@@ -407,6 +407,7 @@ def search_files(ctx, path=None, name=None, ext=None, pattern=None, max_results=
         name_l = (name or "").lower()
         ext_l = (ext or "").lower().lstrip(".")
         hits = []
+        more = 0
         for root, _dirs, files in os.walk(path):
             for fname in files:
                 if name_l and name_l not in fname.lower():
@@ -423,20 +424,22 @@ def search_files(ctx, path=None, name=None, ext=None, pattern=None, max_results=
                                 continue
                     except OSError:
                         continue
-                hits.append(os.path.join(root, fname))
-                if len(hits) >= limit:
-                    break
-            if len(hits) >= limit:
-                break
-        total = len(hits)
-        shown = hits[:limit]
-        msg = "\n".join(shown)
-        if total > limit:
-            msg += f"\n...and {total - limit} more"
+                if len(hits) < limit:
+                    hits.append(os.path.join(root, fname))
+                else:
+                    more += 1
+        msg = "\n".join(hits)
+        if more:
+            msg += f"\n...and {more} more"
         return ActionResult(ctx.current_action_id, bool(hits), msg, retryable=False)
     except Exception as e:
         return ActionResult(ctx.current_action_id, False, str(e), retryable=True)
 ```
+
+> **实现期修正（TDD 验证发现）**：原方案在 `len(hits) >= limit` 时 `break` 退出 os.walk，
+> 导致 `total == limit`、`"...and N more"` 永不出现，与 `test_search_respects_max_results`
+> 矛盾。修正为：前 `limit` 个入 `hits`，其余计入 `more` 计数器，消息末尾附
+> `...and {more} more`。
 
 - [ ] **Step 4: 运行确认通过**
 
