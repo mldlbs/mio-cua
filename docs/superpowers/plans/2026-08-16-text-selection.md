@@ -287,7 +287,9 @@ def drag(ctx, x1=None, y1=None, x2=None, y2=None, element_id=None):
 
 
 def _resolve_element(ctx, element_id):
-    obs = ctx.current_observation
+    # observations live on the CONTROLLER (loop sets controller.current_observation);
+    # fall back to ctx.current_observation which ToolContext also carries.
+    obs = getattr(ctx.controller, "current_observation", None) or ctx.current_observation
     if obs is None:
         raise RuntimeError("element_id unresolved: no observation available")
     for e in obs.elements:
@@ -419,7 +421,7 @@ def select_element(ctx, element_id=None):
     if element_id is None:
         return ActionResult(ctx.current_action_id, False,
                             "element_id required", retryable=True)
-    obs = ctx.current_observation
+    obs = getattr(ctx.controller, "current_observation", None) or ctx.current_observation
     if obs is None:
         return ActionResult(ctx.current_action_id, False,
                             "no observation available to resolve element_id", retryable=True)
