@@ -37,7 +37,7 @@
 在 `tests/unit/test_fs.py` 顶部 import 行改为：
 
 ```python
-from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file, write_file, search_files
+from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file
 ```
 
 在文件末尾追加：
@@ -151,7 +151,13 @@ git commit -m "feat: add read_file tool"
 
 - [ ] **Step 1: 写失败测试**
 
-在 `tests/unit/test_fs.py` 末尾追加：
+在 `tests/unit/test_fs.py` 末尾追加 `write_file` 测试前，先把顶部 import 行改为：
+
+```python
+from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file, write_file
+```
+
+然后追加：
 
 ```python
 # --- write_file ---
@@ -298,7 +304,13 @@ git commit -m "feat: add write_file tool"
 
 - [ ] **Step 1: 写失败测试**
 
-在 `tests/unit/test_fs.py` 末尾追加：
+在 `tests/unit/test_fs.py` 末尾追加 `search_files` 测试前，先把顶部 import 行改为：
+
+```python
+from mio_cua.tools.fs import make_dir, move_file, move_files, list_dir, read_file, write_file, search_files
+```
+
+然后追加：
 
 ```python
 # --- search_files ---
