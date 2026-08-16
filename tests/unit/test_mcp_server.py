@@ -190,3 +190,34 @@ def test_mcp_high_risk_alias_table_is_valid():
     # the two known destructive tools must be covered
     assert "mio_kill_process" in _MCP_HIGH_RISK
     assert "mio_close_window" in _MCP_HIGH_RISK
+
+
+def test_mcp_read_file(tmp_path):
+    from mio_cua.mcp_server import mcp
+    p = tmp_path / "data.txt"
+    p.write_text("12\n34\n56", encoding="utf8")
+    content, _ = _run(mcp.call_tool("mio_read_file", {"path": str(p)}))
+    assert "12" in content[0].text
+    assert "56" in content[0].text
+
+
+def test_mcp_write_file_create_and_refuse(tmp_path):
+    from mio_cua.mcp_server import mcp
+    p = tmp_path / "out.txt"
+    c1, _ = _run(mcp.call_tool("mio_write_file", {"path": str(p), "content": "hello"}))
+    assert "wrote" in c1[0].text
+    assert p.read_text(encoding="utf8") == "hello"
+    # create mode must refuse existing file
+    c2, _ = _run(mcp.call_tool("mio_write_file", {"path": str(p), "content": "again"}))
+    assert "refusing" in c2[0].text
+    assert p.read_text(encoding="utf8") == "hello"
+
+
+def test_mcp_search_files(tmp_path):
+    from mio_cua.mcp_server import mcp
+    (tmp_path / "alpha.txt").write_text("hello world", encoding="utf8")
+    (tmp_path / "beta.md").write_text("hello world", encoding="utf8")
+    content, _ = _run(mcp.call_tool(
+        "mio_search_files", {"path": str(tmp_path), "name": "alpha"}))
+    assert "alpha.txt" in content[0].text
+    assert "beta.md" not in content[0].text

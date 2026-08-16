@@ -128,6 +128,50 @@ async def mio_move_files(files: List[str] = Field(..., description="List of file
     return _run(move_files, files=files, dest=dest)
 
 
+@mcp.tool(name="mio_read_file", annotations={
+    "title": "Read a text file", "readOnlyHint": True,
+    "destructiveHint": False, "idempotentHint": True, "openWorldHint": True,
+})
+async def mio_read_file(path: str = Field(..., description="Path of the file to read"),
+                        max_chars: int = Field(default=2000, description="Max chars to return", ge=1, le=100000)) -> str:
+    """Read a text file's first N characters (default 2000). Use to retrieve
+    file contents the AI needs (e.g. numbers to compute on) without opening the
+    file in an editor."""
+    from mio_cua.tools.fs import read_file
+    return _run(read_file, path=path, max_chars=max_chars)
+
+
+@mcp.tool(name="mio_write_file", annotations={
+    "title": "Write text to a file", "readOnlyHint": False,
+    "destructiveHint": True, "idempotentHint": False, "openWorldHint": True,
+})
+async def mio_write_file(path: str = Field(..., description="Path to write"),
+                         content: str = Field(..., description="Text content to write"),
+                         mode: str = Field(default="create", description="create/append/write"),
+                         allow_overwrite: bool = Field(default=False, description="Allow overwriting an existing file in write mode")) -> str:
+    """Write text to a file. mode=create makes a new file (refuses if it exists),
+    append adds to the end, write overwrites only with allow_overwrite=True.
+    Creates parent directories. Content is UTF-8."""
+    from mio_cua.tools.fs import write_file
+    return _run(write_file, path=path, content=content, mode=mode, allow_overwrite=allow_overwrite)
+
+
+@mcp.tool(name="mio_search_files", annotations={
+    "title": "Search files by name/ext/content", "readOnlyHint": True,
+    "destructiveHint": False, "idempotentHint": True, "openWorldHint": True,
+})
+async def mio_search_files(path: str = Field(..., description="Directory to search recursively"),
+                           name: str = Field(default="", description="Filename substring (optional)"),
+                           ext: str = Field(default="", description="Extension without dot, e.g. 'txt' (optional)"),
+                           pattern: str = Field(default="", description="Content substring (optional)"),
+                           max_results: int = Field(default=50, description="Max results", ge=1, le=500)) -> str:
+    """Recursively search a directory for files by name substring, extension,
+    and/or content pattern. Returns up to 50 matching paths."""
+    from mio_cua.tools.fs import search_files
+    return _run(search_files, path=path, name=name or None, ext=ext or None,
+                pattern=pattern or None, max_results=max_results)
+
+
 # ---------------------------------------------------------------------------
 # Window / launch tools
 # ---------------------------------------------------------------------------
