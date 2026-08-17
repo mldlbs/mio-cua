@@ -589,10 +589,8 @@ async def mio_drag(x1: int = Field(..., description="Start X"), y1: int = Field(
     from mio_cua.tools.drag import drag
     from mio_cua.automation.input_controller import InputController
     ctrl = InputController()
-    ctrl.current_observation = _mcp_observe()
     ctx = _StubCtx()
     ctx.controller = ctrl
-    ctx.current_observation = ctrl.current_observation
     res = drag(ctx, x1=x1, y1=y1, x2=x2, y2=y2)
     return res.message if res.success else f"Error: {res.message}"
 
