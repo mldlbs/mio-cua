@@ -586,10 +586,39 @@ async def mio_drag(x1: int = Field(..., description="Start X"), y1: int = Field(
                    x2: int = Field(..., description="End X"), y2: int = Field(..., description="End Y")) -> str:
     """Press left button at (x1,y1), drag to (x2,y2), release. For moving
     window/file icons, selecting ranges, or sliders."""
+    from mio_cua.tools.drag import drag
     from mio_cua.automation.input_controller import InputController
-    from mio_cua.models.action import Action
-    r = InputController().execute(Action(id="mcp", type="drag", params={"x1": x1, "y1": y1, "x2": x2, "y2": y2}))
-    return "dragged" if r.sent else f"Error: {r.error}"
+    ctrl = InputController()
+    ctrl.current_observation = _mcp_observe()
+    ctx = _StubCtx()
+    ctx.controller = ctrl
+    ctx.current_observation = ctrl.current_observation
+    res = drag(ctx, x1=x1, y1=y1, x2=x2, y2=y2)
+    return res.message if res.success else f"Error: {res.message}"
+
+
+def _mcp_observe():
+    """Fresh observation for MCP tools that resolve element_id."""
+    from mio_cua.perception import Perception
+    return Perception().observe()
+
+
+@mcp.tool(name="mio_select_element", annotations={
+    "title": "Select an element's text", "readOnlyHint": False,
+    "destructiveHint": False, "idempotentHint": False, "openWorldHint": True,
+})
+async def mio_select_element(element_id: int = Field(..., description="Element id to select (from mio_observe_scene)")) -> str:
+    """Select an element's text by dragging across its bbox (single-line text).
+    Caller then presses ctrl+c and verifies with mio_clipboard_get."""
+    from mio_cua.tools.selection import select_element
+    from mio_cua.automation.input_controller import InputController
+    ctrl = InputController()
+    ctrl.current_observation = _mcp_observe()
+    ctx = _StubCtx()
+    ctx.controller = ctrl
+    ctx.current_observation = ctrl.current_observation
+    res = select_element(ctx, element_id=element_id)
+    return res.message if res.success else f"Error: {res.message}"
 
 
 @mcp.tool(name="mio_sleep", annotations={
@@ -649,20 +678,9 @@ async def mio_vdesk(action: str = Field(..., description="'ensure' (create & swi
     "destructiveHint": False, "idempotentHint": True, "openWorldHint": True,
 })
 async def mio_clipboard_get() -> str:
-    """Return the current clipboard text. Handy after Ctrl+C (a window's text,
-    an image alt, a path) to retrieve what was copied."""
-    try:
-        import win32clipboard
-        win32clipboard.OpenClipboard()
-        try:
-            if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_UNICODETEXT):
-                txt = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
-                return f"clipboard: {txt[:2000]}" if txt else "(empty)"
-            return "(clipboard has no text)"
-        finally:
-            win32clipboard.CloseClipboard()
-    except Exception as e:
-        return f"Error: {e}"
+    """Return the current clipboard text as structured JSON {text,has_text,length}."""
+    from mio_cua.tools.clipboard import clipboard_get
+    return _run(clipboard_get)
 
 
 @mcp.tool(name="mio_clipboard_set", annotations={
@@ -670,19 +688,9 @@ async def mio_clipboard_get() -> str:
     "destructiveHint": False, "idempotentHint": True, "openWorldHint": True,
 })
 async def mio_clipboard_set(text: str = Field(..., description="Text to place on the clipboard")) -> str:
-    """Put text on the clipboard. Combine with a ctrl+v to paste without typing
-    (fast + reliable for long content)."""
-    try:
-        import win32clipboard
-        win32clipboard.OpenClipboard()
-        try:
-            win32clipboard.EmptyClipboard()
-            win32clipboard.SetClipboardText(text, win32clipboard.CF_UNICODETEXT)
-        finally:
-            win32clipboard.CloseClipboard()
-        return "clipboard set"
-    except Exception as e:
-        return f"Error: {e}"
+    """Put text on the clipboard. Combine with a ctrl+v to paste without typing."""
+    from mio_cua.tools.clipboard import clipboard_set
+    return _run(clipboard_set, text=text)
 
 
 @mcp.tool(name="mio_notify", annotations={

@@ -221,3 +221,27 @@ def test_mcp_search_files(tmp_path):
         "mio_search_files", {"path": str(tmp_path), "name": "alpha"}))
     assert "alpha.txt" in content[0].text
     assert "beta.md" not in content[0].text
+
+
+def test_mcp_select_element_tool_exists():
+    from mio_cua.mcp_server import mcp
+    names = {t.name for t in _run(mcp.list_tools())}
+    assert "mio_select_element" in names
+
+
+def test_mcp_clipboard_set_get_roundtrip():
+    from mio_cua.mcp_server import mcp
+    _run(mcp.call_tool("mio_clipboard_set", {"text": "roundtrip-test"}))
+    content, _ = _run(mcp.call_tool("mio_clipboard_get", {}))
+    assert "roundtrip-test" in content[0].text
+
+
+def test_mcp_drag_requires_coords():
+    """mio_drag requires all four coordinates. The MCP layer validates args
+    before the tool runs and raises a ToolError (missing required fields);
+    over the protocol this surfaces to the client as an error result."""
+    from mio_cua.mcp_server import mcp
+    from mcp.server.fastmcp.exceptions import ToolError
+    with pytest.raises(ToolError) as ei:
+        _run(mcp.call_tool("mio_drag", {}))
+    assert "required" in str(ei.value)

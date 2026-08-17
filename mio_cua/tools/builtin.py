@@ -1,6 +1,9 @@
 ﻿from mio_cua.tools.registry import ToolRegistry
 from mio_cua.tools import click, type as type_tool, key, scroll, wait, screenshot, launch, focus_window, move_mouse, success, fail
 from mio_cua.tools import fs
+from mio_cua.tools import clipboard as clipboard_tool
+from mio_cua.tools import drag as drag_tool
+from mio_cua.tools import selection as selection_tool
 
 _SCHEMAS = {
     "click": {"type": "function", "function": {"name": "click", "description": "Click mouse at coordinates or element", "parameters": {"type": "object", "properties": {
@@ -43,6 +46,14 @@ _SCHEMAS = {
     "search_files": {"type": "function", "function": {"name": "search_files", "description": "Recursively search a directory for files by name substring, extension, and/or content pattern. Returns up to 50 paths.", "parameters": {"type": "object", "properties": {
         "path": {"type": "string"}, "name": {"type": "string"}, "ext": {"type": "string"},
         "pattern": {"type": "string"}, "max_results": {"type": "integer"}}, "required": ["path"]}}},
+    "drag": {"type": "function", "function": {"name": "drag", "description": "Press and drag the mouse from (x1,y1) to (x2,y2), then release. For selecting text ranges or moving items.", "parameters": {"type": "object", "properties": {
+        "x1": {"type": "number"}, "y1": {"type": "number"}, "x2": {"type": "number"}, "y2": {"type": "number"},
+        "element_id": {"type": "integer"}}}}},
+    "select_element": {"type": "function", "function": {"name": "select_element", "description": "Select an element's text by dragging across its bbox (single-line). Then ctrl+c and verify with clipboard_get.", "parameters": {"type": "object", "properties": {
+        "element_id": {"type": "integer"}}, "required": ["element_id"]}}},
+    "clipboard_get": {"type": "function", "function": {"name": "clipboard_get", "description": "Read the clipboard text as structured JSON {text,has_text,length}. Use AFTER ctrl+c to verify what was copied.", "parameters": {"type": "object", "properties": {}}}},
+    "clipboard_set": {"type": "function", "function": {"name": "clipboard_set", "description": "Put text on the clipboard (combine with ctrl+v to paste without typing).", "parameters": {"type": "object", "properties": {
+        "text": {"type": "string"}}, "required": ["text"]}}},
 }
 
 
@@ -66,5 +77,9 @@ def register_builtin_tools(registry: ToolRegistry):
         ("read_file", fs.read_file),
         ("write_file", fs.write_file),
         ("search_files", fs.search_files),
+        ("drag", drag_tool.drag),
+        ("select_element", selection_tool.select_element),
+        ("clipboard_get", clipboard_tool.clipboard_get),
+        ("clipboard_set", clipboard_tool.clipboard_set),
     ]:
         registry.register(name, func, _SCHEMAS[name])

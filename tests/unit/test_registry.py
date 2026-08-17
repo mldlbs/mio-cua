@@ -115,3 +115,12 @@ def test_builtin_registers_file_content_tools():
     assert "read_file" in names
     assert "write_file" in names
     assert "search_files" in names
+
+
+def test_builtin_registers_selection_tools():
+    from mio_cua.tools.builtin import register_builtin_tools
+    reg = ToolRegistry(confirmation=Confirmation(enabled=False))
+    register_builtin_tools(reg)
+    names = set(reg.names())
+    for t in ("drag", "clipboard_get", "clipboard_set", "select_element"):
+        assert t in names, f"{t} not registered"
