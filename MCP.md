@@ -78,6 +78,7 @@ pip install -e ".[gpu]"     # 可选：onnxruntime-directml，GPU 加速感知�
 | `mio_list_processes` | 列出运行进程（PID/名称/内存，可过滤） |
 | `mio_kill_process` | 结束进程（按名称/PID，可选强制） |
 | `mio_get_screen_info` | 显示器布局与 DPI scale |
+| `mio_select_element` | 拖拽选中指定元素文本（单行） |
 | `mio_drag` | 从 A 拖到 B（移动图标/选范围/滑条） |
 | `mio_sleep` | 等待 N 秒（应用加载/异步窗口） |
 
