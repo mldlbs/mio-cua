@@ -28,9 +28,9 @@ def drag(ctx, x1=None, y1=None, x2=None, y2=None, element_id=None):
 
 
 def _resolve_element(ctx, element_id):
-    obs = getattr(ctx, "current_observation", None)
+    obs = getattr(ctx.controller, "current_observation", None)
     if obs is None:
-        obs = getattr(ctx.controller, "current_observation", None)
+        obs = getattr(ctx, "current_observation", None)
     if obs is None:
         raise RuntimeError("element_id unresolved: no observation available")
     for e in obs.elements:
