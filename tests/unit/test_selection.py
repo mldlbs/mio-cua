@@ -60,3 +60,25 @@ def test_select_element_requires_element_id():
     r = select_element(ctx)
     assert r.success is False
     assert r.retryable is True
+
+
+def test_select_element_resolves_scene_node_id():
+    from mio_cua.scene import build_scene
+    from mio_cua.scene.graph import SceneNode
+    from mio_cua.models.observation import Observation
+    els = [Element(0, "uia", text="win", role="text", bbox=(0, 0, 10, 10))]
+    scene = build_scene(els, active_window="win")
+    # a web-control node with an id above the element range
+    scene.nodes.append(SceneNode(id=10000, type="text", bbox=(200, 300, 400, 50),
+                                 text="web", source="web"))
+    ctrl = RecordingController()
+    ctrl.current_observation = Observation(None, 1.0, "win", 1.0, els, scene=scene)
+    ctx = Ctx()
+    ctx.controller = ctrl
+    r = select_element(ctx, element_id=10000)
+    assert r.success is True
+    a = ctrl.calls[-1]
+    assert a.params["x1"] == 202
+    assert a.params["y1"] == 325
+    assert a.params["x2"] == 598
+    assert a.params["y2"] == 325

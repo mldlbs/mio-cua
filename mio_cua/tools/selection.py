@@ -30,6 +30,17 @@ def select_element(ctx, element_id=None):
             x2 = max(x1 + 1, left + width - 2)
             y = top + height // 2
             return drag(ctx, x1=x1, y1=y, x2=x2, y2=y)
+    # Fall back to scene nodes (e.g. OmniParser web controls whose ids live
+    # above the merged-element range).
+    scene = getattr(obs, "scene", None)
+    if scene is not None:
+        for n in getattr(scene, "nodes", []) or []:
+            if n.id == element_id or str(n.id) == str(element_id):
+                left, top, width, height = n.bbox
+                x1 = left + 2
+                x2 = max(x1 + 1, left + width - 2)
+                y = top + height // 2
+                return drag(ctx, x1=x1, y1=y, x2=x2, y2=y)
     return ActionResult(ctx.current_action_id, False,
                         f"element_id {element_id!r} not found in current observation",
                         retryable=True)

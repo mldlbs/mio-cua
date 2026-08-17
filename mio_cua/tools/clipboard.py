@@ -21,17 +21,17 @@ def clipboard_get(ctx):
     import win32clipboard
     try:
         win32clipboard.OpenClipboard()
+        try:
+            if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_UNICODETEXT):
+                text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
+            else:
+                text = ""
+        finally:
+            win32clipboard.CloseClipboard()
+        data = {"text": text, "has_text": bool(text), "length": len(text)}
+        return ActionResult(ctx.current_action_id, True, json.dumps(data, ensure_ascii=False))
     except Exception as e:
         return ActionResult(ctx.current_action_id, False, f"clipboard unavailable: {e}", retryable=True)
-    try:
-        if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_UNICODETEXT):
-            text = win32clipboard.GetClipboardData(win32clipboard.CF_UNICODETEXT)
-        else:
-            text = ""
-    finally:
-        win32clipboard.CloseClipboard()
-    data = {"text": text, "has_text": bool(text), "length": len(text)}
-    return ActionResult(ctx.current_action_id, True, json.dumps(data, ensure_ascii=False))
 
 
 def clipboard_set(ctx, text=None):
