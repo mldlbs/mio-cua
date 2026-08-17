@@ -490,8 +490,12 @@ def test_mcp_clipboard_set_get_roundtrip():
 
 def test_mcp_drag_requires_coords():
     from mio_cua.mcp_server import mcp
-    content, _ = _run(mcp.call_tool("mio_drag", {}))
-    assert "Error" in content[0].text or "required" in content[0].text
+    # mcp 1.27+ raises ToolError for missing required Field arg (protocol-level
+    # error, same message a client sees) rather than returning error content.
+    import pytest
+    with pytest.raises(Exception) as exc:
+        _run(mcp.call_tool("mio_drag", {}))
+    assert "required" in str(exc.value) or "Field required" in str(exc.value)
 ```
 
 - [ ] **Step 2: 运行确认失败**
