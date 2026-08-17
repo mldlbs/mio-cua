@@ -1,4 +1,9 @@
-﻿from mio_cua.tools.launch import _normalize_path, _normalize_command, _resolve_command
+﻿from mio_cua.tools.launch import (
+    _normalize_path,
+    _normalize_command,
+    _resolve_command,
+    _resolve_url,
+)
 
 
 def test_normalize_path_collapses_double_backslash():
@@ -42,3 +47,24 @@ def test_resolve_chrome_to_full_path():
 def test_resolve_leaves_non_browser_command_alone():
     assert _resolve_command("notepad") == "notepad"
     assert _resolve_command("calc") == "calc"
+
+
+def test_resolve_bare_domain_to_browser():
+    # `launch chat.deepseek.com` (no scheme, no browser prefix) must become a
+    # browser launch; Popen("chat.deepseek.com") would fail on Windows.
+    assert _resolve_url("chat.deepseek.com") == "msedge https://chat.deepseek.com"
+
+
+def test_resolve_bare_domain_with_path_kept():
+    assert _resolve_url("example.com/page?q=1") == "msedge https://example.com/page?q=1"
+
+
+def test_resolve_url_with_scheme_untouched():
+    assert _resolve_url("https://example.com") == "https://example.com"
+    assert _resolve_url("http://example.com/a") == "http://example.com/a"
+
+
+def test_resolve_url_non_domain_untouched():
+    assert _resolve_url("notepad") == "notepad"
+    assert _resolve_url(r"D:\Users\gf1913\Desktop\f.txt") == r"D:\Users\gf1913\Desktop\f.txt"
+    assert _resolve_url("calc") == "calc"

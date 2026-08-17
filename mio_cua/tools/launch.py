@@ -19,6 +19,12 @@ _BROWSER_PATHS = {
     "chrome": r"C:\Program Files\Google\Chrome\Application\chrome.exe",
 }
 
+# A bare domain like `chat.deepseek.com` (no scheme, no browser prefix) must be
+# treated as a URL to open in the browser, not a program to run.
+_BARE_HOST_RE = re.compile(
+    r"^(?:www\.)?[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}(?:/[^\s]*)?$"
+)
+
 
 def _resolve_command(command: str) -> str:
     """Replace a browser command token with its full install path if needed."""
@@ -29,6 +35,26 @@ def _resolve_command(command: str) -> str:
     resolved = _BROWSER_PATHS.get(base.lower())
     if resolved and base.lower() in _BROWSER_PATHS:
         return ' '.join([f'"{resolved}"'] + tokens[1:])
+    return command
+
+
+def _resolve_url(command: str) -> str:
+    """Turn a bare domain (``chat.deepseek.com``) into a browser launch.
+
+    The model often emits a URL without a scheme and without a browser prefix.
+    ``Popen("chat.deepseek.com")`` would then fail with "not recognized" on
+    Windows. Detect a single bare-domain token and route it through Edge.
+    """
+    if not command or not command.strip():
+        return command
+    token = command.strip()
+    if (
+        " " not in token
+        and "://" not in token
+        and "\\" not in token
+        and _BARE_HOST_RE.match(token)
+    ):
+        return f"msedge https://{token}"
     return command
 
 
@@ -69,7 +95,7 @@ def _wait_for_front(command, tries=6, delay=1.0):
 
 def launch(ctx, command):
     try:
-        command = _resolve_command(_normalize_command(command))
+        command = _resolve_command(_normalize_command(_resolve_url(command)))
         tokens = command.split()
         plain_app = len(tokens) == 1
         if plain_app and _process_base(tokens[0]) in _MULTI_INSTANCE_APPS:
