@@ -1,0 +1,392 @@
+{
+  "trace_id": "trace_1787489834",
+  "created_at": 1787489834.2909584,
+  "task": {
+    "instruction": "找到名为「兴蓉」的群并打开",
+    "target_context": {
+      "app": "WeChat"
+    },
+    "metadata": {}
+  },
+  "metadata": {
+    "steps": 1,
+    "final_status": "FAIL",
+    "final_summary": "loop error: name 'get_active_window' is not defined"
+  },
+  "entries": [
+    {
+      "obs_before": {
+        "id": 1,
+        "timestamp": 1787489834.290897,
+        "active_window": "",
+        "scene_nodes": [
+          {
+            "id": 0,
+            "type": "button",
+            "bbox": [
+              0,
+              1560,
+              48,
+              40
+            ],
+            "text": "开始",
+            "semantic": "开始"
+          },
+          {
+            "id": 1,
+            "type": "group",
+            "bbox": [
+              48,
+              1560,
+              2268,
+              40
+            ],
+            "text": "运行中的应用程序",
+            "semantic": "运行中的应用程序"
+          },
+          {
+            "id": 2,
+            "type": "button",
+            "bbox": [
+              51,
+              1560,
+              49,
+              40
+            ],
+            "text": "Microsoft Edge",
+            "semantic": "Microsoft Edge"
+          },
+          {
+            "id": 3,
+            "type": "button",
+            "bbox": [
+              100,
+              1560,
+              49,
+              40
+            ],
+            "text": "Google Chrome - 1 个运行窗口",
+            "semantic": "Google Chrome - 1 个运行窗口"
+          },
+          {
+            "id": 4,
+            "type": "button",
+            "bbox": [
+              149,
+              1560,
+              49,
+              40
+            ],
+            "text": "Clash for Windows - 1 个运行窗口",
+            "semantic": "Clash for Windows - 1 个运行窗口"
+          },
+          {
+            "id": 5,
+            "type": "button",
+            "bbox": [
+              198,
+              1560,
+              49,
+              40
+            ],
+            "text": "WorkBuddy - 1 个运行窗口",
+            "semantic": "WorkBuddy - 1 个运行窗口"
+          },
+          {
+            "id": 6,
+            "type": "button",
+            "bbox": [
+              247,
+              1560,
+              49,
+              40
+            ],
+            "text": "文件资源管理器 - 7 个运行窗口",
+            "semantic": "文件资源管理器 - 7 个运行窗口"
+          },
+          {
+            "id": 7,
+            "type": "button",
+            "bbox": [
+              296,
+              1560,
+              49,
+              40
+            ],
+            "text": "CC Switch - 1 个运行窗口",
+            "semantic": "CC Switch - 1 个运行窗口"
+          },
+          {
+            "id": 8,
+            "type": "button",
+            "bbox": [
+              345,
+              1560,
+              49,
+              40
+            ],
+            "text": "Windows PowerShell - 1 个运行窗口",
+            "semantic": "Windows PowerShell - 1 个运行窗口"
+          },
+          {
+            "id": 9,
+            "type": "button",
+            "bbox": [
+              394,
+              1560,
+              49,
+              40
+            ],
+            "text": "控制面板 - 1 个运行窗口",
+            "semantic": "控制面板 - 1 个运行窗口"
+          },
+          {
+            "id": 10,
+            "type": "button",
+            "bbox": [
+              443,
+              1560,
+              49,
+              40
+            ],
+            "text": "Foxmail 7.2 - 1 个运行窗口",
+            "semantic": "Foxmail 7.2 - 1 个运行窗口"
+          },
+          {
+            "id": 11,
+            "type": "button",
+            "bbox": [
+              492,
+              1560,
+              49,
+              40
+            ],
+            "text": "OpenCode - 1 个运行窗口",
+            "semantic": "OpenCode - 1 个运行窗口"
+          },
+          {
+            "id": 12,
+            "type": "button",
+            "bbox": [
+              541,
+              1560,
+              49,
+              40
+            ],
+            "text": "Visual Studio Code - 1 个运行窗口",
+            "semantic": "Visual Studio Code - 1 个运行窗口"
+          },
+          {
+            "id": 13,
+            "type": "button",
+            "bbox": [
+              590,
+              1560,
+              49,
+              40
+            ],
+            "text": "微信 - 1 个运行窗口",
+            "semantic": "微信 - 1 个运行窗口"
+          },
+          {
+            "id": 14,
+            "type": "button",
+            "bbox": [
+              639,
+              1560,
+              49,
+              40
+            ],
+            "text": "mio-taskhub - 1 个运行窗口",
+            "semantic": "mio-taskhub - 1 个运行窗口"
+          },
+          {
+            "id": 15,
+            "type": "button",
+            "bbox": [
+              688,
+              1560,
+              49,
+              40
+            ],
+            "text": "WXWork 企业微信 - 1 个运行窗口",
+            "semantic": "WXWork 企业微信 - 1 个运行窗口"
+          },
+          {
+            "id": 16,
+            "type": "button",
+            "bbox": [
+              737,
+              1560,
+              49,
+              40
+            ],
+            "text": "Hermes - 1 个运行窗口",
+            "semantic": "Hermes - 1 个运行窗口"
+          },
+          {
+            "id": 17,
+            "type": "group",
+            "bbox": [
+              2316,
+              1560,
+              244,
+              40
+            ],
+            "text": ""
+          },
+          {
+            "id": 18,
+            "type": "button",
+            "bbox": [
+              2316,
+              1560,
+              24,
+              40
+            ],
+            "text": "通知 V 形",
+            "semantic": "通知 V 形"
+          },
+          {
+            "id": 19,
+            "type": "group",
+            "bbox": [
+              2340,
+              1560,
+              72,
+              40
+            ],
+            "text": ""
+          },
+          {
+            "id": 20,
+            "type": "group",
+            "bbox": [
+              2340,
+              1560,
+              72,
+              40
+            ],
+            "text": "用户提示通知区域",
+            "semantic": "用户提示通知区域"
+          },
+          {
+            "id": 21,
+            "type": "button",
+            "bbox": [
+              2340,
+              1560,
+              24,
+              40
+            ],
+            "text": "电量充满(100%)",
+            "semantic": "电量充满(100%)"
+          },
+          {
+            "id": 22,
+            "type": "button",
+            "bbox": [
+              2364,
+              1560,
+              24,
+              40
+            ],
+            "text": "iPhone\nInternet 访问",
+            "semantic": "iPhone\nInternet 访问"
+          },
+          {
+            "id": 23,
+            "type": "button",
+            "bbox": [
+              2388,
+              1560,
+              24,
+              40
+            ],
+            "text": "扬声器: 67%",
+            "semantic": "扬声器: 67%"
+          },
+          {
+            "id": 24,
+            "type": "group",
+            "bbox": [
+              2412,
+              1560,
+              22,
+              40
+            ],
+            "text": "任务栏输入指示",
+            "semantic": "任务栏输入指示"
+          },
+          {
+            "id": 25,
+            "type": "button",
+            "bbox": [
+              2412,
+              1560,
+              22,
+              40
+            ],
+            "text": "输入法模式图标 - 英语模式\n\n单击右键以查看更多选项",
+            "semantic": "输入法模式图标 - 英语模式\n\n单击右键以查看更多选项"
+          },
+          {
+            "id": 26,
+            "type": "button",
+            "bbox": [
+              2434,
+              1560,
+              73,
+              40
+            ],
+            "text": "系统时钟, 20:57, ‎2026/‎8/‎23",
+            "semantic": "系统时钟, 20:57, ‎2026/‎8/‎23"
+          },
+          {
+            "id": 27,
+            "type": "button",
+            "bbox": [
+              2507,
+              1560,
+              48,
+              40
+            ],
+            "text": "操作中心，5 个新通知",
+            "semantic": "操作中心，5 个新通知"
+          },
+          {
+            "id": 28,
+            "type": "button",
+            "bbox": [
+              2555,
+              1560,
+              5,
+              40
+            ],
+            "text": "显示桌面",
+            "semantic": "显示桌面"
+          }
+        ],
+        "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1787489831548.png",
+        "metadata": {
+          "step": 0
+        }
+      },
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "WeChat"
+        },
+        "timestamp": 1787489832.6320767,
+        "result": {
+          "sent": true,
+          "success": false
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    }
+  ]
+}

@@ -1,0 +1,654 @@
+{
+  "observation": {
+    "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1787478348065.png",
+    "timestamp": 1787478348.105313,
+    "active_window": "微信",
+    "dpi_scale": 1.0,
+    "elements": [
+      {
+        "id": 0,
+        "source": "uia",
+        "text": "MMUIRenderSubWindowHW",
+        "role": "Pane",
+        "bbox": [
+          985,
+          180,
+          880,
+          640
+        ],
+        "confidence": 1.0,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 1,
+        "source": "ocr",
+        "text": "17:35",
+        "role": "text",
+        "bbox": [
+          1246,
+          287,
+          30,
+          15
+        ],
+        "confidence": 0.8222139378388723,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 2,
+        "source": "ocr",
+        "text": "17:28",
+        "role": "text",
+        "bbox": [
+          1246,
+          352,
+          30,
+          16
+        ],
+        "confidence": 0.8248083293437958,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 3,
+        "source": "ocr",
+        "text": "hao",
+        "role": "text",
+        "bbox": [
+          1099,
+          371,
+          30,
+          18
+        ],
+        "confidence": 0.7212913632392883,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 4,
+        "source": "ocr",
+        "text": "17:18",
+        "role": "text",
+        "bbox": [
+          1247,
+          418,
+          29,
+          13
+        ],
+        "confidence": 0.7017314235369364,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 5,
+        "source": "ocr",
+        "text": "17:18",
+        "role": "text",
+        "bbox": [
+          1246,
+          482,
+          30,
+          16
+        ],
+        "confidence": 0.8215467731157938,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 6,
+        "source": "ocr",
+        "text": "115269",
+        "role": "text",
+        "bbox": [
+          1100,
+          543,
+          55,
+          21
+        ],
+        "confidence": 0.8227411678859166,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 7,
+        "source": "ocr",
+        "text": "16:18",
+        "role": "text",
+        "bbox": [
+          1246,
+          547,
+          31,
+          16
+        ],
+        "confidence": 0.8208152651786804,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 8,
+        "source": "ocr",
+        "text": "14:34",
+        "role": "text",
+        "bbox": [
+          1246,
+          611,
+          30,
+          16
+        ],
+        "confidence": 0.75547523299853,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 9,
+        "source": "ocr",
+        "text": "12:07",
+        "role": "text",
+        "bbox": [
+          1246,
+          677,
+          29,
+          15
+        ],
+        "confidence": 0.8135024607181549,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      }
+    ],
+    "ui_tree": null,
+    "scene": {
+      "nodes": [
+        {
+          "id": 0,
+          "type": "group",
+          "bbox": [
+            985,
+            180,
+            880,
+            640
+          ],
+          "text": "MMUIRenderSubWindowHW",
+          "confidence": 1.0,
+          "semantic": "MMUIRenderSubWindowHW",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "uia",
+          "role": "pane",
+          "metadata": {}
+        },
+        {
+          "id": 1,
+          "type": "text",
+          "bbox": [
+            1246,
+            287,
+            30,
+            15
+          ],
+          "text": "17:35",
+          "confidence": 0.8222139378388723,
+          "semantic": "17:35",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 2,
+          "type": "text",
+          "bbox": [
+            1246,
+            352,
+            30,
+            16
+          ],
+          "text": "17:28",
+          "confidence": 0.8248083293437958,
+          "semantic": "17:28",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 3,
+          "type": "text",
+          "bbox": [
+            1099,
+            371,
+            30,
+            18
+          ],
+          "text": "hao",
+          "confidence": 0.7212913632392883,
+          "semantic": "hao",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 4,
+          "type": "text",
+          "bbox": [
+            1247,
+            418,
+            29,
+            13
+          ],
+          "text": "17:18",
+          "confidence": 0.7017314235369364,
+          "semantic": "17:18",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 5,
+          "type": "text",
+          "bbox": [
+            1246,
+            482,
+            30,
+            16
+          ],
+          "text": "17:18",
+          "confidence": 0.8215467731157938,
+          "semantic": "17:18",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 6,
+          "type": "text",
+          "bbox": [
+            1100,
+            543,
+            55,
+            21
+          ],
+          "text": "115269",
+          "confidence": 0.8227411678859166,
+          "semantic": "115269",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 7,
+          "type": "text",
+          "bbox": [
+            1246,
+            547,
+            31,
+            16
+          ],
+          "text": "16:18",
+          "confidence": 0.8208152651786804,
+          "semantic": "16:18",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 8,
+          "type": "text",
+          "bbox": [
+            1246,
+            611,
+            30,
+            16
+          ],
+          "text": "14:34",
+          "confidence": 0.75547523299853,
+          "semantic": "14:34",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 9,
+          "type": "text",
+          "bbox": [
+            1246,
+            677,
+            29,
+            15
+          ],
+          "text": "12:07",
+          "confidence": 0.8135024607181549,
+          "semantic": "12:07",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        }
+      ],
+      "relations": [
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "child",
+          "weight": 0.0007990056818181819
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "child",
+          "weight": 0.0008522727272727272
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "child",
+          "weight": 0.0009588068181818182
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "child",
+          "weight": 0.0006693892045454545
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "child",
+          "weight": 0.0008522727272727272
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "child",
+          "weight": 0.00205078125
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "child",
+          "weight": 0.0008806818181818182
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "child",
+          "weight": 0.0008522727272727272
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "child",
+          "weight": 0.0007723721590909091
+        },
+        {
+          "source": 5,
+          "target": 0,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 2,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 2,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 5,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 7,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 9,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 4,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 7,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 9,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 6,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 5,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 5,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 7,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 7,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 7,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 9,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 6,
+          "target": 7,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 8,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 9,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 9,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 9,
+          "kind": "near",
+          "weight": 1.0
+        }
+      ],
+      "affordances": [],
+      "display_ids": [],
+      "regions": [],
+      "active_window": "微信"
+    }
+  },
+  "action": {
+    "id": "a-000001",
+    "type": "click",
+    "params": {
+      "x": 130,
+      "y": 33
+    }
+  },
+  "result": {
+    "action_id": "a-000001",
+    "success": true,
+    "message": "clicked",
+    "observation_changed": false,
+    "retryable": false,
+    "metadata": {}
+  },
+  "task_id": "d9c7d9df",
+  "timestamp": 1787478354.6257718,
+  "seq": 1
+}

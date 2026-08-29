@@ -15,6 +15,11 @@ DEFAULTS: Dict[str, Any] = {
     "artifact_max_bytes": 200 * 1024 * 1024,
     "batch_limit": 3,       # 一个 plan 内最多连续执行的非终止动作数
     "batch_verify": True,   # 批次内每步做轻量实时验证；False 退化为「一观察一动作」
+    "runtime_v2": False,    # 使用 Agent Runtime v2 (Belief/Progress/Recovery) 替代 v1 的 if-else invariant
+    # --- A/B 实验层开关：A/B/C/D 逐层打开时使用，默认全开（不影响旧行为）---
+    "enable_grounding": True,     # False -> InputController 不挂 Grounder（版本 A 裸执行）
+    "enable_verification": True,  # False -> 关闭批次内实时验证（版本 B）
+    "enable_recovery": True,      # False -> 关闭确定性 Recovery（版本 A/B/C）
 }
 
 

@@ -1,0 +1,23 @@
+# 本地 zen-proxy 配置（OpenAI 兼容）
+# 端点实测：http://127.0.0.1:8000/p/zen/chat/completions  (无 /v1 前缀)
+# 路由校验：401 AuthError -> 路径正确、需鉴权；models 在 /p/zen/models
+provider: openai
+# 免费模型（不耗 zen 上游余额）：hy3-free / ling-3.0-flash-fin-free 实测可正常返回（HTTP 200 + choices）。
+# 其他 -free 模型上游不可用或区域限制：deepseek-v4-flash-free(unavailable)、mimo-v2.5-free(404)、
+#   muse-spark-1.2-contributor-free(区域不可用)、nemotron-3.5-lightning-free(空返回)。
+model: hy3-free
+base_url: http://127.0.0.1:8000/p/zen
+# 客户端免 key：zen-proxy 服务端已配 PROVIDER_ZEN_API_KEY，客户端无需传 key。
+# 实测（2026-08-29）：不带/空 Authorization -> zen-proxy 走服务端 key；
+#   带非空客户端 key -> 被当作客户端 key 遭 AuthError:Invalid。故保持 ZEN_API_KEY 为空，切勿设假值。
+# api_key_env 指向 ZEN_API_KEY（用户不设该变量 -> 读为空字符串 -> 走服务端 key）。
+api_key_env: ZEN_API_KEY
+# 实验层（与 config.proxy.yaml 一致）：A/B/C/D 真实 sweep 用得到
+runtime_v2: true
+enable_grounding: true
+enable_verification: true
+enable_recovery: true
+# 可选模型（同代理其他可用 id）：
+#   付费：claude-opus-5, claude-fable-5, gpt-5.5, gemini-3.1-pro, deepseek-v4-pro, qwen3.6-plus
+#   免费：hy3-free, ling-3.0-flash-fin-free（不耗余额）
+

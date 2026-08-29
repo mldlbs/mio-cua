@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "trace_id": "dd48d846",
+  "task_id": "dd48d846",
+  "goal": "在记事本中输入文本（场景：失败）",
+  "started_at": "2026-08-26T09:59:44.092536+00:00",
+  "finished_at": "2026-08-26T09:59:44.093110+00:00",
+  "result": {
+    "status": "FAIL",
+    "summary": "type action failed: element not found"
+  },
+  "failure": {
+    "category": "perception",
+    "confidence": 0.85,
+    "step": 16,
+    "event_id": "c5c56bd8f798",
+    "reason": "Observation never detected the target and exposed no search affordance — Perception gap",
+    "evidence": [
+      "target_visible=False",
+      "search_box_present=False"
+    ],
+    "candidates": [
+      {
+        "category": "perception",
+        "confidence": 0.85,
+        "reason": "Observation never detected the target and exposed no search affordance — Perception gap"
+      }
+    ]
+  },
+  "metadata": {
+    "target_context": {
+      "app": "notepad",
+      "keyword": "编辑"
+    }
+  }
+}

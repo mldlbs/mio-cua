@@ -49,20 +49,69 @@ def get_active_window_rect():
 def focus_window(title: str, exact: bool = False) -> bool:
     """Bring the window whose title matches `title` to the foreground.
 
-    Uses the same robust focus path as ``bring_to_front`` (SwitchToThisWindow +
-    retries), falling back to pywinauto for the rare window that only UIA sees.
+    Matching strategy:
+    1. Exact title match
+    2. Known app aliases (e.g. WeChat -> 微信)
+    3. Substring match (case-insensitive)
     """
     if not title:
         return False
-    for hwnd in _windows_matching_title(title, exact=exact):
+
+    # Known app aliases: English name -> process name (for focus matching)
+    _ALIASES = {
+        "wechat": "weixin",
+        "chrome": "chrome",
+        "firefox": "firefox",
+        "edge": "msedge",
+    }
+
+    # Try exact match first
+    for hwnd in _windows_matching_title(title, exact=True):
         if _focus_latest([hwnd]):
             return True
-    # UIA fallback for windows EnumWindows can't see.
+
+    # Try process name match for known apps - use pywinauto which handles foreground lock
+    # WeChat window title is "微信" not "weixin", so map to actual window titles
+    _UIA_TITLES = {
+        "wechat": "微信",
+        "chrome": "Chrome",
+        "firefox": "Firefox",
+        "edge": "Edge",
+    }
+    alias = _ALIASES.get(title.lower())
+    uia_title = _UIA_TITLES.get(title.lower())
+    if alias:
+        from pywinauto import Desktop
+        try:
+            for w in Desktop(backend="uia").windows():
+                try:
+                    text = w.window_text()
+                    if text:
+                        # Match by process name OR UIA window title
+                        if (alias.lower() in text.lower()) or (uia_title and uia_title in text):
+                            w.set_focus()
+                            return True
+                except Exception:
+                    continue
+        except Exception:
+            pass
+
+    # Fallback to substring match
+    for hwnd in _windows_matching_title(title, exact=False):
+        if _focus_latest([hwnd]):
+            return True
+
+    # UIA fallback
     from pywinauto import Desktop
     try:
         for w in Desktop(backend="uia").windows():
             text = w.window_text()
-            if (exact and text == title) or (not exact and title.lower() in text.lower()):
+            if text == title:
+                w.set_focus()
+                return True
+        for w in Desktop(backend="uia").windows():
+            text = w.window_text()
+            if title.lower() in text.lower():
                 w.set_focus()
                 return True
     except Exception:

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "trace_id": "232877a5",
+  "task_id": "232877a5",
+  "goal": "在记事本中输入文本（场景：成功）",
+  "started_at": "2026-08-26T09:59:44.079348+00:00",
+  "finished_at": "2026-08-26T09:59:44.083436+00:00",
+  "result": {
+    "status": "SUCCESS",
+    "summary": "文本已写入记事本"
+  },
+  "failure": null,
+  "metadata": {
+    "target_context": {
+      "app": "notepad",
+      "keyword": "编辑"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+# mio-cua LLM 配置：指向本机已在用的 Hermes 代理 (ai.cdks.run, OpenAI 兼容)
+# 用法:
+#   mio-cua run "<任务>" --config config.proxy.yaml
+# 代理需要真实 key（已探测：空 key 返回 401）。key 从下面的环境变量读取。
+provider: openai
+model: gpt-5.5
+base_url: https://ai.cdks.run/v1
+api_key_env: OPENAI_API_KEY   # 若你的代理 key 存在别的 env 名，改这一行即可

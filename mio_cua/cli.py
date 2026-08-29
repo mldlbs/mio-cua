@@ -16,6 +16,9 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--simulate-full", action="store_true", help="run full loop against a stateful mock desktop")
     run.add_argument("--scenario", default="notepad", help="mock scenario for --simulate-full: notepad|calculator|explorer")
     run.add_argument("--simulate-scenario", help="path to a scenario YAML to replay offline (no real input)")
+    run.add_argument("--record", action="store_true",
+                     help="record a Phase 3 trace (forces runtime_v2 + attaches Recorder); "
+                          "auto-runs failure attribution and writes a report after the run")
 
     resume = sub.add_parser("resume", help="Resume a previous task")
     resume.add_argument("task_id")
@@ -133,8 +136,58 @@ def _run_command(args):
 
     from mio_cua import Agent
     agent = Agent(config)
-    result = agent.run(task)
+    result = agent.run(task, record=args.record)
     print(f"{result.status} steps={result.steps} duration={result.duration:.1f}s")
+    if result.status != "SUCCESS" and result.summary:
+        print(f"  reason: {result.summary}")
+    if args.record:
+        _analyze_recorded(agent)
+
+
+def _analyze_recorded(agent):
+    """Load the just-recorded trace, run failure attribution + benchmark, and print + save a report."""
+    recorder = getattr(agent, "last_recorder", None)
+    trace_dir = getattr(agent, "last_trace_dir", None)
+    if recorder is None or recorder.trace is None:
+        print("[record] no trace captured")
+        return
+
+    from mio_cua.evaluation.attribution import FailureAttributor
+    from mio_cua.evaluation.benchmark import benchmark
+
+    trace = recorder.trace
+    attribution = FailureAttributor().classify(trace)
+    bm = benchmark([trace])
+
+    lines = [
+        f"# Phase 3 录制分析报告 — {trace.task_id}",
+        "",
+        f"- 目标: {trace.goal}",
+        f"- 结果: {'SUCCESS' if trace.success else 'FAIL'} (steps={trace.steps}, 事件数={len(trace.events)})",
+        f"- 失败归因: {attribution.category} (置信度={attribution.confidence})",
+    ]
+    if attribution.evidence:
+        lines.append("- 证据:")
+        for ev in attribution.evidence:
+            lines.append(f"    - {ev}")
+    if getattr(attribution, "reasoning", None):
+        lines.append(f"- 推理: {attribution.reasoning}")
+    lines += [
+        "",
+        "## Benchmark (单任务聚合)",
+        f"- 成功率: {bm.success_rate}",
+        f"- 失败分布: {bm.failure_distribution}",
+        f"- 步成功率: {bm.metadata.get('step_success_rate')}",
+        f"- 平均步数: {bm.average_steps}",
+    ]
+    report = "\n".join(lines)
+
+    print("\n" + report)
+    if trace_dir:
+        out = os.path.join(trace_dir, "report.md")
+        with open(out, "w", encoding="utf-8") as f:
+            f.write(report + "\n")
+        print(f"\n[record] trace + report saved -> {trace_dir}")
 
 
 def _simulate_command(config, task):
@@ -217,6 +270,8 @@ def _simulate_full_command(config, task, scenario="notepad"):
     )
     result = loop.run(task)
     print(f"[{scenario}] {result.status} steps={result.steps} duration={result.duration:.1f}s")
+    if result.status != "SUCCESS" and result.summary:
+        print(f"  reason: {result.summary}")
     print(f"mock completed: {desktop.completed}")
     for action in desktop.actions:
         print(f"  [act] {action.type} {action.params}")
@@ -249,6 +304,8 @@ def _simulate_scenario_command(config, task, scenario_path):
     )
     result = loop.run(task)
     print(f"[scenario] {result.status} steps={result.steps} duration={result.duration:.1f}s")
+    if result.status != "SUCCESS" and result.summary:
+        print(f"  reason: {result.summary}")
     for action in controller.calls:
         print(f"  [act] {action.type} {action.params}")
 

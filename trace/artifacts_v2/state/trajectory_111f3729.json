@@ -1,0 +1,155 @@
+[
+  {
+    "step": 0,
+    "action": "screenshot",
+    "params": {},
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599887094992",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\shot_1787469184877.png"
+  },
+  {
+    "step": 1,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599887175952",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 2,
+    "action": "read_file",
+    "params": {
+      "path": "E:\\work\\code\\agent-dev\\desktop-agent\\smoke\\wechat_兴蓉整理.md"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599897552144",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "# 微信群消息整理（兴蓉）\n\n- 候选群数: 5\n- OCR 提取条数: 5\n\n**翰东&兴蓉政（胸..**: 微信ClawBotAl\n\n**兴蓉市政数据接口...**: Z-H咖啡\n\n**兴蓉市政-智慧气象平台.**: 超图-王辰涛\n\n**兴蓉GIS交流群超图-天...**: 超图-李刚玲、Epic、小乙(3)\n\n**兴蓉市政AR实施**: 鸡蛋泡泡\n\n"
+  },
+  {
+    "step": 3,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599900614736",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 4,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1601347166032",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 5,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599879408736",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 6,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599896271152",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 7,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599881374976",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 8,
+    "action": "screenshot",
+    "params": {},
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599896484368",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\shot_1787469352317.png"
+  },
+  {
+    "step": 9,
+    "action": "launch",
+    "params": {
+      "command": "weixin"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1601378282400",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "reused already-running weixin window",
+    "context_violated": true,
+    "post_active": "微信",
+    "recovery_active": "wechat_兴蓉整理.md - Visual Studio Code"
+  },
+  {
+    "step": 10,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "1599887078416",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  }
+]

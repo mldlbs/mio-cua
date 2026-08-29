@@ -1,13 +1,20 @@
 ﻿from mio_cua.automation.backends import Backend, SendInputBackend
+from mio_cua.automation.grounding import Grounder, GroundingError
 from mio_cua.models.action import Action
 from mio_cua.models.action_result import RawResult
 
 
 class InputController:
-    """Resolves element references to coordinates, then delegates to a Backend."""
+    """Resolves element references to coordinates, then delegates to a Backend.
 
-    def __init__(self, backend: Backend = None):
+    When a ``Grounder`` is attached, element references are re-resolved against
+    the *live* UIA tree at execution time (visibility / on-window hit-test) so a
+    model's stale or hallucinated target is caught before any real input.
+    """
+
+    def __init__(self, backend: Backend = None, grounder: Grounder = None):
         self.backend = backend or SendInputBackend()
+        self.grounder = grounder
         self.current_observation = None
 
     def resolve(self, action: Action):
@@ -17,6 +24,19 @@ class InputController:
         if an element_id cannot be located, so the caller can treat it as retryable.
         """
         element_id = action.params.get("element_id")
+        spatial = element_id is not None or (
+            action.params.get("x") is not None and action.params.get("y") is not None
+        )
+        if self.grounder is not None and spatial:
+            try:
+                coords = self.grounder.resolve(action, self.current_observation)
+            except GroundingError as e:
+                raise RuntimeError(f"grounding failed: {e}")
+            if coords is not None:
+                action.params["x"], action.params["y"] = coords
+                action.params.pop("element_id", None)
+                return
+            # coords is None -> no spatial target (e.g. a key action); fall through
         if element_id is None:
             return
         if action.params.get("x") is not None and action.params.get("y") is not None:

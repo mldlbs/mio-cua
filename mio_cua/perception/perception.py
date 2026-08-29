@@ -2,9 +2,11 @@
 import os
 import time
 from copy import copy
+from typing import Tuple
 
 from mio_cua.automation.windows import get_active_window, get_active_window_rect, set_dpi_aware
 from mio_cua.perception.merger import merge
+from mio_cua.perception.quality import assess_quality, enhance_scene_with_fallback
 from mio_cua.scene import build_scene, analyze_regions
 from mio_cua.scene.graph import Region
 from mio_cua.vision.overlay import overlay
@@ -73,7 +75,9 @@ class Perception:
             ocr_elements = self._ocr_cache[1]
         else:
             try:
-                for e in ocr_module.get_elements(img):
+                import numpy as np
+                img_array = np.array(img)
+                for e in ocr_module.get_elements(img_array):
                     e.bbox = _shift_bbox(e.bbox, rect[0], rect[1])
                     ocr_elements.append(e)
             except Exception as e:
@@ -103,6 +107,28 @@ class Perception:
             scene=self._build_scene(elements, active_window, img, rect),
         )
 
+    def observe_with_quality(self) -> Tuple["Observation", "QualityReport"]:
+        """Observe with quality assessment and visual fallback.
+
+        Returns:
+            (Observation, QualityReport) — the observation and its quality assessment.
+        """
+        obs = self.observe()
+        quality = assess_quality(obs.scene)
+
+        if not quality.is_usable:
+            # Re-capture image for fallback (observe() already consumed it)
+            try:
+                rect = get_active_window_rect()
+            except Exception:
+                rect = (0, 0, 0, 0)
+            img = capture_rect(rect)
+            obs.scene = enhance_scene_with_fallback(obs.scene, img, rect, quality)
+            # Re-assess after fallback
+            quality = assess_quality(obs.scene)
+
+        return obs, quality
+
     def observe_light(self) -> Observation:
         """OCR-only observation for in-batch verification.
 
@@ -123,7 +149,9 @@ class Perception:
         img = capture_rect(rect)
         ocr_elements = []
         try:
-            for e in ocr_module.get_elements(img):
+            import numpy as np
+            img_array = np.array(img)
+            for e in ocr_module.get_elements(img_array):
                 e.bbox = _shift_bbox(e.bbox, rect[0], rect[1])
                 ocr_elements.append(e)
         except Exception as e:

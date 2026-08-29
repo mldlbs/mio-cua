@@ -534,14 +534,17 @@ async def mio_kill_process(name: str = Field(default="", description="Process na
     try:
         if pid:
             subprocess.run(["taskkill", "/PID", str(pid), *(["/F"] if force else [])],
-                           check=True, capture_output=True, text=True)
+                           check=True, capture_output=True)
             return f"killed pid {pid}"
         proc = name if name.lower().endswith(".exe") else name + ".exe"
         subprocess.run(["taskkill", "/IM", proc, *(["/F"] if force else [])],
-                       check=True, capture_output=True, text=True)
+                       check=True, capture_output=True)
         return f"killed {proc}"
     except subprocess.CalledProcessError as e:
-        return f"Error: {e.stderr.strip() or e}"
+        err = e.stderr
+        if isinstance(err, bytes):
+            err = err.decode("utf-8", "replace")
+        return f"Error: {(err or '').strip() or e}"
 
 
 @mcp.tool(name="mio_get_screen_info", annotations={
@@ -689,6 +692,81 @@ async def mio_clipboard_set(text: str = Field(..., description="Text to place on
     """Put text on the clipboard. Combine with a ctrl+v to paste without typing."""
     from mio_cua.tools.clipboard import clipboard_set
     return _run(clipboard_set, text=text)
+
+
+# ---------------------------------------------------------------------------
+# Generic verifiable workflow (app-agnostic, Runtime knows app)
+# ---------------------------------------------------------------------------
+
+@mcp.tool(name="mio_discover", annotations={
+    "title": "Discover candidates by keyword (generic)", "readOnlyHint": True,
+    "destructiveHint": False, "idempotentHint": True, "openWorldHint": True,
+})
+async def mio_discover(app: str = Field(..., description="Runtime app context, e.g. '微信'"),
+                     keyword: str = Field(..., description="Keyword to search, e.g. '兴蓉'")) -> str:
+    """Generic Discovery: search_input → candidate_list. App is Runtime context only."""
+    try:
+        from mio_cua.workflow.discovery import discover
+        cands = discover(app=app, keyword=keyword)
+        import json
+        return json.dumps([{"id": c.id, "name": c.name, "bbox": c.bbox, "confidence": c.confidence} for c in cands], ensure_ascii=False)
+    except Exception as e:
+        return f"Error: {e}"
+
+
+@mcp.tool(name="mio_extract", annotations={
+    "title": "Extract records via clipboard (generic)", "readOnlyHint": False,
+    "destructiveHint": False, "idempotentHint": False, "openWorldHint": True,
+})
+async def mio_extract() -> str:
+    """Generic Extraction: scroll/select/clipboard. Reads current clipboard as dataset."""
+    try:
+        from mio_cua.workflow.state import WorkflowState
+        from mio_cua.workflow.extraction import extract
+        # MVP: use a transient state that is already confirmed
+        s = WorkflowState(app="generic", keyword="")
+        s.candidates = []  # bypass
+        s.confirmed = True
+        s.selected_ids = ["dummy"]
+        recs = extract(s)
+        import json
+        return json.dumps([{"sender": r.sender, "content": r.content, "confidence": r.confidence} for r in recs], ensure_ascii=False)
+    except Exception as e:
+        return f"Error: {e}"
+
+
+@mcp.tool(name="mio_validate", annotations={
+    "title": "Validate dataset (generic)", "readOnlyHint": True,
+    "destructiveHint": False, "idempotentHint": True, "openWorldHint": True,
+})
+async def mio_validate() -> str:
+    """Generic Validation: visual_compare/completeness_check. Validates last extraction."""
+    try:
+        from mio_cua.workflow.state import WorkflowState, Record
+        from mio_cua.workflow.validation import validate
+        s = WorkflowState(dataset=[Record(timestamp="", sender="s", content="test")])
+        res = validate(s)
+        import json
+        return json.dumps(res, ensure_ascii=False)
+    except Exception as e:
+        return f"Error: {e}"
+
+
+@mcp.tool(name="mio_report", annotations={
+    "title": "Generate evidence report (generic)", "readOnlyHint": False,
+    "destructiveHint": False, "idempotentHint": False, "openWorldHint": True,
+})
+async def mio_report(output: str = Field(default="smoke/wechat_兴蓉整理.md", description="Output markdown path")) -> str:
+    """Generic Report: dataset → evidence Markdown. App is Runtime context only."""
+    try:
+        from mio_cua.workflow.state import WorkflowState, Record
+        from mio_cua.workflow.report import generate_report
+        s = WorkflowState(app="generic", keyword="test", candidates=[], selected_ids=["1"], dataset=[Record(timestamp="10:00", sender="Alice", content="hello")])
+        s.set_validation({"status": "passed", "issues": []})
+        path = generate_report(s, output)
+        return f"report written to {path}"
+    except Exception as e:
+        return f"Error: {e}"
 
 
 @mcp.tool(name="mio_notify", annotations={

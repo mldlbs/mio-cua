@@ -1,0 +1,25 @@
+{
+  "scenario": "target_discovery",
+  "task": "找到名为「兴蓉」的群并打开",
+  "trace_id": "trace_1787490795",
+  "timestamp": 1787490795.853573,
+  "duration_s": 7.87,
+  "total_steps": 0,
+  "perception_config": {
+    "uia": true,
+    "ocr": "rapidocr_onnxruntime",
+    "fallback": true,
+    "quality_gate": true,
+    "quality_scoring": "confidence_based"
+  },
+  "failure_summary": {
+    "total_steps": 0,
+    "category_counts": {},
+    "perception_rate": 0.0,
+    "planner_rate": 0.0,
+    "action_rate": 0.0,
+    "environment_rate": 0.0
+  },
+  "step_results": [],
+  "step_details": []
+}

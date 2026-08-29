@@ -42,6 +42,9 @@ _BUTTON_WORDS = {
     "got it", "agree", "同意", "删除", "delete", "rename", "重命名",
 }
 
+# Fuzzy search keywords: partial matches for detecting search boxes
+_SEARCH_KEYWORDS = {"搜索", "search", "查找", "find", "查询", "query", "搜"}
+
 
 def _bbox(bbox):
     return tuple(int(v) for v in bbox)
@@ -93,6 +96,9 @@ class AffordanceBuilder:
         for a in self._dialog_field_affordances():
             affordances.append(a)
 
+        for a in self._search_affordances():
+            affordances.append(a)
+
         return affordances, display_ids
 
     @staticmethod
@@ -107,6 +113,66 @@ class AffordanceBuilder:
 
     def _conf(self, n):
         return max(0.3, min(1.0, n.confidence))
+
+    def _search_affordances(self):
+        """Detect search input affordances.
+
+        Generic detection based on:
+        1. Text contains search keywords (搜索, search, 查找, etc.)
+        2. Role is edit/input in top region
+        3. Layout fallback: when multiple text nodes form a list pattern
+           (e.g. chat list) but no search affordance detected, infer search
+           at the top-left region where search boxes typically appear.
+
+        Returns list of Affordance objects with action="type" for search input.
+        """
+        affs = []
+        if not self.nodes:
+            return affs
+
+        # Find window bounds for position check
+        max_bottom = max(n.bbox[1] + n.bbox[3] for n in self.nodes if n.bbox)
+        top_threshold = max_bottom * 0.2  # top 20% of window
+
+        has_search_node = False
+        for n in self.nodes:
+            if not n.state.get("enabled", True):
+                continue
+            text = (n.semantic or n.text or "").strip().lower()
+            if not text:
+                continue
+
+            is_search_text = any(kw in text for kw in _SEARCH_KEYWORDS)
+            is_input_role = n.role in ("edit", "textbox", "combobox") or n.type == "input"
+            is_top_position = n.bbox[1] <= top_threshold
+
+            # Match: search keyword in text, OR input role in top region
+            if is_search_text or (is_input_role and is_top_position):
+                affs.append(Affordance(
+                    node_id=n.id, action="type",
+                    params={"into": n.id, "purpose": "search"},
+                    confidence=self._conf(n) * 0.9,
+                ))
+                has_search_node = True
+
+# Layout fallback: list pattern without search affordance
+        # Detect list-like layout: multiple text nodes in a column
+        # (chat list, contact list, etc.) — search box typically at top
+        if not has_search_node and len(self.nodes) >= 5:
+            text_nodes = [n for n in self.nodes
+                         if n.type == "text"
+                         and len((n.text or "").strip()) > 0]
+            if len(text_nodes) >= 3:
+                # Likely a list view — search box should be at top
+                # Create a synthetic search affordance
+                affs.append(Affordance(
+                    node_id=-1, action="type",
+                    params={"into": -1, "purpose": "search",
+                            "hint": "search box at top of list, click there first"},
+                    confidence=0.5,
+                ))
+
+        return affs
 
     def _dialog_field_affordances(self):
         """Give type candidates to edit boxes that OCR only saw as text.

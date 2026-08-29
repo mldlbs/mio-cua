@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 import os
 import time
 import uuid
@@ -9,6 +9,7 @@ from mio_cua.automation.input_controller import InputController
 from mio_cua.events import ObservationCreated, ActionStarted, ActionFinished, TaskFinished
 from mio_cua.models.action_result import ActionResult
 from mio_cua.models.task import Task, TaskResult
+from mio_cua.perception.quality import assess_quality
 from mio_cua.scene.memory import SceneMemory
 
 logger = logging.getLogger(__name__)
@@ -37,8 +38,8 @@ def _keys_eq(sig, want):
 
 class AgentLoop:
     def __init__(self, perception, planner, registry, safety, events,
-                 recover=None, config=None, history=None, controller=None,
-                 artifact_store=None, state_dir=None):
+                recover=None, config=None, history=None, controller=None,
+                artifact_store=None, state_dir=None, event_sinks=None):
         self.perception = perception
         self.planner = planner
         self.registry = registry
@@ -50,10 +51,94 @@ class AgentLoop:
         self.controller = controller or InputController()
         self.artifact_store = artifact_store
         self.state_dir = state_dir
+        # Phase 3 Runtime Event Sink bus (spec §19-§20, §32). Defaults to no
+        # sinks, so existing behaviour is unchanged (zero side effects).
+        self.event_sinks = list(event_sinks or [])
         self._task = None
         self._artifact_paths = []
         self._task_id = uuid.uuid4().hex[:8]
         self.scene_memory = SceneMemory()
+        self._trajectory = []  # [{step, action, target, bbox, reason, obs_id, active_window, result}]
+
+    # -- Runtime Event Sink bus (Phase 3) ---------------------------------
+
+    def add_event_sink(self, sink) -> None:
+        """Subscribe a sink (e.g. a ``Recorder``) to runtime TraceEvents."""
+        self.event_sinks.append(sink)
+
+    def emit(self, event_type: str, step: int, payload: dict, duration_ms=None) -> None:
+        """Emit a runtime event to all subscribed sinks.
+
+        Safe by design: a missing/empty sink list is a no-op, and any sink
+        exception is swallowed so the agent loop never crashes because of a
+        recorder/telemetry failure.
+        """
+        if not self.event_sinks:
+            return
+        try:
+            from mio_cua.evaluation.schema import TraceEvent, EventType
+            et = event_type if isinstance(event_type, str) else str(event_type)
+            ev = TraceEvent(
+                event_type=et, step=step, payload=payload, duration_ms=duration_ms,
+            )
+            for sink in list(self.event_sinks):
+                try:
+                    sink.emit(ev)
+                except Exception:  # pragma: no cover - defensive
+                    logger.exception("event sink %r failed", sink)
+        except Exception:  # pragma: no cover - defensive
+            logger.exception("emit failed")
+
+    def _check_target_visibility(self, action, obs, task):
+        """Target Visibility Invariant: target ∈ visible_candidates before select/click.
+
+        If target is not in visible candidates, block the action and return False.
+        The agent must use search/scroll/recovery instead of random selection.
+        """
+        # Only apply to selection actions
+        if action.type not in ("click", "select_element", "type"):
+            return True
+        # Get target keyword from task
+        keyword = (getattr(task, "metadata", None) or {}).get("keyword", "")
+        if not keyword:
+            return True
+        # Check if target keyword is in any visible element
+        scene = getattr(obs, "scene", None)
+        if scene is None:
+            return True
+        visible_texts = []
+        for n in getattr(scene, "nodes", []) or []:
+            text = (getattr(n, "text", "") or "").strip()
+            if text:
+                visible_texts.append(text.lower())
+        # Also check flat elements
+        for e in getattr(obs, "elements", []) or []:
+            text = (getattr(e, "text", "") or "").strip()
+            if text:
+                visible_texts.append(text.lower())
+        # Check if keyword is visible
+        keyword_lower = keyword.lower()
+        target_visible = any(keyword_lower in t for t in visible_texts)
+        if not target_visible:
+            # Check if the action is clicking on a non-matching element
+            node_id = action.params.get("element_id")
+            if node_id is not None:
+                # Find the element being clicked
+                clicked_text = ""
+                for n in getattr(scene, "nodes", []) or []:
+                    if n.id == int(node_id):
+                        clicked_text = (getattr(n, "text", "") or "").lower()
+                        break
+                for e in getattr(obs, "elements", []) or []:
+                    if e.id == int(node_id):
+                        clicked_text = (getattr(e, "text", "") or "").lower()
+                        break
+                # If clicking on something that doesn't match keyword, block it
+                if clicked_text and keyword_lower not in clicked_text:
+                    logger.warning("target visibility violated: clicking %r but target %r not visible",
+                                    clicked_text, keyword)
+                    return False
+        return True
 
     def _make_ctx(self, obs):
         from mio_cua.tools.context import ToolContext
@@ -66,11 +151,139 @@ class AgentLoop:
             current_observation=obs,
         )
 
+    def _check_context(self, task, obs):
+        """Verify target_context ⊆ observation.context.
+
+        If mismatch, focus target window, re-observe, verify active_window.
+        Returns (obs, context_ok) - possibly updated observation after refocus.
+        """
+        target = getattr(task, "target_context", None) or {}
+        if not target:
+            return obs, True
+        active = getattr(obs, "active_window", "") or ""
+        # Check app/window match — exact match OR process name via aliases
+        _ALIASES = {"wechat": "微信", "chrome": "Chrome", "firefox": "Firefox", "edge": "Edge"}
+        target_app = target.get("app", "")
+        target_window = target.get("window", "")
+        match_target = target_window or target_app
+        target_proc = _ALIASES.get(match_target.lower(), "")
+        context_ok = match_target and (
+            match_target.lower() == active.lower()
+            or target_proc and target_proc in active.lower()
+        )
+        if not context_ok:
+            # Mismatch: focus target window
+            logger.info("context mismatch: target=%r active=%r, focusing", match_target, active)
+            _ALIASES = {"wechat": "weixin", "chrome": "chrome", "firefox": "firefox", "edge": "msedge"}
+            for attempt in range(5):
+                try:
+                    self.registry.call("focus_window", {"title": match_target}, self._make_ctx(obs))
+                except Exception:
+                    pass
+                time.sleep(1.5 + attempt * 0.5)
+                # Verify window is actually foreground before observing
+                current = get_active_window() or ""
+                target_proc = _ALIASES.get(match_target.lower(), "")
+                focused = (match_target.lower() == current.lower() or
+                          (target_proc and target_proc in current.lower()))
+                if not focused:
+                    logger.debug("focus attempt %d: window=%r, expected=%r", attempt + 1, current, match_target)
+                    continue
+                # Re-observe after verified focus
+                obs = self.perception.observe()
+                self.events.publish(ObservationCreated(obs))
+                active = getattr(obs, "active_window", "") or ""
+                recheck = match_target.lower() == active.lower() or (target_proc and target_proc in active.lower())
+                if recheck:
+                    scene = getattr(obs, "scene", None)
+                    if scene and len(getattr(scene, "nodes", [])) > 10:
+                        logger.info("context aligned: active=%r nodes=%d (attempt %d)", active, len(scene.nodes), attempt + 1)
+                        break
+                    else:
+                        logger.warning("context aligned but scene sparse: active=%r nodes=%d", active, len(scene.nodes) if scene else 0)
+                else:
+                    logger.warning("context check failed: active=%r (attempt %d)", active, attempt + 1)
+            else:
+                logger.warning("context still mismatched after focus: active=%r", get_active_window())
+                return obs, False
+        return obs, True
+
+    def _extract_target_info(self, action, obs):
+        """Extract target element info from action + observation for trajectory logging."""
+        info = {"target": None, "bbox": None, "reason": None}
+        scene = getattr(obs, "scene", None)
+        if scene is None:
+            return info
+        node_id = action.params.get("element_id")
+        if node_id is not None:
+            node = None
+            for n in getattr(scene, "nodes", []) or []:
+                if n.id == int(node_id):
+                    node = n
+                    break
+            if node:
+                info["target"] = node.semantic or node.text or f"node_{node_id}"
+                info["bbox"] = node.bbox
+        # Extract thought/reason from plan if available
+        if hasattr(action, "thought"):
+            info["reason"] = action.thought
+        return info
+
+    def _extract_sidebar_candidates(self, obs):
+        """Extract visible chat/group names from left sidebar (left 35% of active window)."""
+        candidates = []
+        active_window = getattr(obs, "active_window", "") or ""
+        # Find the active window's bbox from scene
+        window_bbox = None
+        scene = getattr(obs, "scene", None)
+        if scene:
+            for n in getattr(scene, "nodes", []) or []:
+                if getattr(n, "type", "") == "group" and "MMUIRenderSubWindow" in (getattr(n, "semantic", "") or ""):
+                    window_bbox = n.bbox
+                    break
+                if "Weixin" in (getattr(n, "semantic", "") or "") and getattr(n, "type", "") == "group":
+                    window_bbox = n.bbox
+                    break
+# If we found the window, define sidebar as left 50% of window
+            if window_bbox:
+                wx, wy, ww, wh = window_bbox
+                sidebar_right = wx + int(ww * 0.5)
+            # Scene nodes
+            for n in getattr(scene, "nodes", []) or []:
+                bbox = getattr(n, "bbox", None)
+                text = getattr(n, "text", "") or ""
+                if bbox and len(bbox) >= 2 and bbox[0] < sidebar_right and text.strip():
+                    candidates.append(text.strip())
+        # Fallback: absolute x < 400 (for windows at left of screen)
+        if not window_bbox:
+            for n in getattr(obs.scene, "nodes", []) or []:
+                bbox = getattr(n, "bbox", None)
+                text = getattr(n, "text", "") or ""
+                if bbox and len(bbox) >= 2 and bbox[0] < 400 and text.strip():
+                    candidates.append(text.strip())
+        # Flat elements fallback
+        for e in getattr(obs, "elements", []) or []:
+            bbox = getattr(e, "bbox", None)
+            text = getattr(e, "text", "") or ""
+            if bbox and len(bbox) >= 2 and text.strip():
+                # Check if in sidebar region
+                in_sidebar = False
+                if window_bbox:
+                    wx, _, ww, _ = window_bbox
+                    sidebar_right = wx + int(ww * 0.5)
+                    if bbox[0] < sidebar_right:
+                        in_sidebar = True
+                elif bbox[0] < 400:
+                    in_sidebar = True
+                if in_sidebar:
+                    candidates.append(text.strip())
+        return list(set(candidates))
+
     def _save_artifact(self, obs, action, result):
         if self.artifact_store is None:
             return
         p = self.artifact_store.save_artifact(obs=obs, action=action, result=result,
-                                              task_id=self._task_id)
+                                                task_id=self._task_id)
         self._artifact_paths.append(str(p))
 
     def _save_state(self, obs, step):
@@ -119,12 +332,42 @@ class AgentLoop:
                 self.events.publish(ObservationCreated(obs))
                 self._save_state(obs, steps)
                 self.scene_memory.push(getattr(obs, "scene", None))
+                # Context invariant: target_context ⊆ observation.context
+                obs, context_ok = self._check_context(task, obs)
+                if not context_ok:
+                    hints = ["目标应用窗口未找到或无法聚焦，请检查目标应用是否已安装并运行。"]
+                    plan = self.planner.plan(task, obs, compute_diff(None, obs),
+                                            self.registry.schemas(), history=self.history, hints=hints)
+                    if plan.actions:
+                        ctx = self._make_ctx(obs)
+                        for action in plan.actions:
+                            if action.type in ("success", "fail"):
+                                break
+                            try:
+                                self.registry.call(action.type, action.params, ctx)
+                            except Exception:
+                                pass
+                        # After focus action, continue to next iteration to re-observe
+                        steps += 1
+                        continue
+                    break
+                # Perception quality gate: check if scene graph is usable
+                quality = assess_quality(getattr(obs, "scene", None))
+                if not quality.is_usable:
+                    hints = [
+                        "OBSERVATION QUALITY: low visibility. "
+                        f"Visible elements: {quality.node_count} ({quality.interactive_count} interactive). "
+                        "Actions: scroll to reveal more content, or use search to find targets. "
+                        "Do NOT click on elements you cannot see."
+                    ]
+                    logger.warning("perception quality insufficient at step %d: %s", steps, quality.reason)
+                else:
+                    hints = []
                 diff = compute_diff(prev, obs)
                 if prev is not None and not diff.changes:
                     no_change += 1
                 else:
                     no_change = 0
-                hints = []
                 if self._pending_verify is not None:
                     vh = self._verify_pending(obs)
                     if vh:
@@ -136,7 +379,7 @@ class AgentLoop:
                 )
                 if mem_summary:
                     hints.append("MEMORY (what you have already seen/done):\n" + mem_summary +
-                                 "\nUse this to continue the task -- do not re-read or re-open what you already saw.")
+                                "\nUse this to continue the task -- do not re-read or re-open what you already saw.")
                 if no_change >= 2:
                     hints.append('the screen did not change after your recent actions — the last action had no visible effect. Do NOT repeat it. To confirm a dialog, call key(keys="enter") or click the Save/OK button.')
                 confirm_hint = self._confirm_hint()
@@ -150,8 +393,8 @@ class AgentLoop:
                     hints.append(finish_hint)
                 if self._batch_failed:
                     hints.append("GUIDANCE: the last batch was aborted because "
-                                 f"{self._batch_failed}; re-inspect the screen "
-                                 "and pick a fresh action, do NOT blindly repeat.")
+                                f"{self._batch_failed}; re-inspect the screen "
+                                "and pick a fresh action, do NOT blindly repeat.")
                     self._batch_failed = None
                 if len(self._recent_sigs) >= 4 and self._recent_sigs.count(self._recent_sigs[-1]) >= 4:
                     hints.append(f"you have called `{self._recent_sigs[-1]}` repeatedly with no effect. STOP repeating it and choose a different action now.")
@@ -159,6 +402,11 @@ class AgentLoop:
                     logger.debug("hints@%d: %s", steps, " | ".join(hints))
                 plan = self.planner.plan(task, obs, diff, self.registry.schemas(), history=self.history, hints=hints)
                 if not plan.actions:
+                    finished_status = "FAIL"
+                    finished_summary = (
+                        f"planner returned 0 actions "
+                        f"(thought={getattr(plan, 'thought', '')!r})"
+                    )
                     break
                 ctx = self._make_ctx(obs)
                 config_batch_limit = getattr(self.config, "batch_limit", 3) if self.config else 3
@@ -168,6 +416,59 @@ class AgentLoop:
                 for i, action in enumerate(plan.actions):
                     if batch_executed >= config_batch_limit or self.safety.should_stop():
                         break
+                    # Target Visibility Invariant
+                    if not self._check_target_visibility(action, obs, task):
+                        logger.warning("action blocked by target visibility: %s(%s)", action.type, action.params)
+                        hints.append(
+                            f"TARGET NOT VISIBLE: the target '{getattr(task, 'metadata', {}).get('keyword', '?')}' "
+                            f"is not in the current visible candidates. Do NOT click on other items. "
+                            f"Instead, use scroll to find the target, or use search if available."
+                        )
+                        # Re-plan with the hint
+                        plan = self.planner.plan(task, obs, diff, self.registry.schemas(),
+                                                history=self.history, hints=hints)
+                        if not plan.actions:
+                            break
+                        continue
+                    # Action Guard: block redundant focus_window
+                    if action.type == "focus_window":
+                        focus_title = (action.params.get("title") or "").lower()
+                        current_window = (getattr(obs, "active_window", "") or "").lower()
+                        if focus_title and focus_title in current_window:
+                            logger.info("action guard: skip focus_window('%s'), already active", focus_title)
+                            hints.append(
+                                f"ALREADY FOCUSED: 当前窗口已是 '{getattr(obs, 'active_window', '')}'. "
+                                f"不要再调用 focus_window. 直接执行任务."
+                            )
+                            plan = self.planner.plan(task, obs, diff, self.registry.schemas(),
+                                                    history=self.history, hints=hints)
+                            if not plan.actions:
+                                break
+                            continue
+                    # Target Discovery Guard: warn about wrong clicks when target not visible
+                    if action.type == "click":
+                        keyword = (getattr(task, "metadata", None) or {}).get("keyword", "")
+                        if keyword:
+                            clicked_id = action.params.get("id")
+                            clicked_node = None
+                            for n in (obs.scene.nodes if obs.scene else []):
+                                if n.id == clicked_id:
+                                    clicked_node = n
+                                    break
+                            if clicked_node:
+                                clicked_text = (clicked_node.semantic or clicked_node.text or "").strip()
+                                if keyword.lower() not in clicked_text.lower():
+                                    # Check if search affordance exists
+                                    has_search = False
+                                    for a in (getattr(obs.scene, "affordances", []) if obs.scene else []):
+                                        if a.params.get("purpose") == "search":
+                                            has_search = True
+                                            break
+                                    search_hint = " 有搜索框，用搜索功能." if has_search else ""
+                                    hints.append(
+                                        f"TARGET MISMATCH: 你点击了 '{clicked_text}'，但目标是 '{keyword}'. "
+                                        f"不要点击不匹配的元素.{search_hint}"
+                                    )
                     self.events.publish(ActionStarted(action))
                     ctx.current_action_id = action.id
                     try:
@@ -180,6 +481,74 @@ class AgentLoop:
                     self.events.publish(ActionFinished(result))
                     if self.history is not None:
                         self.history.record(action.id, action.type, result.success, result.message)
+                    # Trajectory logging
+                    target_info = self._extract_target_info(action, obs)
+                    self._trajectory.append({
+                        "step": steps,
+                        "action": action.type,
+                        "params": action.params,
+                        "target": target_info.get("target"),
+                        "bbox": target_info.get("bbox"),
+                        "reason": target_info.get("reason"),
+                        "obs_id": str(id(obs)),
+                        "active_window": getattr(obs, "active_window", ""),
+                        "result_success": result.success,
+                        "result_msg": (result.message or "")[:200],
+                    })
+                    # Post-action context verify
+                    target = getattr(task, "target_context", None) or {}
+                    target_app = target.get("app") or target.get("window", "")
+                    if target_app and action.type not in ("success", "fail", "focus_window"):
+                        try:
+                            post_obs = self.perception.observe()
+                            post_active = getattr(post_obs, "active_window", "") or ""
+                            if target_app.lower() not in post_active.lower():
+                                logger.warning("post-action context violated: expected=%r got=%r after %s",
+                                                target_app, post_active, action.type)
+                                self._trajectory[-1]["context_violated"] = True
+                                self._trajectory[-1]["post_active"] = post_active
+                                # Recovery: focus target
+                                try:
+                                    self.registry.call("focus_window", {"title": target_app}, self._make_ctx(post_obs))
+                                except Exception:
+                                    pass
+                                time.sleep(0.5)
+                                # Re-observe
+                                obs = self.perception.observe()
+                                self.events.publish(ObservationCreated(obs))
+                                self._trajectory[-1]["recovery_active"] = getattr(obs, "active_window", "")
+                        except Exception:
+                            pass
+                    # Scroll Progress Verify
+                    if action.type == "scroll":
+                        try:
+                            post_obs = self.perception.observe()
+                            keyword = (getattr(task, "metadata", None) or {}).get("keyword", "")
+                            if keyword:
+                                prev_candidates = self._extract_sidebar_candidates(obs)
+                                new_candidates = self._extract_sidebar_candidates(post_obs)
+                                changed = set(new_candidates) != set(prev_candidates)
+                                target_visible = any(keyword.lower() in c.lower() for c in new_candidates)
+                                self._trajectory[-1]["scroll_progress"] = {
+                                    "prev_count": len(prev_candidates),
+                                    "new_count": len(new_candidates),
+                                    "changed": changed,
+                                    "target_visible": target_visible,
+                                }
+                                if target_visible:
+                                    logger.info("scroll progress: target %r now visible", keyword)
+                                elif not changed:
+                                    logger.warning("scroll progress: candidates unchanged after %s", action.params)
+                                    hints.append(
+                                        f"SCROLL STALLED: scrolling {action.params.get('direction')} "
+                                        f"did not reveal new candidates. Try the opposite direction, "
+                                        f"or use search if available."
+                                    )
+                                else:
+                                    logger.info("scroll progress: %d -> %d candidates, target not yet visible",
+                                                len(prev_candidates), len(new_candidates))
+                        except Exception:
+                            pass
                     self.safety.record_step()
                     steps += 1
                     if not result.success:
@@ -269,6 +638,14 @@ class AgentLoop:
             artifacts=self._artifact_paths,
         )
         self.events.publish(TaskFinished(result))
+        # Save trajectory for debugging
+        if self._trajectory and self.state_dir:
+            import json as _json
+            os.makedirs(self.state_dir, exist_ok=True)
+            traj_path = os.path.join(self.state_dir, f"trajectory_{self._task_id}.json")
+            with open(traj_path, "w", encoding="utf-8") as f:
+                _json.dump(self._trajectory, f, ensure_ascii=False, indent=2)
+            logger.info("trajectory saved: %s (%d entries)", traj_path, len(self._trajectory))
         return result
 
     def _capture_expected(self, obs, action):

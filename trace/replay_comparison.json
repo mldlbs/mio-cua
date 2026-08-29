@@ -1,0 +1,54 @@
+{
+  "trace_id": "trace_1787466378",
+  "comparison": [
+    {
+      "step": 2,
+      "uia_nodes": 1,
+      "uia_interactive": 0,
+      "uia_usable": false,
+      "ocr_nodes": 41,
+      "merged_nodes": 38,
+      "merged_interactive": 37,
+      "merged_usable": true,
+      "target_in_uia": false,
+      "target_in_merged": false
+    },
+    {
+      "step": 4,
+      "uia_nodes": 1,
+      "uia_interactive": 0,
+      "uia_usable": false,
+      "ocr_nodes": 41,
+      "merged_nodes": 38,
+      "merged_interactive": 37,
+      "merged_usable": true,
+      "target_in_uia": false,
+      "target_in_merged": false
+    },
+    {
+      "step": 6,
+      "uia_nodes": 1,
+      "uia_interactive": 0,
+      "uia_usable": false,
+      "ocr_nodes": 41,
+      "merged_nodes": 38,
+      "merged_interactive": 37,
+      "merged_usable": true,
+      "target_in_uia": false,
+      "target_in_merged": false
+    },
+    {
+      "step": 12,
+      "uia_nodes": 1,
+      "uia_interactive": 0,
+      "uia_usable": false,
+      "ocr_nodes": 41,
+      "merged_nodes": 38,
+      "merged_interactive": 37,
+      "merged_usable": true,
+      "target_in_uia": false,
+      "target_in_merged": false
+    }
+  ],
+  "conclusion": "UIA-only usable: 0/4. UIA+OCR usable: 4/4. Target visible after fallback: 0/4."
+}

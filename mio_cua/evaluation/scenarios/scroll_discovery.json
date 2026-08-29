@@ -1,0 +1,114 @@
+{
+  "id": "scroll_discovery",
+  "description": "Target not visible initially; agent scrolls sidebar to discover it, then clicks",
+  "task": {
+    "instruction": "在微信中，找到左侧聊天列表里的群『兴蓉项目群』，打开它。",
+    "target_context": {"app": "WeChat", "keyword": "兴蓉"},
+    "metadata": {"keyword": "兴蓉"}
+  },
+  "observations": [
+    {
+      "id": 0,
+      "active_window": "WeChat",
+      "scene_nodes": [
+        {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+        {"id": 1, "type": "group", "semantic": "Weixin", "bbox": [840, 100, 900, 700]},
+        {"id": 2, "type": "text", "text": "文件传输助手", "bbox": [860, 200, 200, 40]},
+        {"id": 3, "type": "text", "text": "家庭群", "bbox": [860, 250, 200, 40]},
+        {"id": 4, "type": "text", "text": "同事群", "bbox": [860, 300, 200, 40]},
+        {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+      ]
+    },
+    {
+      "id": 1,
+      "active_window": "WeChat",
+      "scene_nodes": [
+        {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+        {"id": 6, "type": "text", "text": "项目讨论", "bbox": [860, 200, 200, 40]},
+        {"id": 7, "type": "text", "text": "兴蓉项目群", "bbox": [860, 250, 200, 40]},
+        {"id": 8, "type": "text", "text": "采购群", "bbox": [860, 300, 200, 40]},
+        {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+      ]
+    },
+    {
+      "id": 2,
+      "active_window": "WeChat",
+      "scene_nodes": [
+        {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+        {"id": 10, "type": "text", "text": "兴蓉项目群", "bbox": [900, 120, 300, 30]},
+        {"id": 11, "type": "text", "text": "2026-08-22 周三", "bbox": [900, 160, 300, 20]},
+        {"id": 12, "type": "text", "text": "张三: 收到，明天开会讨论", "bbox": [900, 200, 500, 40]}
+      ]
+    }
+  ],
+  "transition_graph": {
+    "edges": [
+      {
+        "from": 0,
+        "action_type": "scroll",
+        "action_params_match": {"direction": "down"},
+        "to": 1,
+        "preconditions": {"context_matches": true, "target_visible": false}
+      },
+      {
+        "from": 0,
+        "action_type": "search_click",
+        "to": 0,
+        "preconditions": {"context_matches": true, "search_box_available": true}
+      },
+      {
+        "from": 1,
+        "action_type": "scroll",
+        "action_params_match": {"direction": "up"},
+        "to": 0,
+        "preconditions": {"context_matches": true}
+      },
+      {
+        "from": 1,
+        "action_type": "click",
+        "action_params_match": {"element_id": 7},
+        "to": 2,
+        "preconditions": {"context_matches": true, "target_visible": true}
+      },
+      {
+        "from": 1,
+        "action_type": "search_click",
+        "to": 0,
+        "preconditions": {"context_matches": true, "search_box_available": true}
+      }
+    ]
+  },
+  "ground_truth": [
+    {
+      "obs_id": 0,
+      "target_visible": false,
+      "context_matches": true,
+      "search_box_available": true,
+      "forbidden_patterns": ["click_frame_node", "raw_xy_outside_window"]
+    },
+    {
+      "obs_id": 1,
+      "target_visible": true,
+      "context_matches": true,
+      "search_box_available": true,
+      "forbidden_patterns": ["click_frame_node", "raw_xy_outside_window"]
+    },
+    {
+      "obs_id": 2,
+      "target_visible": true,
+      "context_matches": true,
+      "forbidden_patterns": []
+    }
+  ],
+  "goal": {
+    "type": "target_visible_then_click",
+    "keyword": "兴蓉",
+    "max_steps": 8,
+    "max_recovery_count": 0,
+    "max_invalid_actions": 0
+  },
+  "meta": {
+    "difficulty": "medium",
+    "tags": ["scroll", "discovery", "click"]
+  }
+}

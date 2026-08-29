@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "trace_id": "98bf2f5a",
+  "task_id": "98bf2f5a",
+  "goal": "测试任务",
+  "started_at": "2026-08-27T01:55:13.727670+00:00",
+  "finished_at": "2026-08-27T01:55:13.733298+00:00",
+  "result": {
+    "status": "SUCCESS",
+    "summary": "done"
+  },
+  "failure": null,
+  "metadata": {
+    "target_context": {}
+  }
+}

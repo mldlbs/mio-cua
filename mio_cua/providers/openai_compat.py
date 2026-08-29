@@ -13,13 +13,16 @@ class OpenAICompatProvider(Provider):
         self.timeout = timeout
 
     def generate(self, messages: list, tools: list = None) -> LLMResponse:
-        body = {"model": self.model, "messages": messages, "temperature": 0.2}
+        body = {"model": self.model, "messages": messages, "temperature": 0.2, "max_tokens": 4096}
         if tools:
             body["tools"] = tools
         resp = client.retrying_post(
             f"{self.base_url}/chat/completions", body,
             timeout=self.timeout, retries=3,
-            headers={"Authorization": f"Bearer {self.api_key}"},
+            headers={
+                "Authorization": f"Bearer {self.api_key}",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+            },
         )
         data = resp.json()
         msg = data["choices"][0]["message"]

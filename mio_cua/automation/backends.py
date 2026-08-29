@@ -79,6 +79,11 @@ def _dispatch(action: Action):
         amount = params.get("amount", 1)
         direction = params.get("direction", "down")
         delta = -120 * amount if direction == "down" else 120 * amount
+        # Move the cursor over the target region (e.g. a chat list) before
+        # wheeling, so the scroll actuates that region instead of wherever the
+        # cursor happens to be. Without this, scrolls land in the void.
+        if "x" in params and "y" in params:
+            win32api.SetCursorPos((int(params["x"]), int(params["y"])))
         win32api.mouse_event(win32con.MOUSEEVENTF_WHEEL, 0, 0, delta, 0)
 
     elif typ == "drag":
@@ -170,6 +175,8 @@ def _dispatch_pyautogui(action: Action):
         amount = params.get("amount", 1)
         direction = params.get("direction", "down")
         delta = -amount if direction == "down" else amount
+        if "x" in params and "y" in params:
+            pyautogui.moveTo(params["x"], params["y"])
         pyautogui.scroll(delta)
     elif typ == "drag":
         pyautogui.moveTo(params["x1"], params["y1"])

@@ -23,8 +23,11 @@ class RecordingBackend(Backend):
 
 
 class RecordingController(InputController):
-    def __init__(self):
-        super().__init__(backend=RecordingBackend())
+    def __init__(self, *args, **kwargs):
+        # Accept (and ignore) extra kwargs like ``grounder`` so this mock stays
+        # a drop-in for InputController wherever the factory passes one.
+        kwargs.pop("grounder", None)
+        super().__init__(*args, backend=kwargs.pop("backend", RecordingBackend()), **kwargs)
 
     @property
     def calls(self):
