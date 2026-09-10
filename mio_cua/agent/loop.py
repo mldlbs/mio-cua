@@ -328,7 +328,9 @@ class AgentLoop:
             self._pending_verify = None  # (node_id, expected, prev_scene) awaiting the next observation
             self._batch_failed = None
             while not self.safety.should_stop():
+                _t = time.time(); print(f"[diag] observe start (step {steps})", flush=True)
                 obs = self.perception.observe()
+                print(f"[diag] observe done ({time.time()-_t:.1f}s)", flush=True)
                 self.events.publish(ObservationCreated(obs))
                 self._save_state(obs, steps)
                 self.scene_memory.push(getattr(obs, "scene", None))
@@ -400,7 +402,9 @@ class AgentLoop:
                     hints.append(f"you have called `{self._recent_sigs[-1]}` repeatedly with no effect. STOP repeating it and choose a different action now.")
                 if hints:
                     logger.debug("hints@%d: %s", steps, " | ".join(hints))
+                _t = time.time()
                 plan = self.planner.plan(task, obs, diff, self.registry.schemas(), history=self.history, hints=hints)
+                print(f"[diag] planner done ({time.time()-_t:.1f}s) actions={len(plan.actions)} thought={getattr(plan, 'thought', '')[:160]!r}", flush=True)
                 if not plan.actions:
                     finished_status = "FAIL"
                     finished_summary = (
@@ -500,7 +504,9 @@ class AgentLoop:
                     target_app = target.get("app") or target.get("window", "")
                     if target_app and action.type not in ("success", "fail", "focus_window"):
                         try:
+                            _t = time.time(); print("[diag] post-action observe start", flush=True)
                             post_obs = self.perception.observe()
+                            print(f"[diag] post-action observe done ({time.time()-_t:.1f}s)", flush=True)
                             post_active = getattr(post_obs, "active_window", "") or ""
                             if target_app.lower() not in post_active.lower():
                                 logger.warning("post-action context violated: expected=%r got=%r after %s",
@@ -514,7 +520,9 @@ class AgentLoop:
                                     pass
                                 time.sleep(0.5)
                                 # Re-observe
+                                _t = time.time(); print("[diag] re-observe start", flush=True)
                                 obs = self.perception.observe()
+                                print(f"[diag] re-observe done ({time.time()-_t:.1f}s)", flush=True)
                                 self.events.publish(ObservationCreated(obs))
                                 self._trajectory[-1]["recovery_active"] = getattr(obs, "active_window", "")
                         except Exception:

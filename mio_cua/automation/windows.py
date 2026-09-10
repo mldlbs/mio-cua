@@ -155,6 +155,8 @@ _TITLE_HINTS = {
     "msedge": ("edge", "microsoft edge"),
     "edge": ("edge", "microsoft edge"),
     "chrome": ("chrome", "google chrome"),
+    "wechat": ("微信", "weixin"),
+    "weixin": ("微信", "weixin"),
 }
 
 
@@ -225,6 +227,8 @@ _PROC_ALIASES = {
     "msedge": ("msedge",),
     "edge": ("msedge",),
     "chrome": ("chrome",),
+    "wechat": ("weixin",),
+    "weixin": ("weixin",),
 }
 
 

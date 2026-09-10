@@ -176,6 +176,22 @@ class ObservationRecorder:
 # TraceStore — persistence layer
 # ---------------------------------------------------------------------------
 
+
+def _safe_asdict(obj):
+    """Convert dataclass to dict safely; fall back to __dict__ or empty dict."""
+    if obj is None:
+        return None
+    try:
+        return asdict(obj)
+    except TypeError:
+        pass
+    if hasattr(obj, "__dict__"):
+        return dict(obj.__dict__)
+    if isinstance(obj, dict):
+        return obj
+    return {}
+
+
 class TraceStore:
     """Saves and loads traces (trajectories) to/from disk.
 
@@ -199,10 +215,10 @@ class TraceStore:
             "metadata": trace.metadata,
             "entries": [
                 {
-                    "obs_before": asdict(e.obs_before),
-                    "action": asdict(e.action) if e.action else None,
-                    "obs_after": asdict(e.obs_after) if e.obs_after else None,
-                    "planner": asdict(e.planner) if e.planner else None,
+                    "obs_before": _safe_asdict(e.obs_before),
+                    "action": _safe_asdict(e.action),
+                    "obs_after": _safe_asdict(e.obs_after),
+                    "planner": _safe_asdict(e.planner),
                     "metadata": e.metadata,
                 }
                 for e in trace.entries

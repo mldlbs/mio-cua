@@ -291,6 +291,13 @@ class FailureClassifier:
         Returns:
             {"category": str, "detail": str, "confidence": float}
         """
+        if observation is None:
+            return {
+                "category": self.PERCEPTION,
+                "detail": "No observation available for this step",
+                "confidence": 0.5,
+            }
+
         if context_matches is None:
             context_matches = self._context_matches(observation.active_window, goal_app)
 
