@@ -93,15 +93,22 @@
 **四阶段闭环（Perceive → Decide → Act → Verify）** 之上，v0.3 叠加了「去模型化」确定性层，让 A/B 实验有可开关变量：
 
 ```mermaid
-flowchart TD
-    A[Observation: OCR+UIA Scene Graph] --> B{Planner}
-    B -->|候选动作| C[Grounding: 实时 UIA 树重匹配 element_id→bbox]
-    C -->|安全坐标| D[InputController: 真实键鼠]
-    D --> E[Scene Diff 校验]
-    E -->|未变化| F[Recovery: 确定性恢复动作]
-    F --> B
-    E -->|已变化| G[Progress / 下一步]
-    G --> A
+flowchart LR
+    O(["感知<br/>Observation<br/>OCR + UIA → Scene Graph"]):::per
+    P(["决策<br/>Planner (LLM)<br/>从已校验候选中选动作"]):::dec
+    G(["定位<br/>Grounding<br/>实时 UIA 树重匹配 → 安全坐标"]):::act
+    I(["执行<br/>InputController<br/>真实鼠标 / 键盘"]):::act
+    V{"校验<br/>Scene Diff<br/>屏幕真的变了？"}:::ver
+    R(["恢复<br/>Recovery<br/>确定性恢复动作"]):::ver
+
+    O --> P --> G --> I --> V
+    V -->|未变化| R --> P
+    V -->|已变化| O
+
+    classDef per fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef dec fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef act fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    classDef ver fill:#fce4ec,stroke:#c2185b,color:#880e4f
 ```
 
 - **Scene Graph 感知** —— OCR + UIA 融合成场景图：每个 UI 元素是节点（文本/类型/状态/bbox/空间关系），LLM 从**已校验的动作候选**中选，而非猜坐标。
