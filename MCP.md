@@ -81,6 +81,12 @@ pip install -e ".[gpu]"     # 可选：onnxruntime-directml，GPU 加速感知�
 | `mio_select_element` | 拖拽选中指定元素文本（单行） |
 | `mio_drag` | 从 A 拖到 B（移动图标/选范围/滑条） |
 | `mio_sleep` | 等待 N 秒（应用加载/异步窗口） |
+| `mio_discover` | 通用发现：search_input → 候选列表（app 仅作运行时上下文） |
+| `mio_extract` | 通用抽取：scroll/select/clipboard，读当前剪贴板为数据集 |
+| `mio_validate` | 通用校验：visual_compare/completeness_check，校验上次抽取 |
+| `mio_report` | 通用报告：dataset → 证据 Markdown |
+
+> 注：上表共 **36** 个工具。`mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 为 `workflow/` 下的 MVP 封装，依赖运行时上下文；其余为稳定能力。
 
 ## 安全提示
 

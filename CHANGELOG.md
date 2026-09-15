@@ -35,6 +35,11 @@ work; released sections are tagged on `master`.
 ### Fixed
 
 - `perception/quality.py` — `assess_quality(None)` 现在安全返回"无场景图"报告，而非 `AttributeError`；修复 Agent 循环在无 `scene` 的观察（如确定性 simulation 测试）上直接 FAIL 的问题。
+
+### Docs
+
+- **README 重写（中文，实测指标）**：纠正「32 工具」为实测 **36**；更正 Quick Start 的 `pip install mio-cua` 为源码安装（PyPI 尚未发布）；补全 `history` CLI 子命令、`MIO_CUA_*` 环境变量、A/B/C/D 实验层开关与 Phase 3 可观测性说明。
+- **MCP.md 工具表补全**：新增 `mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 四个 workflow MVP 工具，工具计数更新为 36。
 - `mcp_server.py` — `mio_kill_process` 在 `taskkill` 失败时不再因 `e.stderr` 为 `None`（GBK 输出解码失败）而崩溃；改为按字节捕获并以 `utf-8/replace` 解码，异常路径返回结构化错误字符串。
 - **Phase 3 回归修复（均由新增测试捕获）**：
   - `evaluation/attribution.py` — 补上 `classify()` 缺失的 `_goal_context(trace)` 方法（原引用未定义会 `AttributeError`）；补 `import logging`。
