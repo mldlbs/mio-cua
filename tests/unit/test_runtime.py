@@ -29,8 +29,9 @@ class _Scene:
 
 
 class FakeObs:
-    def __init__(self, active_window, nodes, elements=None):
+    def __init__(self, active_window, nodes, elements=None, active_process=""):
         self.active_window = active_window
+        self.active_process = active_process
         self.scene = _Scene(nodes)
         self.elements = elements or []
 
@@ -67,6 +68,36 @@ def test_observation_target_not_visible():
     obs.scene.nodes[3].text = "张三群"
     robs = RuntimeObservation.from_obs(obs, {"app": "微信", "keyword": "兴蓉"})
     assert robs.target_visible is False
+
+
+def test_context_matches_by_process_when_title_hides_app():
+    """A window TITLE is content, not identity.
+
+    The Edge window hosting mio-taskhub is titled "MIO·HUB — 任务总线", so the
+    old title-substring test reported context_matches=False forever and every
+    action paid a pointless focus + re-observe (scenario trace 1790783368).
+    """
+    obs = _wechat_obs()
+    obs.active_window = "MIO·HUB — 任务总线"
+    obs.active_process = "msedge"
+    robs = RuntimeObservation.from_obs(obs, {"app": "Edge", "keyword": "兴蓉"})
+    assert robs.context_matches is True
+
+
+def test_context_matches_false_for_a_different_process():
+    obs = _wechat_obs()
+    obs.active_window = "无标题 - 记事本"
+    obs.active_process = "notepad.exe"
+    robs = RuntimeObservation.from_obs(obs, {"app": "Edge", "keyword": "兴蓉"})
+    assert robs.context_matches is False
+
+
+def test_context_matches_title_only_when_process_unknown():
+    """Back-compat: an Observation without a process still matches on title."""
+    obs = _wechat_obs()
+    obs.active_window = "Edge - 新标签页"
+    robs = RuntimeObservation.from_obs(obs, {"app": "Edge", "keyword": "兴蓉"})
+    assert robs.context_matches is True
 
 
 def test_belief_tracks_seen_candidates_and_progress():

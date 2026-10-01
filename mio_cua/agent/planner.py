@@ -1,5 +1,6 @@
 ﻿import json
 from dataclasses import dataclass, field
+from mio_cua.automation.windows import matches_target
 from mio_cua.models.action import Action, Plan
 from mio_cua.providers.base import Provider
 
@@ -75,6 +76,7 @@ class Planner:
         self.system_prompt = system_prompt
         self._counter = 0
         self._exploration = ExplorationState()
+        self._image_rejected = False  # set once a screenshot upload fails
 
     @property
     def exploration_state(self):
@@ -95,18 +97,18 @@ class Planner:
         target = getattr(task, "target_context", None) or {}
         target_app = target.get("app") or target.get("window", "")
         active_window = observation.active_window or ""
-        # Context match: exact title match OR process name match via aliases
-        _ALIASES = {"wechat": "微信", "chrome": "Chrome", "firefox": "Firefox", "edge": "Edge"}
-        target_proc = _ALIASES.get(target_app.lower(), "")
+        # A window TITLE is content, not identity: an Edge window is titled
+        # "MIO·HUB — 任务总线", so title-only matching keeps
+        # context_verified=false and the INVARIANT below forces the model into
+        # an endless focus_window loop. Match the owning process as well.
+        active_process = getattr(observation, "active_process", None)
         context_verified = bool(
-            target_app and (
-                active_window.lower() == target_app.lower()
-                or target_proc and target_proc in active_window.lower()
-            )
+            target_app and matches_target(target_app, active_window, active_process)
         )
 
         context_state = {
             "active_app": active_window,
+            "active_process": active_process,
             "target_app": target_app or None,
             "context_verified": context_verified,
         }
@@ -147,8 +149,10 @@ class Planner:
         elif context_verified:
             user_content += (
                 f"\n=== CONTEXT STATE ===\n"
-                f"context_verified=true: 当前窗口已是 '{active_window}'.\n"
-                f"禁止调用 focus_window(title='{active_window}') — 窗口已聚焦.\n"
+                f"context_verified=true: 窗口 '{active_window}'"
+                + (f" (process={active_process})" if active_process else "")
+                + f" 已匹配目标应用 '{target_app}'.\n"
+                f"禁止调用 focus_window — 目标应用已在前台.\n"
                 f"直接在当前窗口中执行任务.\n"
                 f"=========================="
             )
@@ -157,20 +161,39 @@ class Planner:
             {"role": "user", "content": user_content},
         ]
         image_msg = None
-        if observation.screenshot_path:
-            user_content += "\nThe attached screenshot shows red boxes numbered by element id; prefer element_id when targeting them."
-            image_msg = _image_message(observation.screenshot_path)
-            messages.append(image_msg)
+        # Once a screenshot attempt has failed, stop attaching one: it is the
+        # largest request we send (461 KiB observed) and the endpoint reported
+        # 404 "No endpoints found that support image input", so re-paying the
+        # upload (and the connection risk) on every step buys nothing.
+        if observation.screenshot_path and not self._image_rejected:
+            try:
+                image_msg = _image_message(observation.screenshot_path)
+            except OSError:
+                image_msg = None  # screenshot vanished/unreadable -> plan blind
+            if image_msg is not None:
+                # NOTE: messages already captured `user_content`; assigning to
+                # the local name here would leave this hint out of the prompt.
+                user_content += ("\nThe attached screenshot shows red boxes numbered by "
+                                 "element id; prefer element_id when targeting them.")
+                messages[1]["content"] = user_content
+                messages.append(image_msg)
         try:
             resp = self.provider.generate(messages, tools=tools)
         except Exception as e:
-            status = getattr(getattr(e, "response", None), "status_code", None)
-            if image_msg is not None and status in (400, 404):
-                # non-vision provider: drop the screenshot and retry
+            if image_msg is None:
+                raise
+            # Screenshot upload is best-effort. The endpoint may reject it
+            # outright (404 "No endpoints found that support image input") or
+            # the connection can be reset mid-upload (10054) -- a plain
+            # `status in (400, 404)` guard let that second case kill the whole
+            # run. Retry blind once, then surface the ORIGINAL failure if the
+            # text-only attempt fails too.
+            self._image_rejected = True
+            try:
                 messages.remove(image_msg)
                 resp = self.provider.generate(messages, tools=tools)
-            else:
-                raise
+            except Exception:
+                raise e
         actions = []
         for tc in resp.tool_calls:
             self._counter += 1

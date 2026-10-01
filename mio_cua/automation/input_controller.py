@@ -30,8 +30,10 @@ class InputController:
         if self.grounder is not None and spatial:
             try:
                 coords = self.grounder.resolve(action, self.current_observation)
-            except GroundingError as e:
-                raise RuntimeError(f"grounding failed: {e}")
+            except GroundingError:
+                # Preserve the original error (and its ``ambiguous`` flag) so
+                # the loop can choose between a blind retry and a replan.
+                raise
             if coords is not None:
                 action.params["x"], action.params["y"] = coords
                 action.params.pop("element_id", None)

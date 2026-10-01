@@ -30,8 +30,54 @@ from mio_cua.evaluation.recorder import (
 
 
 # ---------------------------------------------------------------------------
-# TraceRecorder — wraps AgentLoop, captures full trajectory
+# TraceRecorder �� wraps AgentLoop, captures full trajectory
 # ---------------------------------------------------------------------------
+
+
+def build_trace_entries(
+    actions: List[ActionRecord],
+    effective_obs_by_step: Dict[int, Any],
+    raw_obs_by_step: Dict[int, Any],
+    plan_by_step: Dict[int, PlannerRecord],
+    capture: Callable[[Any, Dict[str, Any]], Any],
+) -> List[TraceEntry]:
+    """Pair each action with the observation and the plan live at its own step.
+
+    Free function so the pairing can be unit tested without a running agent.
+
+    ``step_counter`` advances on every ``registry.call()`` -- including the
+    context check's deterministic ``focus_window`` retries, which emit no plan
+    at all. Appending plans in ordinal order and pairing them with
+    ``actions[i]`` therefore shifted every plan forward by the number of such
+    retries (trace_1790812617: 4 plans vs 6 actions, each plan attached two
+    entries too early), so a step's thought was read against another step's
+    observation. Key plans by step index instead.
+    """
+    entries: List[TraceEntry] = []
+    for i in range(len(actions)):
+        obs_effective = effective_obs_by_step.get(i, raw_obs_by_step.get(i))
+        obs_after_effective = effective_obs_by_step.get(i + 1, raw_obs_by_step.get(i + 1))
+        obs_raw = raw_obs_by_step.get(i)
+
+        before = capture(obs_effective, {"step": i}) if obs_effective else None
+        after = capture(obs_after_effective, {"step": i + 1}) if obs_after_effective else None
+
+        metadata = {}
+        if obs_raw is not None and obs_effective is not None:
+            raw_nodes = len(getattr(obs_raw, "scene", None) and getattr(obs_raw.scene, "nodes", []) or [])
+            eff_nodes = len(getattr(obs_effective, "scene", None) and getattr(obs_effective.scene, "nodes", []) or [])
+            if raw_nodes != eff_nodes:
+                metadata["observation_discrepancy"] = f"raw={raw_nodes} effective={eff_nodes}"
+
+        entries.append(TraceEntry(
+            obs_before=before,
+            action=actions[i],
+            obs_after=after,
+            planner=plan_by_step.get(i),
+            metadata=metadata or None,
+        ))
+    return entries
+
 
 class TraceRecorder:
     """Wraps Agent and records the full observation → action → result trajectory.
@@ -58,6 +104,15 @@ class TraceRecorder:
         """
         actions: List[ActionRecord] = []
         planner_records: List[PlannerRecord] = []
+        # Plans are indexed by the step counter at plan time, NOT by their own
+        # ordinal. Every registry.call() bumps step_counter -- including the
+        # deterministic focus_window retries issued by the context check, which
+        # produce no plan at all. Appending plans in order and pairing them with
+        # actions[i] therefore shifts every plan two entries ahead (observed on
+        # trace_1790812617: 4 plans vs 6 actions, plan i attached to action i
+        # instead of action i+2), so a step's thought was read from a different
+        # step's observation.
+        plan_by_step: Dict[int, PlannerRecord] = {}
 
         step_counter = [0]
 
@@ -151,6 +206,9 @@ class TraceRecorder:
                     decision_state=decision_state,
                 )
                 planner_records.append(pr)
+                # Key by the step the plan will act at, so entry i pairs its
+                # own observation with its own thought.
+                plan_by_step[step_counter[0]] = pr
                 return plan
 
             perception_inst.observe = _tracing_observe
@@ -165,30 +223,13 @@ class TraceRecorder:
                 planner_inst.plan = orig_plan
 
             # Build entries inside _intercepted_run where dicts are accessible
-            built_entries = []
-            for i in range(len(actions)):
-                obs_effective = effective_obs_by_step.get(i, raw_obs_by_step.get(i))
-                obs_after_effective = effective_obs_by_step.get(i + 1, raw_obs_by_step.get(i + 1))
-                obs_raw = raw_obs_by_step.get(i)
-
-                obs_before_frame = self._recorder.capture(obs_effective, metadata={"step": i}) if obs_effective else None
-                obs_after_frame = self._recorder.capture(obs_after_effective, metadata={"step": i + 1}) if obs_after_effective else None
-
-                metadata = {}
-                if obs_raw is not None and obs_effective is not None:
-                    raw_nodes = len(getattr(obs_raw, "scene", None) and getattr(obs_raw.scene, "nodes", []) or [])
-                    eff_nodes = len(getattr(obs_effective, "scene", None) and getattr(obs_effective.scene, "nodes", []) or [])
-                    if raw_nodes != eff_nodes:
-                        metadata["observation_discrepancy"] = f"raw={raw_nodes} effective={eff_nodes}"
-
-                pr = planner_records[i] if i < len(planner_records) else None
-                built_entries.append(TraceEntry(
-                    obs_before=obs_before_frame,
-                    action=actions[i],
-                    obs_after=obs_after_frame,
-                    planner=pr,
-                    metadata=metadata if metadata else None,
-                ))
+            built_entries = build_trace_entries(
+                actions=actions,
+                effective_obs_by_step=effective_obs_by_step,
+                raw_obs_by_step=raw_obs_by_step,
+                plan_by_step=plan_by_step,
+                capture=self._recorder.capture,
+            )
 
             # Store entries on recorder for outer scope access
             self._built_entries = built_entries
@@ -250,8 +291,20 @@ class FailureClassifier:
         "vscode": ["visual studio code", "vs code", "code.exe"],
     }
 
-    def _context_matches(self, active_window: str, goal_app: str) -> bool:
-        """Fuzzy context matching: handles Chinese/English window names."""
+    def _context_matches(self, active_window: str, goal_app: str,
+                         active_process: Optional[str] = None) -> bool:
+        """Fuzzy context matching: handles Chinese/English window names.
+
+        Matches the foreground's PROCESS too: a browser window's title is the
+        page it shows ("MIO·HUB — 任务总线") and never contains the app name,
+        so title-only comparison would mis-attribute a correctly focused
+        browser as an environment error.
+        """
+        if active_process:
+            from mio_cua.automation.windows import matches_target
+            if matches_target(goal_app, active_window, active_process):
+                return True
+
         aw = active_window.lower().strip()
         ga = goal_app.lower().strip()
 
@@ -299,7 +352,9 @@ class FailureClassifier:
             }
 
         if context_matches is None:
-            context_matches = self._context_matches(observation.active_window, goal_app)
+            context_matches = self._context_matches(
+                observation.active_window, goal_app,
+                getattr(observation, "active_process", None))
 
         target_in_obs = self._target_in_observation(observation, goal_keyword)
         has_search_box = self._has_search_box(observation)
@@ -310,8 +365,9 @@ class FailureClassifier:
         if not context_matches:
             return {
                 "category": self.ENVIRONMENT,
-                "detail": f"active_window={observation.active_window!r}, expected={goal_app!r} — "
-                          f"Observation 缺少目标应用上下文",
+                "detail": f"active_window={observation.active_window!r} "
+                          f"(process={getattr(observation, 'active_process', None)!r}), "
+                          f"expected={goal_app!r} — Observation 缺少目标应用上下文",
                 "confidence": 0.9,
             }
 
@@ -385,10 +441,35 @@ class FailureClassifier:
                     "confidence": 0.9,
                 }
 
+            # Anything that actually drives the search box is not "no action".
+            # The old catch-all here returned planner_error for every action
+            # that was not scroll/search/click, so typing the goal keyword
+            # straight into the box was scored as a planner failure
+            # (trace_1790812617 step 3: action type "今日新闻" -> planner_error).
+            if action and action.type in ("type", "key", "enter", "write", "input"):
+                return {
+                    "category": None,
+                    "detail": f"target not visible yet, agent driving the search box "
+                              f"({action.type})",
+                    "confidence": 0.0,
+                }
+            if action and action.type == "focus_window":
+                return {
+                    "category": self.PLANNER,
+                    "detail": f"target not visible but context already matches — "
+                              f"re-focusing the same app instead of searching",
+                    "confidence": 0.7,
+                }
+            if action is None:
+                return {
+                    "category": self.PLANNER,
+                    "detail": f"target not visible, exploration available but no action",
+                    "confidence": 0.6,
+                }
             return {
-                "category": self.PLANNER,
-                "detail": f"target not visible, exploration available but no action",
-                "confidence": 0.6,
+                "category": None,
+                "detail": f"target not visible, agent attempting {action.type}",
+                "confidence": 0.0,
             }
 
         # ── Layer 2: Action 是否符合 Observation + Goal ──
@@ -402,6 +483,12 @@ class FailureClassifier:
 
         if action.type in ("click", "select_element"):
             clicked_matches = self._click_matches_target(action, observation, goal_keyword)
+            if not clicked_matches and self._is_search_submit(action, observation):
+                # The submit control's own label never contains the keyword --
+                # that lives in the input box beside it. trace_1790812617 step 4
+                # typed 今日新闻 then clicked element 104 {"text": "搜索",
+                # "semantic": "搜索"} and was scored planner_error @0.95.
+                clicked_matches = True
             if not clicked_matches:
                 return {
                     "category": self.PLANNER,
@@ -494,6 +581,29 @@ class FailureClassifier:
             if text and keyword.lower() not in text.lower():
                 candidates.append(text)
         return candidates
+
+    # Labels of the control that submits the typed query. Its own text never
+    # carries the keyword -- the keyword sits in the input box next to it.
+    # Latin labels are matched exactly ("go" would otherwise accept "Google").
+    _SUBMIT_LABELS = ("搜索", "搜一下", "查找", "查询")
+
+    def _is_search_submit(self, action: ActionRecord, obs: ObsFrame) -> bool:
+        """True when the click lands on the search/submit affordance."""
+        eid = action.params.get("element_id")
+        if eid is None:
+            return False
+        for node in obs.scene_nodes:
+            if node.get("id") == eid:
+                semantic = (node.get("semantic") or "").lower()
+                text = (node.get("text") or "").strip().lower()
+                if "search" in semantic or "搜索" in semantic:
+                    return True
+                if not text:
+                    return False
+                if text == "search":
+                    return True
+                return any(label in text for label in self._SUBMIT_LABELS)
+        return False
 
     def _click_matches_target(self, action: ActionRecord, obs: ObsFrame, keyword: str) -> bool:
         eid = action.params.get("element_id")

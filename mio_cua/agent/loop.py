@@ -6,6 +6,7 @@ import uuid
 from mio_cua.agent.batch import verify_action
 from mio_cua.agent.diff import compute_diff
 from mio_cua.automation.input_controller import InputController
+from mio_cua.automation.windows import matches_target
 from mio_cua.events import ObservationCreated, ActionStarted, ActionFinished, TaskFinished
 from mio_cua.models.action_result import ActionResult
 from mio_cua.models.task import Task, TaskResult
@@ -154,59 +155,87 @@ class AgentLoop:
     def _check_context(self, task, obs):
         """Verify target_context ⊆ observation.context.
 
-        If mismatch, focus target window, re-observe, verify active_window.
+        On mismatch: focus the target window, re-observe, and confirm the
+        foreground really is the target. Focus is confirmed by process name as
+        well as title — an Edge window's title is its page title ("MIO·HUB —
+        任务总线") and never contains "edge", so title-only matching can never
+        verify focus for a browser.
+
         Returns (obs, context_ok) - possibly updated observation after refocus.
         """
+        from mio_cua.automation.windows import get_active_window, matches_target
+
         target = getattr(task, "target_context", None) or {}
         if not target:
             return obs, True
-        active = getattr(obs, "active_window", "") or ""
-        # Check app/window match — exact match OR process name via aliases
-        _ALIASES = {"wechat": "微信", "chrome": "Chrome", "firefox": "Firefox", "edge": "Edge"}
-        target_app = target.get("app", "")
-        target_window = target.get("window", "")
-        match_target = target_window or target_app
-        target_proc = _ALIASES.get(match_target.lower(), "")
-        context_ok = match_target and (
-            match_target.lower() == active.lower()
-            or target_proc and target_proc in active.lower()
-        )
-        if not context_ok:
-            # Mismatch: focus target window
-            logger.info("context mismatch: target=%r active=%r, focusing", match_target, active)
-            _ALIASES = {"wechat": "weixin", "chrome": "chrome", "firefox": "firefox", "edge": "msedge"}
-            for attempt in range(5):
-                try:
-                    self.registry.call("focus_window", {"title": match_target}, self._make_ctx(obs))
-                except Exception:
-                    pass
-                time.sleep(1.5 + attempt * 0.5)
-                # Verify window is actually foreground before observing
-                current = get_active_window() or ""
-                target_proc = _ALIASES.get(match_target.lower(), "")
-                focused = (match_target.lower() == current.lower() or
-                          (target_proc and target_proc in current.lower()))
-                if not focused:
-                    logger.debug("focus attempt %d: window=%r, expected=%r", attempt + 1, current, match_target)
-                    continue
-                # Re-observe after verified focus
-                obs = self.perception.observe()
-                self.events.publish(ObservationCreated(obs))
-                active = getattr(obs, "active_window", "") or ""
-                recheck = match_target.lower() == active.lower() or (target_proc and target_proc in active.lower())
-                if recheck:
-                    scene = getattr(obs, "scene", None)
-                    if scene and len(getattr(scene, "nodes", [])) > 10:
-                        logger.info("context aligned: active=%r nodes=%d (attempt %d)", active, len(scene.nodes), attempt + 1)
-                        break
-                    else:
-                        logger.warning("context aligned but scene sparse: active=%r nodes=%d", active, len(scene.nodes) if scene else 0)
-                else:
-                    logger.warning("context check failed: active=%r (attempt %d)", active, attempt + 1)
+
+        match_target = target.get("window", "") or target.get("app", "")
+        if not match_target:
+            return obs, True
+
+        obs_title = getattr(obs, "active_window", "") or ""
+        obs_proc = getattr(obs, "active_process", None)
+        if matches_target(match_target, obs_title, obs_proc):
+            return obs, True
+
+        # Mismatch: focus target window
+        logger.info("context mismatch: target=%r active=%r/%r, focusing",
+                    match_target, obs_title, obs_proc)
+        for attempt in range(5):
+            try:
+                self.registry.call("focus_window", {"title": match_target}, self._make_ctx(obs))
+            except Exception:
+                logger.debug("focus_window raised", exc_info=True)
+            time.sleep(1.5 + attempt * 0.5)
+            # Verify the foreground really moved before paying for a re-observe.
+            if not matches_target(match_target):
+                logger.debug("focus attempt %d: window=%r, expected=%r",
+                             attempt + 1, get_active_window(), match_target)
+                continue
+            # Re-observe after verified focus
+            obs = self.perception.observe()
+            if obs is None:
+                logger.warning("re-observe returned no observation (attempt %d)", attempt + 1)
+                continue
+            self.events.publish(ObservationCreated(obs))
+            active = getattr(obs, "active_window", "") or ""
+            # Judge by the observation's OWN title+process. Do not also require
+            # the live foreground to match: for a browser the title never names
+            # the app, so a conjunctive check can never pass (it silently turned
+            # every attempt into a re-observe until the run timed out).
+            if matches_target(match_target, active, getattr(obs, "active_process", None)):
+                scene = getattr(obs, "scene", None)
+                nodes = len(getattr(scene, "nodes", [])) if scene else 0
+                if nodes > 10:
+                    logger.info("context aligned: active=%r proc=%r nodes=%d (attempt %d)",
+                                active, getattr(obs, "active_process", None), nodes, attempt + 1)
+                    break
+                logger.warning("context aligned but scene sparse: active=%r nodes=%d",
+                               active, nodes)
             else:
-                logger.warning("context still mismatched after focus: active=%r", get_active_window())
-                return obs, False
+                logger.warning("context check failed: active=%r proc=%r (attempt %d)",
+                               active, getattr(obs, "active_process", None), attempt + 1)
+        else:
+            logger.warning("context still mismatched after focus: active=%r",
+                           get_active_window())
+            return obs, False
         return obs, True
+
+    def _detect_obstruction(self, obs, task):
+        """High-confidence obstruction signals that warrant *recovery* (a
+        deterministic fix), not a blind retry.
+
+        Returns a failure-mode string (``"context_menu"``) or ``None``.
+        """
+        scene = getattr(obs, "scene", None)
+        if scene is None:
+            return None
+        for n in getattr(scene, "nodes", []) or []:
+            role = (getattr(n, "role", "") or "").lower()
+            typ = (getattr(n, "type", "") or "").lower()
+            if role in ("menu", "contextmenu") or typ == "contextmenu":
+                return "context_menu"
+        return None
 
     def _extract_target_info(self, action, obs):
         """Extract target element info from action + observation for trajectory logging."""
@@ -353,6 +382,20 @@ class AgentLoop:
                         steps += 1
                         continue
                     break
+                # Obstruction recovery: a stray context menu blocks every click.
+                # Dismiss it deterministically (Esc) before replanning -- this is
+                # *recovery*, not a blind retry.
+                obstruction = self._detect_obstruction(obs, task)
+                if obstruction == "context_menu":
+                    logger.info("obstruction: context menu detected, dismissing with Esc")
+                    try:
+                        self.registry.call("key", {"keys": "esc"}, self._make_ctx(obs))
+                    except Exception:
+                        pass
+                    time.sleep(0.3)
+                    if self._trajectory:
+                        self._trajectory[-1]["recovery"] = "context_menu:dismissed"
+                    continue
                 # Perception quality gate: check if scene graph is usable
                 quality = assess_quality(getattr(obs, "scene", None))
                 if not quality.is_usable:
@@ -478,7 +521,10 @@ class AgentLoop:
                     try:
                         result = self.registry.call(action.type, action.params, ctx)
                     except Exception as e:
-                        result = ActionResult(action.id, success=False, message=str(e), retryable=True)
+                        # Grounding ambiguity must replan (not blind-retry);
+                        # other errors stay retryable so Recover can act.
+                        retryable = not getattr(e, "ambiguous", False)
+                        result = ActionResult(action.id, success=False, message=str(e), retryable=retryable)
                     if not result.success and result.retryable and self.recover is not None:
                         result = self.recover(action, result, ctx)
                     self._save_artifact(obs, action, result)
@@ -508,11 +554,20 @@ class AgentLoop:
                             post_obs = self.perception.observe()
                             print(f"[diag] post-action observe done ({time.time()-_t:.1f}s)", flush=True)
                             post_active = getattr(post_obs, "active_window", "") or ""
-                            if target_app.lower() not in post_active.lower():
-                                logger.warning("post-action context violated: expected=%r got=%r after %s",
-                                                target_app, post_active, action.type)
+                            post_proc = getattr(post_obs, "active_process", None)
+                            # Title-only substring check ("Edge" in title) flags
+                            # a violation whenever the Edge window is showing
+                            # anything but a title containing "Edge" -- the
+                            # taskhub page is titled "MIO·HUB — 任务总线",
+                            # so this used to fire a pointless focus+re-observe
+                            # after EVERY action. Match on the owning process.
+                            if not matches_target(target_app, post_active, post_proc):
+                                logger.warning(
+                                    "post-action context violated: expected=%r got=%r (process=%r) after %s",
+                                    target_app, post_active, post_proc, action.type)
                                 self._trajectory[-1]["context_violated"] = True
                                 self._trajectory[-1]["post_active"] = post_active
+                                self._trajectory[-1]["post_process"] = post_proc
                                 # Recovery: focus target
                                 try:
                                     self.registry.call("focus_window", {"title": target_app}, self._make_ctx(post_obs))
@@ -597,31 +652,50 @@ class AgentLoop:
                             finished_summary = f"stuck: repeated {sig} {repeat_count} times with no effect"
                             break
                     batch_executed += 1
-                    # Capture the expected on-screen change (clicks with an
-                    # element_id that maps to an affordance).
+                    # Capture the expected on-screen change (clicks that map to an
+                    # affordance, or a focus_window whose target we can re-check).
                     expected = None
                     pending = None
                     if action.type == "click":
                         pending = self._capture_expected(obs, action)
                         expected = pending[1] if pending else None
+                    elif action.type == "focus_window":
+                        title = (action.params.get("title") or "").strip()
+                        if title:
+                            pending = (None, {"window_title": title}, obs)
                     light_observe = getattr(self.perception, "observe_light", None)
                     has_successor = (i + 1 < len(plan.actions)) and (batch_executed < config_batch_limit)
-                    if not has_successor or not config_batch_verify or light_observe is None:
-                        # Batch tail, verification disabled, or perception has no
-                        # light observe: defer to the next full observation via the
-                        # existing _pending_verify hint.
-                        if action.type == "click" and pending is not None:
+                    _needs_full = bool(expected) and any(
+                        k in expected for k in ("state_toggle", "window_title"))
+
+                    # Defer to the next full observation when the expectation needs
+                    # a UIA-backed frame (toggle state / window title), at the batch
+                    # tail, or when verification is disabled / no light path exists.
+                    if action.type == "click" and (
+                        _needs_full or not has_successor
+                        or not config_batch_verify or light_observe is None
+                    ):
+                        if _needs_full or pending is not None:
                             self._pending_verify = pending
                         break
-                    # --- in-batch light verification (do NOT set _pending_verify) ---
-                    light = light_observe()
-                    ok, detail = verify_action(light_base, light, action, expected)
-                    if not ok:
-                        if self.history is not None:
-                            self.history.record(action.id, action.type, False, f"verify: {detail}")
-                        self._batch_failed = detail
-                        break
-                    light_base = light
+                    # In-batch light verification (click w/ display|text expectation,
+                    # or any click w/ no expectation -> OCR-layer screen-diff).
+                    if action.type == "click" and light_observe is not None:
+                        light = light_observe()
+                        ok, detail = verify_action(
+                            light_base, light, action, expected,
+                            node_id=action.params.get("element_id"),
+                        )
+                        if not ok:
+                            if self.history is not None:
+                                self.history.record(action.id, action.type, False, f"verify: {detail}")
+                            self._batch_failed = detail
+                            break
+                        light_base = light
+                    elif action.type == "focus_window" and pending is not None:
+                        # Re-check window focus on the next full observation, but
+                        # keep running the rest of the batch (focus is cheap).
+                        self._pending_verify = pending
                 if finished_status in ("SUCCESS", "FAIL"):
                     break
                 prev = obs
@@ -670,15 +744,24 @@ class AgentLoop:
         return (int(node_id), dict(aff.expected), scene)
 
     def _verify_pending(self, obs):
-        """Check whether the previous click produced its expected change."""
+        """Check whether the previous action produced its expected change."""
         node_id, expected, prev_scene = self._pending_verify
+        if "window_title" in expected:
+            ok, detail = self._verifier.verify(
+                None, None, expected, curr_active_window=getattr(obs, "active_window", ""))
+            if ok:
+                return None
+            return (f"VERIFICATION: after the window action the active window is "
+                    f"{getattr(obs, 'active_window', '')!r} but expected to match "
+                    f"{expected['window_title']!r}. The target window may not be "
+                    f"focused -- do NOT assume success; re-focus or pick another action.")
         curr_scene = getattr(obs, "scene", None)
         if curr_scene is None:
             return None
-        ok, detail = self._verifier.verify(prev_scene, curr_scene, expected)
+        ok, detail = self._verifier.verify(prev_scene, curr_scene, expected, node_id=node_id)
         if ok:
             return None
-        return (f"VERIFICATION: your last click on node {node_id} did not have the "
+        return (f"VERIFICATION: your last action on node {node_id} did not have the "
                 f"expected effect ({detail}). It likely missed or the target changed. "
                 f"Do NOT repeat it blindly -- re-inspect and pick a fresh target.")
 

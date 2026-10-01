@@ -19,14 +19,27 @@ All win32 / pywinauto imports are lazy (inside methods) so importing this
 module never requires a desktop.
 """
 
+import logging
 from typing import Any, Callable, List, Optional, Tuple
 
 from mio_cua.models.action import Action
 from mio_cua.models.element import Element
 
+logger = logging.getLogger(__name__)
+
 
 class GroundingError(Exception):
-    """Raised when an action cannot be safely grounded on the live desktop."""
+    """Raised when an action cannot be safely grounded on the live desktop.
+
+    ``ambiguous`` marks the case where the target matched multiple live
+    elements equally well (e.g. two identical "OK" buttons). Such failures
+    should make the planner *replan* (pick a less ambiguous selector) rather
+    than blindly retry the same intent.
+    """
+
+    def __init__(self, message: str = "", *, ambiguous: bool = False):
+        super().__init__(message)
+        self.ambiguous = ambiguous
 
 
 LiveSource = Callable[[], List[Element]]
@@ -56,11 +69,15 @@ class Grounder:
 
     # -- live sources (lazy) ------------------------------------------
     def _live(self) -> List[Element]:
-        if self._live_source is not None:
-            return self._live_source()
-        from mio_cua.automation.uia import get_elements
+        try:
+            if self._live_source is not None:
+                return self._live_source()
+            from mio_cua.automation.uia import get_elements
 
-        return get_elements()
+            return get_elements()
+        except Exception:  # pragma: no cover - desktop unreadable
+            logger.warning("live UIA read failed; degrading to cached bbox", exc_info=True)
+            return []
 
     def _win_rect(self) -> Optional[Tuple[int, int, int, int]]:
         if self._window_rect is not None:
@@ -79,7 +96,10 @@ class Grounder:
 
         Match by (text, role) when the ref has text; otherwise by bbox
         proximity. Among matches pick the one whose center is closest to the
-        ref center (handles small drift between frames).
+        ref center (handles small drift between frames). When two candidates
+        are *equally* close (ambiguous target, e.g. two identical "OK"
+        buttons), raise so the planner picks a less ambiguous selector instead
+        of us guessing.
         """
         candidates = [e for e in live if getattr(e, "visible", True) and getattr(e, "enabled", True)]
         if not candidates:
@@ -95,11 +115,19 @@ class Grounder:
             pool = candidates
         best: Optional[Element] = None
         best_d = None
+        tie_count = 0
         for e in pool:
             lcx, lcy = _center(e.bbox)
             d = (lcx - rcx) ** 2 + (lcy - rcy) ** 2
             if best_d is None or d < best_d:
                 best, best_d = e, d
+                tie_count = 1
+            elif abs(d - best_d) <= 16:  # ~4px tie -> ambiguous
+                tie_count += 1
+        if best is not None and tie_count > 1 and len({_center(e.bbox) for e in pool}) > 1:
+            raise GroundingError(
+                f"target {getattr(ref, 'text', '')!r} matches {tie_count} ambiguous "
+                f"live elements; cannot safely pick one", ambiguous=True)
         return best
 
     @staticmethod

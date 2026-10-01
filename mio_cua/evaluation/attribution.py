@@ -94,7 +94,8 @@ class FailureAttributor:
             elif et == EventType.OBSERVATION.value:
                 latest_obs = _get(p, "observation")
                 aw = _get(latest_obs, "active_window") or ""
-                context_matches = self._context_matches(aw, target_app)
+                ap = _get(latest_obs, "active_process") or ""
+                context_matches = self._context_matches(aw, target_app, ap)
             elif et == EventType.PLAN_CREATED.value:
                 latest_plan = _get(p, "plan")
             elif et == EventType.ACTION_COMPLETED.value:
@@ -316,7 +317,8 @@ class FailureAttributor:
             return FailureCategory.PERCEPTION.value, 0.8, f"error indicates perception gap: {msg}"
         return FailureCategory.UNKNOWN.value, 0.4, f"unclassified error: {msg}"
 
-    def _context_matches(self, active_window: str, goal_app: str) -> bool:
+    def _context_matches(self, active_window: str, goal_app: str,
+                         active_process: str = "") -> bool:
         aw = (active_window or "").lower().strip()
         ga = (goal_app or "").lower().strip()
         if not ga:
@@ -330,6 +332,14 @@ class FailureAttributor:
             if aw == key or aw in aliases:
                 if any(a in ga for a in aliases) or key in ga:
                     return True
+        # Title rules did not match. The owning process is the only identity a
+        # page title cannot hide -- an Edge window showing the taskhub page is
+        # titled "MIO·HUB — 任务总线", which no alias list will ever accept, so
+        # without this the run is mis-attributed to environment_error.
+        if active_process:
+            from mio_cua.automation.windows import matches_target
+            if matches_target(goal_app, active_window, active_process):
+                return True
         return False
 
     def _target_visible(self, obs_d: Dict[str, Any], keyword: str) -> bool:

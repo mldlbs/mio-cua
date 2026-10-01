@@ -16,23 +16,36 @@ from mio_cua.scene.graph import SceneGraph, SceneNode
 VISIBLE_TYPES = ("click", "type", "key", "scroll")
 
 
-def verify_action(prev_obs, curr_obs, action, expected):
+def verify_action(prev_obs, curr_obs, action, expected, node_id=None):
     """Verify an action's on-screen effect between two observations.
 
     Returns ``(ok, detail)``. Decision order:
 
     1. ``expected`` (from an affordance, e.g. ``{'display': True}``) is
        verified with ``ExpectedVerifier`` -- this is the strongest signal.
+       Expectations that require a *full* UIA-backed observation
+       (``state_toggle`` / ``window_title``) are deferred so a light OCR-only
+       frame never produces a false failure; the loop re-checks them on the
+       next full observation.
     2. else, if ``action.type`` is a visible action, fall back to a diff of the
        OCR-only layer between the two frames (any change = pass).
     3. else (wait/launch/move_mouse/fs tools/...) -> pass, the action is not
        expected to change the screen.
     """
     if expected:
+        _full_obs_keys = ("state_toggle", "window_title")
+        if any(k in expected for k in _full_obs_keys):
+            # Light frames (OCR-only) lack UIA state / window title; defer so we
+            # do not abort a batch on a verification we cannot yet perform.
+            return True, "deferred: full-observation verification pending"
         prev_scene = getattr(prev_obs, "scene", None)
         curr_scene = getattr(curr_obs, "scene", None)
         if prev_scene is not None and curr_scene is not None:
-            return ExpectedVerifier().verify(prev_scene, curr_scene, expected)
+            return ExpectedVerifier().verify(
+                prev_scene, curr_scene, expected,
+                node_id=node_id,
+                curr_active_window=getattr(curr_obs, "active_window", ""),
+            )
     if action.type not in VISIBLE_TYPES:
         return True, "no visible expectation"
     changes = _ocr_diff(prev_obs, curr_obs)

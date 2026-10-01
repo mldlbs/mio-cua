@@ -245,3 +245,75 @@ def test_mcp_drag_requires_coords():
     with pytest.raises(ToolError) as ei:
         _run(mcp.call_tool("mio_drag", {}))
     assert "required" in str(ei.value)
+
+
+def test_mcp_logging_configured_and_writes_to_file():
+    """The MCP server must expose diagnostics: a rotating file log exists and
+    logger output actually lands in it. Without this, the whole perception/OCR
+    stack is an unobservable black box."""
+    import logging
+    from mio_cua import mcp_server
+
+    assert mcp_server._LOG_FILE
+    assert mcp_server._LOG_FILE.endswith("mcp.log")
+
+    marker = "pytest-mcp-logging-marker"
+    logging.getLogger("mio_cua.mcp").info(marker)
+    for h in logging.getLogger().handlers:
+        h.flush()
+    with open(mcp_server._LOG_FILE, "r", encoding="utf-8") as f:
+        assert marker in f.read()
+
+
+def test_mcp_logging_does_not_pollute_stdout(monkeypatch):
+    """A stdio MCP server owns stdout for JSON-RPC; logging must never write
+    there or the protocol stream is corrupted."""
+    import io
+    import logging
+    from mio_cua import mcp_server
+
+    captured = io.StringIO()
+    monkeypatch.setattr(sys, "stdout", captured)
+    logging.getLogger("mio_cua.mcp").warning("stdout-pollution-probe")
+    for h in logging.getLogger().handlers:
+        h.flush()
+    assert "stdout-pollution-probe" not in captured.getvalue()
+
+
+def test_mcp_health_tool_registered():
+    from mio_cua.mcp_server import mcp
+    names = {t.name for t in _run(mcp.list_tools())}
+    assert "mio_health" in names
+
+
+def test_mcp_health_reports_layers_and_log():
+    """mio_health is the one call that answers 'why did perception degrade?' —
+    it must surface the log path and every perception layer's readiness."""
+    from mio_cua.mcp_server import mcp
+    content, _ = _run(mcp.call_tool("mio_health", {}))
+    text = content[0].text
+    assert "mcp.log" in text
+    assert "uia" in text
+    assert "ocr" in text
+    assert "omniparser" in text
+    assert "single-instance" in text
+    assert "pid" in text
+
+
+def test_importing_mcp_server_does_not_take_desktop_lock():
+    """Only main() may acquire the single-instance mutex — a unit test (or any
+    import) must never seize the lock from a live server."""
+    from mio_cua import mcp_server
+    assert mcp_server._INSTANCE_OK is None
+
+
+def test_single_instance_allow_multi_override(monkeypatch):
+    from mio_cua import mcp_server
+
+    monkeypatch.setenv("MIO_CUA_ALLOW_MULTI", "1")
+    monkeypatch.setattr(mcp_server, "_INSTANCE_OK", None)
+    assert mcp_server._acquire_single_instance() is True
+    # still None at module scope for other readers? No: it records the result.
+    assert mcp_server._INSTANCE_OK is True
+    # never touched the real mutex
+    assert mcp_server._INSTANCE_HANDLE is None

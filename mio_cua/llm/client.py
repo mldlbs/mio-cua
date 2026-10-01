@@ -3,8 +3,11 @@ import time
 import requests
 
 
-def retrying_post(url: str, json_body: dict, timeout: float = 60, retries: int = 3,
+def retrying_post(url: str, json_body: dict, timeout: float = 60, retries: int = 4,
                   headers: dict = None) -> requests.Response:
+    # 4 attempts with exponential backoff: this machine's route to the LLM
+    # endpoint is flaky (observed TLS handshake timeouts and RST 10054 within
+    # a single session), and 3 attempts were not enough to ride it out.
     last_err = None
     for attempt in range(retries):
         try:

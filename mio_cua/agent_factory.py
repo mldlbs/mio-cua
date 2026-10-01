@@ -85,10 +85,13 @@ class Agent:
             config=self.config,
             history=History(),
             controller=InputController(
-                grounder=Grounder()
-                if getattr(self.config, "runtime_v2", False)
-                and getattr(self.config, "enable_grounding", True)
-                else None
+                # Mount the deterministic Grounder by default (fail-soft: it
+                # degrades to the cached bbox whenever the live desktop is
+                # unreadable, and only refuses to click when the target is
+                # genuinely missing/occluded/ambiguous). This is the execution
+                # boundary half of "de-modeling" and was previously dormant
+                # unless runtime_v2 was on.
+                grounder=Grounder() if getattr(self.config, "enable_grounding", True) else None
             ),
             artifact_store=ArtifactStore(self.config.artifact_dir),
             state_dir=os.path.join(self.config.artifact_dir, "state"),

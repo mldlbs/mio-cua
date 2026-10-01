@@ -4,6 +4,7 @@ from mio_cua.tools import fs
 from mio_cua.tools import clipboard as clipboard_tool
 from mio_cua.tools import drag as drag_tool
 from mio_cua.tools import selection as selection_tool
+from mio_cua.tools import taskbar as taskbar_tool
 
 _SCHEMAS = {
     "click": {"type": "function", "function": {"name": "click", "description": "Click mouse at coordinates or element", "parameters": {"type": "object", "properties": {
@@ -23,6 +24,9 @@ _SCHEMAS = {
         "command": {"type": "string"}}, "required": ["command"]}}},
     "focus_window": {"type": "function", "function": {"name": "focus_window", "description": "Focus a window by title", "parameters": {"type": "object", "properties": {
         "title": {"type": "string"}}, "required": ["title"]}}},
+    "taskbar": {"type": "function", "function": {"name": "taskbar", "description": "Inspect or operate the Windows taskbar. action='list' returns taskbar items as [{name,kind,rect}] using deterministic UIA names (running apps, Start, Search, clock, tray) -- use it to see which apps are open and to learn exact item names. action='click' activates an item by name substring; pass target taken from a 'list' result, NEVER pixel coordinates. Use this to switch to an already-open app or to read the clock/notifications.", "parameters": {"type": "object", "properties": {
+        "action": {"type": "string", "enum": ["list", "click"], "default": "list"},
+        "target": {"type": "string"}}}}},
     "move_mouse": {"type": "function", "function": {"name": "move_mouse", "description": "Move mouse (hover)", "parameters": {"type": "object", "properties": {
         "element_id": {"type": "integer"}, "x": {"type": "number"}, "y": {"type": "number"}}}}},
     "success": {"type": "function", "function": {"name": "success", "description": "Task complete", "parameters": {"type": "object", "properties": {
@@ -67,6 +71,7 @@ def register_builtin_tools(registry: ToolRegistry):
         ("screenshot", screenshot.screenshot),
         ("launch", launch.launch),
         ("focus_window", focus_window.focus_window),
+        ("taskbar", taskbar_tool.taskbar),
         ("move_mouse", move_mouse.move_mouse),
         ("success", success.success),
         ("fail", fail.fail),

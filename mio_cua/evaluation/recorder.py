@@ -41,6 +41,9 @@ class ObsFrame:
     timestamp: float
     active_window: str
     scene_nodes: List[Dict[str, Any]]
+    # Foreground window's process name (e.g. 'msedge'). Optional because
+    # traces recorded before this field existed deserialize without it.
+    active_process: Optional[str] = None
     screenshot_path: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
@@ -145,6 +148,7 @@ class ObservationRecorder:
             timestamp=time.time(),
             active_window=getattr(observation, "active_window", "") or "",
             scene_nodes=scene_nodes,
+            active_process=getattr(observation, "active_process", None),
             screenshot_path=getattr(observation, "screenshot_path", None),
             metadata=metadata or {},
         )

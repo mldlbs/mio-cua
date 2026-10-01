@@ -47,6 +47,7 @@ class ScrollState:
 class RuntimeObservation:
     raw: Any
     context: str = ""
+    active_process: str = ""
     target_context: Dict[str, Any] = field(default_factory=dict)
     candidates: List[str] = field(default_factory=list)
     affordances: List[Affordance] = field(default_factory=list)
@@ -70,7 +71,12 @@ class RuntimeObservation:
         )
         if not target:
             return True
-        return target.lower() in (self.context or "").lower()
+        # A window TITLE is content, not identity: an Edge window showing the
+        # taskhub page is titled "MIO·HUB — 任务总线", so a title-substring
+        # test reports context_matches=False forever and every action gets a
+        # pointless focus+re-observe. Match the owning process too.
+        from mio_cua.automation.windows import matches_target
+        return matches_target(target, self.context, self.active_process)
 
     @property
     def target_visible(self) -> bool:
@@ -83,6 +89,7 @@ class RuntimeObservation:
     def from_obs(cls, obs, target_context: Optional[Dict[str, Any]] = None) -> "RuntimeObservation":
         target_context = target_context or {}
         active = getattr(obs, "active_window", "") or ""
+        active_process = getattr(obs, "active_process", "") or ""
         scene = getattr(obs, "scene", None)
         elements = getattr(obs, "elements", []) or []
 
@@ -169,6 +176,7 @@ class RuntimeObservation:
         return cls(
             raw=obs,
             context=active,
+            active_process=active_process,
             target_context=target_context,
             candidates=candidates,
             affordances=affordances,

@@ -1,0 +1,17 @@
+{
+  "trace_id": "trace_1790748711",
+  "created_at": 1790748711.9141753,
+  "task": {
+    "instruction": "打开浏览器，在搜索引擎中搜索「今日新闻」",
+    "target_context": {
+      "app": "Edge"
+    },
+    "metadata": {}
+  },
+  "metadata": {
+    "steps": 0,
+    "final_status": "FAIL",
+    "final_summary": "loop error: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /v1/chat/completions (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=8000): Failed to e"
+  },
+  "entries": []
+}

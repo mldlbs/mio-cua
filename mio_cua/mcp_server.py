@@ -9,6 +9,8 @@ Exposes the agent's proven capabilities as MCP tools:
 Local stdio transport (the tools operate on the user's own desktop).
 """
 
+import logging
+import logging.handlers
 import os
 import sys
 import time
@@ -16,6 +18,91 @@ from typing import List, Optional
 
 from pydantic import Field
 from mcp.server.fastmcp import FastMCP
+
+
+def _log_dir() -> str:
+    """Writable directory for MCP logs.
+
+    Prefers %LOCALAPPDATA%\\mio-cua\\logs (survives across runs, easy to find);
+    falls back to the system temp dir when that is not writable.
+    """
+    base = os.environ.get("LOCALAPPDATA") or os.environ.get("TEMP") or "."
+    path = os.path.join(base, "mio-cua", "logs")
+    try:
+        os.makedirs(path, exist_ok=True)
+        probe = os.path.join(path, ".write_test")
+        with open(probe, "w", encoding="utf-8") as f:
+            f.write("ok")
+        os.remove(probe)
+        return path
+    except Exception:
+        import tempfile
+        return tempfile.gettempdir()
+
+
+_LOG_FILE = os.path.join(_log_dir(), "mcp.log")
+_START_TIME = time.time()
+logger = logging.getLogger("mio_cua.mcp")
+
+
+def _setup_logging(force: bool = False) -> str:
+    """Configure MCP logging: rotating file + stderr. Never touches stdout.
+
+    A stdio MCP server owns stdout for the JSON-RPC protocol, so diagnostics
+    MUST go to stderr or a file. Without this, every ``logger.*`` call in the
+    perception/OCR/OmniParser layers is silently dropped and the server becomes
+    an unobservable black box.
+
+    Level is controlled by ``MIO_CUA_LOG_LEVEL`` (default INFO).
+    Returns the log file path.
+    """
+    root = logging.getLogger()
+    if getattr(root, "_mio_configured", False) and not force:
+        return _LOG_FILE
+
+    level_name = os.environ.get("MIO_CUA_LOG_LEVEL", "INFO").upper()
+    level = getattr(logging, level_name, logging.INFO)
+    root.setLevel(level)
+
+    fmt = logging.Formatter(
+        "%(asctime)s %(levelname)-7s [%(name)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+
+    # File handler (rotating) — the durable record.
+    try:
+        fh = logging.handlers.RotatingFileHandler(
+            _LOG_FILE, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+        )
+        fh.setFormatter(fmt)
+        fh.setLevel(level)
+        root.addHandler(fh)
+    except Exception as e:  # pragma: no cover - filesystem edge
+        print(f"[mio-cua] file logging disabled: {e}", file=sys.stderr)
+
+    # stderr handler — visible to MCP clients that surface stderr.
+    try:
+        sh = logging.StreamHandler(sys.stderr)
+        sh.setFormatter(fmt)
+        sh.setLevel(level)
+        root.addHandler(sh)
+    except Exception:  # pragma: no cover - defensive
+        pass
+
+    # Capture Python warnings and uncaught exceptions too.
+    logging.captureWarnings(True)
+
+    def _log_uncaught(exc_type, exc, tb):
+        root.critical("uncaught exception", exc_info=(exc_type, exc, tb))
+
+    sys.excepthook = _log_uncaught
+
+    root._mio_configured = True
+    logger.info("mio-cua MCP logging initialized (level=%s, file=%s)", level_name, _LOG_FILE)
+    return _LOG_FILE
+
+
+_setup_logging()
 
 mcp = FastMCP("mio_cua_mcp")
 
@@ -25,6 +112,7 @@ mcp = FastMCP("mio_cua_mcp")
 # without it (they lazy-load), this just hides the latency.
 def _prewarm_omniparser():
     if os.environ.get("MIO_CUA_NO_PREWARM") == "1":
+        logger.info("OmniParser prewarm skipped (MIO_CUA_NO_PREWARM=1)")
         return
     try:
         import threading
@@ -32,15 +120,106 @@ def _prewarm_omniparser():
             try:
                 from mio_cua.scene import omniparser
                 omniparser._load()
+                logger.info("OmniParser prewarm completed")
             except Exception:
-                pass
+                # Surface the degradation instead of swallowing it: web-control
+                # detection will be unavailable, and callers should know why.
+                logger.warning("OmniParser prewarm failed; web controls disabled",
+                               exc_info=True)
         t = threading.Thread(target=_do, name="omni-prewarm", daemon=True)
         t.start()
     except Exception:
-        pass
+        logger.warning("could not start OmniParser prewarm thread", exc_info=True)
 
 
-_prewarm_omniparser()
+# ── Single-instance guard ───────────────────────────────────────────────────
+# Two concurrent MCP servers would fight over the physical cursor/keyboard and
+# double every action. A named Windows mutex (session-local) makes the second
+# launcher detect the first. Enforced at main(); importing the module is always
+# allowed (tests import it freely).
+_INSTANCE_MUTEX = "Local\\mio-cua-mcp-singleton"
+_INSTANCE_HANDLE = None  # holds the mutex handle for the process lifetime
+_INSTANCE_OK = None      # None = not attempted, True/False = result
+
+
+def _instance_lock_file() -> str:
+    return os.path.join(os.path.dirname(_LOG_FILE), "instance.json")
+
+
+def _read_instance_lock() -> dict:
+    try:
+        import json
+        with open(_instance_lock_file(), "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _write_instance_lock() -> None:
+    try:
+        import json
+        with open(_instance_lock_file(), "w", encoding="utf-8") as f:
+            json.dump({"pid": os.getpid(), "started_at": time.time(), "log": _LOG_FILE}, f)
+    except Exception:
+        logger.debug("could not write instance lock file", exc_info=True)
+
+
+def _acquire_single_instance() -> bool:
+    """Try to become the single MCP instance.
+
+    Returns True when this process may run (either it won the mutex, or the
+    guard is disabled / unsupported). Returns False when another instance is
+    already running, in which case the caller should exit.
+    """
+    global _INSTANCE_HANDLE, _INSTANCE_OK
+
+    if os.environ.get("MIO_CUA_ALLOW_MULTI") == "1":
+        logger.info("single-instance guard disabled (MIO_CUA_ALLOW_MULTI=1)")
+        _INSTANCE_OK = True
+        return True
+    if os.name != "nt":
+        _INSTANCE_OK = True
+        return True
+
+    try:
+        import ctypes
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel32.CreateMutexW.restype = ctypes.c_void_p
+        kernel32.CreateMutexW.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_wchar_p]
+        handle = kernel32.CreateMutexW(None, 1, _INSTANCE_MUTEX)
+        err = ctypes.get_last_error()
+        ERROR_ALREADY_EXISTS = 183
+
+        if not handle:
+            logger.warning("CreateMutexW failed; running without single-instance guard")
+            _INSTANCE_OK = True
+            return True
+
+        if err == ERROR_ALREADY_EXISTS:
+            holder = _read_instance_lock()
+            logger.error(
+                "duplicate mio-cua MCP instance detected: another server is "
+                "already running (pid=%s, started_at=%s). Refusing to start — "
+                "two servers would fight over the cursor. Set "
+                "MIO_CUA_ALLOW_MULTI=1 to override.",
+                holder.get("pid", "unknown"), holder.get("started_at", "unknown"),
+            )
+            try:
+                kernel32.CloseHandle(ctypes.c_void_p(handle))
+            except Exception:
+                pass
+            _INSTANCE_OK = False
+            return False
+
+        _INSTANCE_HANDLE = handle  # keep alive for process lifetime
+        _write_instance_lock()
+        _INSTANCE_OK = True
+        logger.info("single-instance guard acquired (pid=%d)", os.getpid())
+        return True
+    except Exception:
+        logger.warning("single-instance guard error; continuing", exc_info=True)
+        _INSTANCE_OK = True
+        return True
 
 
 from mio_cua.safety.confirm import Confirmation
@@ -572,13 +751,82 @@ async def mio_get_screen_info() -> str:
                 ctypes.windll.shcore.GetDpiForMonitor(hmon, 0, ctypes.byref(dpi_x), ctypes.byref(dpi_y))
                 scale = dpi_x.value / 96.0
             except Exception:
-                pass
+                logger.debug("per-monitor DPI query failed; assuming scale=1.0", exc_info=True)
             primary = " (primary)" if (info.get("Flags", 0) & 1) else ""
             l, t, r, b = rect
             lines.append(f"- rect=({l},{t},{r},{b}) {r-l}x{b-t}px scale={scale:.2f}{primary}")
         return "\n".join(lines)
     except Exception as e:
         return f"Error: {e}"
+
+
+def _uia_status() -> str:
+    try:
+        import win32gui
+        from pywinauto import Desktop  # noqa: F401
+        fg = win32gui.GetForegroundWindow()
+        title = win32gui.GetWindowText(fg)
+        return f"ok (foreground={title!r})"
+    except Exception as e:
+        return f"unavailable: {e}"
+
+
+def _ocr_status() -> str:
+    try:
+        from mio_cua.vision import ocr as ocr_module
+        engine = getattr(ocr_module, "_engine", None)
+        device = os.environ.get("mio_cua_OCR_DEVICE", "dml")
+        if engine is None:
+            return f"not loaded yet (lazy; device={device})"
+        return f"loaded (engine={type(engine).__name__}, device={device})"
+    except Exception as e:
+        return f"unavailable: {e}"
+
+
+def _omniparser_status() -> str:
+    try:
+        from mio_cua.scene import omniparser
+        if getattr(omniparser, "_parser", None) is not None:
+            return "loaded"
+        cfg = omniparser._config()
+        if not os.path.isfile(cfg["som_model_path"]):
+            return f"disabled (weights missing: {cfg['som_model_path']})"
+        return "not loaded / init failed (see log)"
+    except Exception as e:
+        return f"unavailable: {e}"
+
+
+@mcp.tool(name="mio_health", annotations={
+    "title": "MCP server health and layer readiness", "readOnlyHint": True,
+    "destructiveHint": False, "idempotentHint": True, "openWorldHint": False,
+})
+async def mio_health() -> str:
+    """Report server + perception-layer health: log file location/size,
+    single-instance status, and whether UIA / OCR / OmniParser are ready. Use
+    to diagnose a silent degradation (e.g. web controls disabled because
+    OmniParser weights are missing)."""
+    import platform
+
+    lines = ["mio-cua MCP health"]
+    lines.append(f"- pid: {os.getpid()}")
+    lines.append(f"- uptime: {time.time() - _START_TIME:.0f}s")
+    lines.append(f"- python: {platform.python_version()} ({platform.system()} {platform.release()})")
+    try:
+        size = os.path.getsize(_LOG_FILE)
+    except OSError:
+        size = 0
+    lines.append(f"- log: {_LOG_FILE} ({size} bytes)")
+    lines.append(
+        f"- single-instance: held={_INSTANCE_OK} "
+        f"allow_multi={os.environ.get('MIO_CUA_ALLOW_MULTI', '0')}"
+    )
+    lines.append("layers:")
+    lines.append(f"  - uia:        {_uia_status()}")
+    lines.append(f"  - ocr:        {_ocr_status()}")
+    lines.append(f"  - omniparser: {_omniparser_status()}")
+    prewarm = "skipped" if os.environ.get("MIO_CUA_NO_PREWARM") == "1" else "enabled"
+    lines.append(f"  - prewarm:    {prewarm}")
+    return "\n".join(lines)
 
 
 @mcp.tool(name="mio_drag", annotations={
@@ -788,7 +1036,22 @@ async def mio_notify(title: str = Field(..., description="Notification title"),
 
 def main():
     """Entry point for `mio-cua-mcp` console script (stdio transport)."""
-    mcp.run()
+    import atexit
+
+    _setup_logging()
+    logger.info("mio-cua MCP server starting (pid=%d, log=%s)", os.getpid(), _LOG_FILE)
+
+    if not _acquire_single_instance():
+        logger.error("exiting: another mio-cua MCP instance already owns this desktop")
+        sys.exit(1)
+
+    _prewarm_omniparser()
+    atexit.register(lambda: logger.info("mio-cua MCP server exiting (pid=%d)", os.getpid()))
+    try:
+        mcp.run()
+    except BaseException:
+        logger.exception("mio-cua MCP server crashed")
+        raise
 
 
 if __name__ == "__main__":

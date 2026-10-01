@@ -74,6 +74,15 @@ class AffordanceBuilder:
             if not n.state.get("enabled", True):
                 continue
             text = (n.semantic or n.text or "").strip()
+            if self._is_toggle(n):
+                # Checkbox / radio / toggle: clicking should flip its state.
+                # Record the expectation so the loop can verify the toggle
+                # actually changed (a classic silent CUA miss).
+                affordances.append(Affordance(
+                    node_id=n.id, action="click", params={},
+                    expected={"state_toggle": True}, confidence=self._conf(n),
+                ))
+                continue
             if n.type == "button":
                 a = self._button_affordance(n, text)
                 if display_bbox and a is not None:
@@ -100,6 +109,14 @@ class AffordanceBuilder:
             affordances.append(a)
 
         return affordances, display_ids
+
+    @staticmethod
+    def _is_toggle(n) -> bool:
+        """True for checkbox / radio / toggle controls (by type or UIA role)."""
+        return (
+            n.type in ("toggle", "checkbox", "radio")
+            or (getattr(n, "role", "") or "") in ("checkbox", "radio", "toggle")
+        )
 
     @staticmethod
     def _is_button_word(text: str) -> bool:

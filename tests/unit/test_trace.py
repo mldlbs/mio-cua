@@ -35,6 +35,30 @@ class TestFailureClassifier:
         assert result["category"] == FailureClassifier.ENVIRONMENT
         assert "Chrome" in result["detail"]
 
+    # ── Context identity: title is content, process is identity ──
+
+    def test_context_matches_by_process_when_title_hides_app(self):
+        """An Edge window titled by its page never contains 'edge'. Title-only
+        comparison mis-attributed a correctly focused browser as an
+        environment error (100% environment rate on the browser scenario)."""
+        fc = FailureClassifier()
+        title = "MIO·HUB — 任务总线"
+        assert fc._context_matches(title, "Edge") is False
+        assert fc._context_matches(title, "Edge", "msedge") is True
+
+    def test_context_matches_wrong_process_is_still_mismatch(self):
+        fc = FailureClassifier()
+        assert fc._context_matches("MIO·HUB — 任务总线", "Edge", "chrome") is False
+
+    def test_classify_reads_process_from_frame(self):
+        fc = FailureClassifier()
+        obs = ObsFrame(id=1, timestamp=100.0,
+                       active_window="MIO·HUB — 任务总线",
+                       scene_nodes=[], active_process="msedge")
+        result = fc.classify(obs, self._action(), "今日新闻", "Edge")
+        assert result["category"] != FailureClassifier.ENVIRONMENT
+        assert "msedge" in result["detail"] or result["category"] != FailureClassifier.ENVIRONMENT
+
     # ── Layer 1b: Target not visible — with alternatives → Planner ──
 
     def test_target_not_visible_clicked_alternative(self):

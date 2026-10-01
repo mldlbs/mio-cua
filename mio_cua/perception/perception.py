@@ -4,7 +4,12 @@ import time
 from copy import copy
 from typing import Tuple
 
-from mio_cua.automation.windows import get_active_window, get_active_window_rect, set_dpi_aware
+from mio_cua.automation.windows import (
+    get_active_process,
+    get_active_window,
+    get_active_window_rect,
+    set_dpi_aware,
+)
 from mio_cua.perception.merger import merge
 from mio_cua.perception.quality import assess_quality, enhance_scene_with_fallback
 from mio_cua.scene import build_scene, analyze_regions
@@ -44,6 +49,19 @@ def _shift_element(e, dx, dy):
     return e
 
 
+def _safe_active_process() -> str:
+    """Foreground window's process name, '' on any failure.
+
+    Never let identity lookup break an observation: a missing process name
+    only degrades context matching, it must not lose the whole frame.
+    """
+    try:
+        return get_active_process()
+    except Exception as e:
+        logger.debug("get_active_process failed: %s", e, exc_info=True)
+        return ""
+
+
 class Perception:
     """Coordinate screen + OCR + UIA into a single Observation, focused on the active window."""
 
@@ -66,6 +84,7 @@ class Perception:
             active_window = get_active_window()
         except Exception as e:
             logger.debug("get_active_window failed: %s", e, exc_info=True)
+        active_process = _safe_active_process()
         img = capture_rect(rect)
         sig = (active_window, rect, _content_signature(img))
         self._last_signature = sig
@@ -105,6 +124,7 @@ class Perception:
             dpi_scale=self.dpi_scale,
             elements=elements,
             scene=self._build_scene(elements, active_window, img, rect),
+            active_process=active_process,
         )
 
     def observe_with_quality(self) -> Tuple["Observation", "QualityReport"]:
@@ -146,6 +166,7 @@ class Perception:
             active_window = get_active_window()
         except Exception as e:
             logger.debug("get_active_window failed: %s", e, exc_info=True)
+        active_process = _safe_active_process()
         img = capture_rect(rect)
         ocr_elements = []
         try:
@@ -164,6 +185,7 @@ class Perception:
             dpi_scale=self.dpi_scale,
             elements=ocr_elements,
             scene=scene,
+            active_process=active_process,
         )
 
     def _build_scene(self, elements, active_window, img, rect):

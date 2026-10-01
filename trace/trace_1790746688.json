@@ -1,0 +1,3196 @@
+{
+  "trace_id": "trace_1790746688",
+  "created_at": 1790746688.44663,
+  "task": {
+    "instruction": "打开浏览器，在搜索引擎中搜索「今日新闻」",
+    "target_context": {
+      "app": "Edge"
+    },
+    "metadata": {}
+  },
+  "metadata": {
+    "steps": 1,
+    "final_status": "FAIL",
+    "final_summary": "loop error: name 'get_active_window' is not defined"
+  },
+  "entries": [
+    {
+      "obs_before": {
+        "id": 1,
+        "timestamp": 1790746688.44663,
+        "active_window": "别给 AI 写接口，给它一双眼睛 - Google Chrome",
+        "scene_nodes": [
+          {
+            "id": 0,
+            "type": "group",
+            "bbox": [
+              0,
+              0,
+              2560,
+              1560
+            ],
+            "text": ""
+          },
+          {
+            "id": 1,
+            "type": "group",
+            "bbox": [
+              0,
+              0,
+              2560,
+              1560
+            ],
+            "text": "q7gs7-CSDN博客 - Google Chrome - Meng",
+            "semantic": "q7gs7-CSDN博客 - Google Chrome - Meng"
+          },
+          {
+            "id": 2,
+            "type": "group",
+            "bbox": [
+              0,
+              0,
+              2560,
+              1560
+            ],
+            "text": ""
+          },
+          {
+            "id": 3,
+            "type": "group",
+            "bbox": [
+              0,
+              0,
+              2560,
+              1560
+            ],
+            "text": ""
+          },
+          {
+            "id": 4,
+            "type": "group",
+            "bbox": [
+              0,
+              0,
+              2560,
+              1560
+            ],
+            "text": ""
+          },
+          {
+            "id": 5,
+            "type": "group",
+            "bbox": [
+              0,
+              0,
+              2423,
+              41
+            ],
+            "text": "Mio-TaskHub—多AgerX|Al智能决策中心",
+            "semantic": "Mio-TaskHub—多AgerX|Al智能决策中心"
+          },
+          {
+            "id": 6,
+            "type": "group",
+            "bbox": [
+              6,
+              0,
+              28,
+              41
+            ],
+            "text": ""
+          },
+          {
+            "id": 7,
+            "type": "group",
+            "bbox": [
+              28,
+              0,
+              2319,
+              41
+            ],
+            "text": "X协同办公系统V6.1SP2,X",
+            "semantic": "X协同办公系统V6.1SP2,X"
+          },
+          {
+            "id": 8,
+            "type": "text",
+            "bbox": [
+              28,
+              0,
+              2319,
+              41
+            ],
+            "text": "数据分析|域名仪表板|c×|Cq7gs7-CSDN博客",
+            "semantic": "数据分析|域名仪表板|c×|Cq7gs7-CSDN博客"
+          },
+          {
+            "id": 9,
+            "type": "button",
+            "bbox": [
+              28,
+              0,
+              210,
+              41
+            ],
+            "text": "Mio-TaskHub — 多 Agent 任务调度基础设施 - 内存用量 - 358 MB",
+            "semantic": "Mio-TaskHub — 多 Agent 任务调度基础设施 - 内存用量 - 358 MB"
+          },
+          {
+            "id": 10,
+            "type": "group",
+            "bbox": [
+              28,
+              0,
+              2319,
+              41
+            ],
+            "text": ""
+          },
+          {
+            "id": 11,
+            "type": "button",
+            "bbox": [
+              220,
+              0,
+              210,
+              41
+            ],
+            "text": "AI智能决策中心",
+            "semantic": "AI智能决策中心"
+          },
+          {
+            "id": 12,
+            "type": "button",
+            "bbox": [
+              412,
+              0,
+              210,
+              41
+            ],
+            "text": "协同办公系统 V6.1SP2, 高志谦,您好! - 内存用量 - 134 MB",
+            "semantic": "协同办公系统 V6.1SP2, 高志谦,您好! - 内存用量 - 134 MB"
+          },
+          {
+            "id": 13,
+            "type": "button",
+            "bbox": [
+              604,
+              0,
+              210,
+              41
+            ],
+            "text": "数据分析 | 域名仪表板 | crlkcloud.cyou | Huani66399@gmail.com's Account | Cloudflare - 内存用量 - 486 MB",
+            "semantic": "数据分析 | 域名仪表板 | crlkcloud.cyou | Huani66399@gmail.com's Account | Cloudflare - 内存用量 - 486 MB"
+          },
+          {
+            "id": 14,
+            "type": "button",
+            "bbox": [
+              796,
+              0,
+              210,
+              41
+            ],
+            "text": "q7gs7-CSDN博客 - 内存用量 - 204 MB",
+            "semantic": "q7gs7-CSDN博客 - 内存用量 - 204 MB"
+          },
+          {
+            "id": 15,
+            "type": "button",
+            "bbox": [
+              988,
+              0,
+              210,
+              41
+            ],
+            "text": "q7gs7-CSDN博客 - 内存用量 - 165 MB",
+            "semantic": "q7gs7-CSDN博客 - 内存用量 - 165 MB"
+          },
+          {
+            "id": 16,
+            "type": "button",
+            "bbox": [
+              1180,
+              0,
+              210,
+              41
+            ],
+            "text": "写文章-CSDN博客 - 内存用量 - 289 MB",
+            "semantic": "写文章-CSDN博客 - 内存用量 - 289 MB"
+          },
+          {
+            "id": 17,
+            "type": "button",
+            "bbox": [
+              1372,
+              0,
+              210,
+              41
+            ],
+            "text": "本地单用户的跨 Agent 任务协调中枢-CSDN博客",
+            "semantic": "本地单用户的跨 Agent 任务协调中枢-CSDN博客"
+          },
+          {
+            "id": 18,
+            "type": "button",
+            "bbox": [
+              1564,
+              0,
+              210,
+              41
+            ],
+            "text": "GIS应用框架简介-CSDN博客 - 内存用量 - 161 MB",
+            "semantic": "GIS应用框架简介-CSDN博客 - 内存用量 - 161 MB"
+          },
+          {
+            "id": 19,
+            "type": "button",
+            "bbox": [
+              1756,
+              0,
+              209,
+              41
+            ],
+            "text": "【无标题】-CSDN博客 - 内存用量 - 168 MB",
+            "semantic": "【无标题】-CSDN博客 - 内存用量 - 168 MB"
+          },
+          {
+            "id": 20,
+            "type": "button",
+            "bbox": [
+              1947,
+              0,
+              209,
+              41
+            ],
+            "text": "公众号",
+            "semantic": "公众号"
+          },
+          {
+            "id": 21,
+            "type": "button",
+            "bbox": [
+              2138,
+              0,
+              209,
+              41
+            ],
+            "text": "别给 AI 写接口，给它一双眼睛 - 内存用量 - 153 MB",
+            "semantic": "别给 AI 写接口，给它一双眼睛 - 内存用量 - 153 MB"
+          },
+          {
+            "id": 22,
+            "type": "button",
+            "bbox": [
+              2341,
+              0,
+              28,
+              41
+            ],
+            "text": "新标签页",
+            "semantic": "新标签页"
+          },
+          {
+            "id": 23,
+            "type": "group",
+            "bbox": [
+              2381,
+              0,
+              42,
+              41
+            ],
+            "text": ""
+          },
+          {
+            "id": 24,
+            "type": "group",
+            "bbox": [
+              2423,
+              0,
+              137,
+              40
+            ],
+            "text": ""
+          },
+          {
+            "id": 25,
+            "type": "button",
+            "bbox": [
+              2423,
+              0,
+              45,
+              40
+            ],
+            "text": "最小化",
+            "semantic": "最小化"
+          },
+          {
+            "id": 26,
+            "type": "button",
+            "bbox": [
+              2468,
+              0,
+              46,
+              40
+            ],
+            "text": "9",
+            "semantic": "9"
+          },
+          {
+            "id": 27,
+            "type": "button",
+            "bbox": [
+              2514,
+              0,
+              46,
+              40
+            ],
+            "text": "X",
+            "semantic": "X"
+          },
+          {
+            "id": 32,
+            "type": "button",
+            "bbox": [
+              6,
+              6,
+              28,
+              28
+            ],
+            "text": "标签页搜索",
+            "semantic": "标签页搜索"
+          },
+          {
+            "id": 33,
+            "type": "button",
+            "bbox": [
+              196,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 34,
+            "type": "button",
+            "bbox": [
+              388,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 35,
+            "type": "button",
+            "bbox": [
+              580,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 36,
+            "type": "button",
+            "bbox": [
+              772,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 37,
+            "type": "button",
+            "bbox": [
+              964,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 38,
+            "type": "button",
+            "bbox": [
+              1156,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 39,
+            "type": "button",
+            "bbox": [
+              1348,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 40,
+            "type": "button",
+            "bbox": [
+              1540,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 41,
+            "type": "button",
+            "bbox": [
+              1732,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 42,
+            "type": "button",
+            "bbox": [
+              1923,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 43,
+            "type": "button",
+            "bbox": [
+              2114,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 44,
+            "type": "button",
+            "bbox": [
+              2305,
+              6,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 47,
+            "type": "group",
+            "bbox": [
+              0,
+              40,
+              2560,
+              46
+            ],
+            "text": "mp.weixin.qq.com/s/6o9h1j6qEpQ36E3KSjUjQ",
+            "semantic": "mp.weixin.qq.com/s/6o9h1j6qEpQ36E3KSjUjQ"
+          },
+          {
+            "id": 48,
+            "type": "group",
+            "bbox": [
+              0,
+              40,
+              2560,
+              46
+            ],
+            "text": ""
+          },
+          {
+            "id": 49,
+            "type": "button",
+            "bbox": [
+              0,
+              46,
+              40,
+              34
+            ],
+            "text": "返回",
+            "semantic": "返回"
+          },
+          {
+            "id": 50,
+            "type": "button",
+            "bbox": [
+              42,
+              46,
+              34,
+              34
+            ],
+            "text": "前进",
+            "semantic": "前进"
+          },
+          {
+            "id": 51,
+            "type": "button",
+            "bbox": [
+              78,
+              46,
+              34,
+              34
+            ],
+            "text": "重新加载",
+            "semantic": "重新加载"
+          },
+          {
+            "id": 53,
+            "type": "group",
+            "bbox": [
+              121,
+              46,
+              2228,
+              34
+            ],
+            "text": ""
+          },
+          {
+            "id": 54,
+            "type": "group",
+            "bbox": [
+              2358,
+              46,
+              106,
+              34
+            ],
+            "text": ""
+          },
+          {
+            "id": 55,
+            "type": "button",
+            "bbox": [
+              2358,
+              46,
+              34,
+              34
+            ],
+            "text": "mio — 浏览器助手\n可以访问此网站",
+            "semantic": "mio — 浏览器助手\n可以访问此网站"
+          },
+          {
+            "id": 56,
+            "type": "button",
+            "bbox": [
+              2394,
+              46,
+              34,
+              34
+            ],
+            "text": "CSDN同步助手\n可以访问此网站",
+            "semantic": "CSDN同步助手\n可以访问此网站"
+          },
+          {
+            "id": 57,
+            "type": "button",
+            "bbox": [
+              2430,
+              46,
+              34,
+              34
+            ],
+            "text": "扩展程序",
+            "semantic": "扩展程序"
+          },
+          {
+            "id": 58,
+            "type": "button",
+            "bbox": [
+              2484,
+              46,
+              34,
+              34
+            ],
+            "text": "Meng",
+            "semantic": "Meng"
+          },
+          {
+            "id": 59,
+            "type": "button",
+            "bbox": [
+              2520,
+              46,
+              40,
+              34
+            ],
+            "text": "Chrome",
+            "semantic": "Chrome"
+          },
+          {
+            "id": 60,
+            "type": "button",
+            "bbox": [
+              126,
+              51,
+              24,
+              24
+            ],
+            "text": "查看网站信息",
+            "semantic": "查看网站信息"
+          },
+          {
+            "id": 61,
+            "type": "input",
+            "bbox": [
+              158,
+              51,
+              2147,
+              24
+            ],
+            "text": "blog.csdn.net/q7GS7?type=blog",
+            "semantic": "blog.csdn.net/q7GS7?type=blog"
+          },
+          {
+            "id": 62,
+            "type": "group",
+            "bbox": [
+              2313,
+              51,
+              24,
+              24
+            ],
+            "text": ""
+          },
+          {
+            "id": 63,
+            "type": "button",
+            "bbox": [
+              2313,
+              51,
+              24,
+              24
+            ],
+            "text": "为此标签页添加书签",
+            "semantic": "为此标签页添加书签"
+          },
+          {
+            "id": 64,
+            "type": "group",
+            "bbox": [
+              2473,
+              55,
+              2,
+              16
+            ],
+            "text": ""
+          },
+          {
+            "id": 68,
+            "type": "group",
+            "bbox": [
+              0,
+              86,
+              2560,
+              1474
+            ],
+            "text": ""
+          },
+          {
+            "id": 69,
+            "type": "group",
+            "bbox": [
+              0,
+              86,
+              2560,
+              1
+            ],
+            "text": ""
+          },
+          {
+            "id": 70,
+            "type": "group",
+            "bbox": [
+              0,
+              87,
+              2560,
+              1473
+            ],
+            "text": ""
+          },
+          {
+            "id": 71,
+            "type": "input",
+            "bbox": [
+              0,
+              87,
+              2560,
+              1473
+            ],
+            "text": "q7gs7-CSDN博客",
+            "semantic": "q7gs7-CSDN博客"
+          },
+          {
+            "id": 72,
+            "type": "button",
+            "bbox": [
+              24,
+              87,
+              80,
+              46
+            ],
+            "text": "CSDN首页",
+            "semantic": "CSDN首页"
+          },
+          {
+            "id": 73,
+            "type": "group",
+            "bbox": [
+              112,
+              87,
+              406,
+              48
+            ],
+            "text": ""
+          },
+          {
+            "id": 74,
+            "type": "button",
+            "bbox": [
+              112,
+              87,
+              48,
+              48
+            ],
+            "text": "阅读深度、前沿文章",
+            "semantic": "阅读深度、前沿文章"
+          },
+          {
+            "id": 75,
+            "type": "button",
+            "bbox": [
+              112,
+              87,
+              48,
+              48
+            ],
+            "text": "博客",
+            "semantic": "博客"
+          },
+          {
+            "id": 76,
+            "type": "button",
+            "bbox": [
+              160,
+              87,
+              48,
+              48
+            ],
+            "text": "高价值源码课程分享",
+            "semantic": "高价值源码课程分享"
+          },
+          {
+            "id": 77,
+            "type": "button",
+            "bbox": [
+              160,
+              87,
+              48,
+              48
+            ],
+            "text": "下载",
+            "semantic": "下载"
+          },
+          {
+            "id": 78,
+            "type": "button",
+            "bbox": [
+              208,
+              87,
+              48,
+              48
+            ],
+            "text": "DevPress官方社区",
+            "semantic": "DevPress官方社区"
+          },
+          {
+            "id": 79,
+            "type": "button",
+            "bbox": [
+              208,
+              87,
+              48,
+              48
+            ],
+            "text": "社区",
+            "semantic": "社区"
+          },
+          {
+            "id": 80,
+            "type": "button",
+            "bbox": [
+              256,
+              87,
+              97,
+              48
+            ],
+            "text": "开源代码托管",
+            "semantic": "开源代码托管"
+          },
+          {
+            "id": 81,
+            "type": "button",
+            "bbox": [
+              256,
+              87,
+              97,
+              48
+            ],
+            "text": "AtomGit",
+            "semantic": "AtomGit"
+          },
+          {
+            "id": 82,
+            "type": "button",
+            "bbox": [
+              352,
+              87,
+              101,
+              48
+            ],
+            "text": "模型市场",
+            "semantic": "模型市场"
+          },
+          {
+            "id": 83,
+            "type": "button",
+            "bbox": [
+              352,
+              87,
+              101,
+              48
+            ],
+            "text": "模型市场",
+            "semantic": "模型市场"
+          },
+          {
+            "id": 84,
+            "type": "button",
+            "bbox": [
+              452,
+              87,
+              66,
+              48
+            ],
+            "text": "更多",
+            "semantic": "更多"
+          },
+          {
+            "id": 85,
+            "type": "group",
+            "bbox": [
+              852,
+              87,
+              921,
+              48
+            ],
+            "text": "手点/输入/按键",
+            "semantic": "手点/输入/按键"
+          },
+          {
+            "id": 86,
+            "type": "group",
+            "bbox": [
+              2107,
+              87,
+              61,
+              48
+            ],
+            "text": ""
+          },
+          {
+            "id": 87,
+            "type": "group",
+            "bbox": [
+              2167,
+              87,
+              116,
+              48
+            ],
+            "text": ""
+          },
+          {
+            "id": 88,
+            "type": "button",
+            "bbox": [
+              2177,
+              87,
+              96,
+              48
+            ],
+            "text": "会员中心",
+            "semantic": "会员中心"
+          },
+          {
+            "id": 89,
+            "type": "group",
+            "bbox": [
+              2283,
+              87,
+              52,
+              48
+            ],
+            "text": ""
+          },
+          {
+            "id": 90,
+            "type": "button",
+            "bbox": [
+              2293,
+              87,
+              32,
+              48
+            ],
+            "text": "消息",
+            "semantic": "消息"
+          },
+          {
+            "id": 91,
+            "type": "group",
+            "bbox": [
+              2335,
+              87,
+              76,
+              48
+            ],
+            "text": ""
+          },
+          {
+            "id": 92,
+            "type": "button",
+            "bbox": [
+              2345,
+              87,
+              56,
+              48
+            ],
+            "text": "创作中心",
+            "semantic": "创作中心"
+          },
+          {
+            "id": 93,
+            "type": "group",
+            "bbox": [
+              2411,
+              87,
+              110,
+              48
+            ],
+            "text": ""
+          },
+          {
+            "id": 94,
+            "type": "text",
+            "bbox": [
+              24,
+              89,
+              80,
+              44
+            ],
+            "text": "CSDN首页",
+            "semantic": "CSDN首页"
+          },
+          {
+            "id": 95,
+            "type": "text",
+            "bbox": [
+              416,
+              89,
+              35,
+              14
+            ],
+            "text": ""
+          },
+          {
+            "id": 96,
+            "type": "button",
+            "bbox": [
+              2107,
+              91,
+              41,
+              40
+            ],
+            "text": ""
+          },
+          {
+            "id": 97,
+            "type": "text",
+            "bbox": [
+              2107,
+              91,
+              41,
+              40
+            ],
+            "text": ""
+          },
+          {
+            "id": 98,
+            "type": "text",
+            "bbox": [
+              2238,
+              92,
+              35,
+              41
+            ],
+            "text": ""
+          },
+          {
+            "id": 99,
+            "type": "text",
+            "bbox": [
+              266,
+              93,
+              20,
+              35
+            ],
+            "text": ""
+          },
+          {
+            "id": 100,
+            "type": "input",
+            "bbox": [
+              852,
+              95,
+              821,
+              32
+            ],
+            "text": "二维gis",
+            "semantic": "二维gis"
+          },
+          {
+            "id": 101,
+            "type": "button",
+            "bbox": [
+              1688,
+              95,
+              85,
+              32
+            ],
+            "text": "搜索",
+            "semantic": "搜索"
+          },
+          {
+            "id": 102,
+            "type": "button",
+            "bbox": [
+              2421,
+              95,
+              100,
+              32
+            ],
+            "text": "创作",
+            "semantic": "创作"
+          },
+          {
+            "id": 103,
+            "type": "text",
+            "bbox": [
+              362,
+              101,
+              21,
+              21
+            ],
+            "text": ""
+          },
+          {
+            "id": 104,
+            "type": "text",
+            "bbox": [
+              462,
+              101,
+              33,
+              19
+            ],
+            "text": "更多",
+            "semantic": "更多"
+          },
+          {
+            "id": 109,
+            "type": "button",
+            "bbox": [
+              1588,
+              251,
+              97,
+              32
+            ],
+            "text": "编辑资料",
+            "semantic": "编辑资料"
+          },
+          {
+            "id": 110,
+            "type": "button",
+            "bbox": [
+              1700,
+              251,
+              97,
+              32
+            ],
+            "text": "导航设置",
+            "semantic": "导航设置"
+          },
+          {
+            "id": 111,
+            "type": "button",
+            "bbox": [
+              1812,
+              251,
+              97,
+              32
+            ],
+            "text": "管理博文",
+            "semantic": "管理博文"
+          },
+          {
+            "id": 112,
+            "type": "text",
+            "bbox": [
+              746,
+              254,
+              61,
+              25
+            ],
+            "text": "q7gs7",
+            "semantic": "q7gs7"
+          },
+          {
+            "id": 113,
+            "type": "button",
+            "bbox": [
+              891,
+              255,
+              27,
+              22
+            ],
+            "text": "要获取缺失的图片说明，请打开上下文菜单。",
+            "semantic": "要获取缺失的图片说明，请打开上下文菜单。"
+          },
+          {
+            "id": 114,
+            "type": "group",
+            "bbox": [
+              810,
+              259,
+              82,
+              16
+            ],
+            "text": ""
+          },
+          {
+            "id": 115,
+            "type": "text",
+            "bbox": [
+              836,
+              260,
+              50,
+              14
+            ],
+            "text": "码龄14年",
+            "semantic": "码龄14年"
+          },
+          {
+            "id": 119,
+            "type": "group",
+            "bbox": [
+              746,
+              293,
+              1163,
+              24
+            ],
+            "text": "·对AI生态",
+            "semantic": "·对AI生态"
+          },
+          {
+            "id": 120,
+            "type": "button",
+            "bbox": [
+              746,
+              293,
+              144,
+              24
+            ],
+            "text": "3,989总访问量",
+            "semantic": "3,989总访问量"
+          },
+          {
+            "id": 121,
+            "type": "group",
+            "bbox": [
+              746,
+              293,
+              111,
+              24
+            ],
+            "text": ""
+          },
+          {
+            "id": 122,
+            "type": "button",
+            "bbox": [
+              889,
+              293,
+              77,
+              24
+            ],
+            "text": "8原创",
+            "semantic": "8原创"
+          },
+          {
+            "id": 123,
+            "type": "button",
+            "bbox": [
+              889,
+              293,
+              77,
+              24
+            ],
+            "text": "8 原创",
+            "semantic": "8 原创"
+          },
+          {
+            "id": 124,
+            "type": "button",
+            "bbox": [
+              965,
+              293,
+              88,
+              24
+            ],
+            "text": "18粉丝",
+            "semantic": "18粉丝"
+          },
+          {
+            "id": 125,
+            "type": "button",
+            "bbox": [
+              965,
+              293,
+              88,
+              24
+            ],
+            "text": "18 粉丝",
+            "semantic": "18 粉丝"
+          },
+          {
+            "id": 126,
+            "type": "button",
+            "bbox": [
+              1052,
+              293,
+              56,
+              24
+            ],
+            "text": "66关注",
+            "semantic": "66关注"
+          },
+          {
+            "id": 127,
+            "type": "button",
+            "bbox": [
+              1052,
+              293,
+              56,
+              24
+            ],
+            "text": "66 关注",
+            "semantic": "66 关注"
+          },
+          {
+            "id": 128,
+            "type": "text",
+            "bbox": [
+              746,
+              294,
+              51,
+              22
+            ],
+            "text": "3,989",
+            "semantic": "3,989"
+          },
+          {
+            "id": 129,
+            "type": "text",
+            "bbox": [
+              800,
+              298,
+              57,
+              16
+            ],
+            "text": "总访问量",
+            "semantic": "总访问量"
+          },
+          {
+            "id": 130,
+            "type": "button",
+            "bbox": [
+              702,
+              301,
+              25,
+              24
+            ],
+            "text": ""
+          },
+          {
+            "id": 132,
+            "type": "group",
+            "bbox": [
+              746,
+              327,
+              102,
+              16
+            ],
+            "text": ""
+          },
+          {
+            "id": 133,
+            "type": "text",
+            "bbox": [
+              746,
+              327,
+              102,
+              16
+            ],
+            "text": "IP 属地：陕西省",
+            "semantic": "IP 属地：陕西省"
+          },
+          {
+            "id": 134,
+            "type": "text",
+            "bbox": [
+              879,
+              327,
+              111,
+              16
+            ],
+            "text": "加入CSDN时间：",
+            "semantic": "加入CSDN时间："
+          },
+          {
+            "id": 135,
+            "type": "input",
+            "bbox": [
+              989,
+              327,
+              4,
+              16
+            ],
+            "text": "：任何 Al 客户端（Claude / Cursor ／ ChatGPT）接入 mio-cua，就获得了操",
+            "semantic": "：任何 Al 客户端（Claude / Cursor ／ ChatGPT）接入 mio-cua，就获得了操"
+          },
+          {
+            "id": 136,
+            "type": "text",
+            "bbox": [
+              992,
+              327,
+              73,
+              16
+            ],
+            "text": "2012-12-08",
+            "semantic": "2012-12-08"
+          },
+          {
+            "id": 138,
+            "type": "group",
+            "bbox": [
+              746,
+              357,
+              99,
+              16
+            ],
+            "text": ""
+          },
+          {
+            "id": 139,
+            "type": "text",
+            "bbox": [
+              746,
+              357,
+              85,
+              16
+            ],
+            "text": "查看详细资料",
+            "semantic": "查看详细资料"
+          },
+          {
+            "id": 141,
+            "type": "group",
+            "bbox": [
+              960,
+              410,
+              565,
+              48
+            ],
+            "text": "：传统 RPA（UIPath 等）要拖流程、配节点、写脚本，界面一改就崩。mio-cua",
+            "semantic": "：传统 RPA（UIPath 等）要拖流程、配节点、写脚本，界面一改就崩。mio-cua"
+          },
+          {
+            "id": 142,
+            "type": "button",
+            "bbox": [
+              960,
+              410,
+              73,
+              48
+            ],
+            "text": "最近",
+            "semantic": "最近"
+          },
+          {
+            "id": 143,
+            "type": "button",
+            "bbox": [
+              1032,
+              410,
+              75,
+              48
+            ],
+            "text": "文章8",
+            "semantic": "文章8"
+          },
+          {
+            "id": 144,
+            "type": "button",
+            "bbox": [
+              1106,
+              410,
+              75,
+              48
+            ],
+            "text": "专栏1",
+            "semantic": "专栏1"
+          },
+          {
+            "id": 145,
+            "type": "button",
+            "bbox": [
+              1180,
+              410,
+              81,
+              48
+            ],
+            "text": "代码仓",
+            "semantic": "代码仓"
+          },
+          {
+            "id": 146,
+            "type": "button",
+            "bbox": [
+              1260,
+              410,
+              65,
+              48
+            ],
+            "text": "资源",
+            "semantic": "资源"
+          },
+          {
+            "id": 147,
+            "type": "button",
+            "bbox": [
+              1324,
+              410,
+              65,
+              48
+            ],
+            "text": "收藏",
+            "semantic": "收藏"
+          },
+          {
+            "id": 148,
+            "type": "button",
+            "bbox": [
+              1388,
+              410,
+              137,
+              48
+            ],
+            "text": "关注/订阅/互动",
+            "semantic": "关注/订阅/互动"
+          },
+          {
+            "id": 149,
+            "type": "group",
+            "bbox": [
+              1524,
+              410,
+              79,
+              48
+            ],
+            "text": ""
+          },
+          {
+            "id": 151,
+            "type": "group",
+            "bbox": [
+              1900,
+              418,
+              17,
+              32
+            ],
+            "text": ""
+          },
+          {
+            "id": 152,
+            "type": "text",
+            "bbox": [
+              628,
+              425,
+              65,
+              17
+            ],
+            "text": "个人成就",
+            "semantic": "个人成就"
+          },
+          {
+            "id": 153,
+            "type": "text",
+            "bbox": [
+              1540,
+              425,
+              33,
+              17
+            ],
+            "text": "更多",
+            "semantic": "更多"
+          },
+          {
+            "id": 155,
+            "type": "group",
+            "bbox": [
+              984,
+              458,
+              91,
+              41
+            ],
+            "text": "·对业务世界",
+            "semantic": "·对业务世界"
+          },
+          {
+            "id": 156,
+            "type": "group",
+            "bbox": [
+              1352,
+              458,
+              91,
+              41
+            ],
+            "text": ""
+          },
+          {
+            "id": 157,
+            "type": "group",
+            "bbox": [
+              984,
+              459,
+              833,
+              39
+            ],
+            "text": ""
+          },
+          {
+            "id": 158,
+            "type": "button",
+            "bbox": [
+              984,
+              459,
+              91,
+              39
+            ],
+            "text": "全部可见",
+            "semantic": "全部可见"
+          },
+          {
+            "id": 159,
+            "type": "input",
+            "bbox": [
+              984,
+              459,
+              201,
+              39
+            ],
+            "text": "全部可见",
+            "semantic": "全部可见"
+          },
+          {
+            "id": 160,
+            "type": "button",
+            "bbox": [
+              1074,
+              459,
+              135,
+              39
+            ],
+            "text": "按发布时间",
+            "semantic": "按发布时间"
+          },
+          {
+            "id": 161,
+            "type": "button",
+            "bbox": [
+              1208,
+              459,
+              121,
+              39
+            ],
+            "text": "按访问量",
+            "semantic": "按访问量"
+          },
+          {
+            "id": 162,
+            "type": "button",
+            "bbox": [
+              1328,
+              459,
+              139,
+              39
+            ],
+            "text": "",
+            "semantic": ""
+          },
+          {
+            "id": 163,
+            "type": "input",
+            "bbox": [
+              1352,
+              459,
+              201,
+              39
+            ],
+            "text": "￼",
+            "semantic": "￼"
+          },
+          {
+            "id": 164,
+            "type": "button",
+            "bbox": [
+              1816,
+              464,
+              93,
+              29
+            ],
+            "text": "RSS订阅",
+            "semantic": "RSS订阅"
+          },
+          {
+            "id": 165,
+            "type": "group",
+            "bbox": [
+              628,
+              475,
+              307,
+              258
+            ],
+            "text": ""
+          },
+          {
+            "id": 166,
+            "type": "button",
+            "bbox": [
+              628,
+              475,
+              307,
+              22
+            ],
+            "text": "获得29次点赞",
+            "semantic": "获得29次点赞"
+          },
+          {
+            "id": 167,
+            "type": "text",
+            "bbox": [
+              660,
+              478,
+              29,
+              16
+            ],
+            "text": "获得",
+            "semantic": "获得"
+          },
+          {
+            "id": 168,
+            "type": "text",
+            "bbox": [
+              692,
+              478,
+              17,
+              16
+            ],
+            "text": "29",
+            "semantic": "29"
+          },
+          {
+            "id": 169,
+            "type": "text",
+            "bbox": [
+              712,
+              478,
+              43,
+              16
+            ],
+            "text": "次点赞",
+            "semantic": "次点赞"
+          },
+          {
+            "id": 171,
+            "type": "group",
+            "bbox": [
+              960,
+              498,
+              973,
+              149
+            ],
+            "text": "：财务月结、政务办事、数据录入、客服操作、运维巡检",
+            "semantic": "：财务月结、政务办事、数据录入、客服操作、运维巡检"
+          },
+          {
+            "id": 172,
+            "type": "button",
+            "bbox": [
+              984,
+              498,
+              925,
+              149
+            ],
+            "text": "本地单用户的跨 Agent 任务协调中枢 当 OpenCode、Claude Code、Codex 同时为我干活时，卡住我的不是「模型够不够聪明」，而是——我到底派了哪些活、它们干到哪了、产出散落在哪。 原创 发布博客 15 分钟前 · 5 阅读 · 0 点赞 · 0 评论 · 0 收藏 编辑",
+            "semantic": "本地单用户的跨 Agent 任务协调中枢 当 OpenCode、Claude Code、Codex 同时为我干活时，卡住我的不是「模型够不够聪明」，而是——我到底派了哪些活、它们干到哪了、产出散落在哪。 原创 发布博客 15 分钟前 · 5 阅读 · 0 点赞 · 0 评论 · 0 收藏 编辑"
+          },
+          {
+            "id": 173,
+            "type": "button",
+            "bbox": [
+              628,
+              509,
+              307,
+              22
+            ],
+            "text": "内容获得1次评论",
+            "semantic": "内容获得1次评论"
+          },
+          {
+            "id": 176,
+            "type": "text",
+            "bbox": [
+              660,
+              512,
+              57,
+              16
+            ],
+            "text": "内容获得",
+            "semantic": "内容获得"
+          },
+          {
+            "id": 177,
+            "type": "text",
+            "bbox": [
+              720,
+              512,
+              9,
+              16
+            ],
+            "text": "1",
+            "semantic": "1"
+          },
+          {
+            "id": 178,
+            "type": "text",
+            "bbox": [
+              732,
+              512,
+              43,
+              16
+            ],
+            "text": "次评论",
+            "semantic": "次评论"
+          },
+          {
+            "id": 179,
+            "type": "text",
+            "bbox": [
+              984,
+              522,
+              292,
+              24
+            ],
+            "text": "本地单用户的跨 Agent 任务协调中枢",
+            "semantic": "本地单用户的跨 Agent 任务协调中枢"
+          },
+          {
+            "id": 181,
+            "type": "button",
+            "bbox": [
+              628,
+              543,
+              307,
+              22
+            ],
+            "text": "获得27次收藏",
+            "semantic": "获得27次收藏"
+          },
+          {
+            "id": 182,
+            "type": "text",
+            "bbox": [
+              660,
+              546,
+              29,
+              16
+            ],
+            "text": "获得",
+            "semantic": "获得"
+          },
+          {
+            "id": 183,
+            "type": "text",
+            "bbox": [
+              692,
+              546,
+              17,
+              16
+            ],
+            "text": "27",
+            "semantic": "27"
+          },
+          {
+            "id": 184,
+            "type": "text",
+            "bbox": [
+              712,
+              546,
+              43,
+              16
+            ],
+            "text": "次收藏",
+            "semantic": "次收藏"
+          },
+          {
+            "id": 185,
+            "type": "button",
+            "bbox": [
+              628,
+              577,
+              307,
+              22
+            ],
+            "text": "博客总排名68,767名",
+            "semantic": "博客总排名68,767名"
+          },
+          {
+            "id": 186,
+            "type": "text",
+            "bbox": [
+              660,
+              580,
+              71,
+              16
+            ],
+            "text": "博客总排名",
+            "semantic": "博客总排名"
+          },
+          {
+            "id": 187,
+            "type": "text",
+            "bbox": [
+              734,
+              580,
+              44,
+              16
+            ],
+            "text": "68,767",
+            "semantic": "68,767"
+          },
+          {
+            "id": 188,
+            "type": "text",
+            "bbox": [
+              781,
+              580,
+              15,
+              16
+            ],
+            "text": "名",
+            "semantic": "名"
+          },
+          {
+            "id": 190,
+            "type": "button",
+            "bbox": [
+              1880,
+              603,
+              29,
+              16
+            ],
+            "text": "编辑",
+            "semantic": "编辑"
+          },
+          {
+            "id": 191,
+            "type": "button",
+            "bbox": [
+              628,
+              611,
+              307,
+              122
+            ],
+            "text": "原力等级原力等级1原力分86本月获得0",
+            "semantic": "原力等级原力等级1原力分86本月获得0"
+          },
+          {
+            "id": 193,
+            "type": "button",
+            "bbox": [
+              628,
+              627,
+              85,
+              22
+            ],
+            "text": "原力等级",
+            "semantic": "原力等级"
+          },
+          {
+            "id": 194,
+            "type": "group",
+            "bbox": [
+              960,
+              647,
+              973,
+              149
+            ],
+            "text": ""
+          },
+          {
+            "id": 195,
+            "type": "button",
+            "bbox": [
+              984,
+              647,
+              925,
+              149
+            ],
+            "text": "别给 AI 写接口，给它一双眼睛 摘要： mio-cua 的 AI自动化思路——不为软件编写接口，而是赋予AI\"视觉能力\"，使其能像人类一样通过观察屏幕界面并操作鼠标键盘来完成各类任务。该工具基于多模态大模型和Agent技术，可识别界面元素、自主规划操作步骤并执行，适用于财务系统、政务平台等无开放接口但具备操作界面的场景。其技术架构实现了\"感知-决策-执行\"闭环，支持跨应用操作和网页自动化，且无需插件或源码解析。作为新一代RPA工具，mio-cua的普适性和自然语言交互特性，为AI在真实工作场景中的落地提供了新范式，尤其适用于重 原创 发布博客 2026.08.13 · 199 阅读 · 6 点赞 · 0 评论 · 7 收藏",
+            "semantic": "别给 AI 写接口，给它一双眼睛 摘要： mio-cua 的 AI自动化思路——不为软件编写接口，而是赋予AI\"视觉能力\"，使其能像人类一样通过观察屏幕界面并操作鼠标键盘来完成各类任务。该工具基于多模态大模型和Agent技术，可识别界面元素、自主规划操作步骤并执行，适用于财务系统、政务平台等无开放接口但具备操作界面的场景。其技术架构实现了\"感知-决策-执行\"闭环，支持跨应用操作和网页自动化，且无需插件或源码解析。作为新一代RPA工具，mio-cua的普适性和自然语言交互特性，为AI在真实工作场景中的落地提供了新范式，尤其适用于重 原创 发布博客 2026.08.13 · 199 阅读 · 6 点赞 · 0 评论 · 7 收藏"
+          },
+          {
+            "id": 197,
+            "type": "text",
+            "bbox": [
+              984,
+              671,
+              244,
+              24
+            ],
+            "text": "别给 AI 写接口，给它一双眼睛",
+            "semantic": "别给 AI 写接口，给它一双眼睛"
+          },
+          {
+            "id": 198,
+            "type": "group",
+            "bbox": [
+              644,
+              673,
+              51,
+              44
+            ],
+            "text": ""
+          },
+          {
+            "id": 199,
+            "type": "group",
+            "bbox": [
+              756,
+              673,
+              51,
+              44
+            ],
+            "text": ""
+          },
+          {
+            "id": 200,
+            "type": "button",
+            "bbox": [
+              868,
+              673,
+              51,
+              44
+            ],
+            "text": "本月获得 0",
+            "semantic": "本月获得 0"
+          },
+          {
+            "id": 201,
+            "type": "group",
+            "bbox": [
+              868,
+              673,
+              51,
+              44
+            ],
+            "text": ""
+          },
+          {
+            "id": 202,
+            "type": "text",
+            "bbox": [
+              645,
+              677,
+              49,
+              14
+            ],
+            "text": "原力等级",
+            "semantic": "原力等级"
+          },
+          {
+            "id": 203,
+            "type": "text",
+            "bbox": [
+              763,
+              677,
+              37,
+              14
+            ],
+            "text": "原力分",
+            "semantic": "原力分"
+          },
+          {
+            "id": 205,
+            "type": "button",
+            "bbox": [
+              644,
+              695,
+              51,
+              22
+            ],
+            "text": "1",
+            "semantic": "1"
+          },
+          {
+            "id": 206,
+            "type": "button",
+            "bbox": [
+              756,
+              695,
+              51,
+              22
+            ],
+            "text": "86",
+            "semantic": "86"
+          },
+          {
+            "id": 207,
+            "type": "button",
+            "bbox": [
+              868,
+              695,
+              51,
+              22
+            ],
+            "text": "0",
+            "semantic": "0"
+          },
+          {
+            "id": 208,
+            "type": "text",
+            "bbox": [
+              664,
+              696,
+              11,
+              20
+            ],
+            "text": "1",
+            "semantic": "1"
+          },
+          {
+            "id": 209,
+            "type": "text",
+            "bbox": [
+              771,
+              696,
+              21,
+              20
+            ],
+            "text": "86",
+            "semantic": "86"
+          },
+          {
+            "id": 210,
+            "type": "button",
+            "bbox": [
+              761,
+              743,
+              41,
+              16
+            ],
+            "text": "",
+            "semantic": ""
+          },
+          {
+            "id": 214,
+            "type": "group",
+            "bbox": [
+              960,
+              796,
+              973,
+              149
+            ],
+            "text": ""
+          },
+          {
+            "id": 215,
+            "type": "button",
+            "bbox": [
+              984,
+              796,
+              925,
+              149
+            ],
+            "text": "WebGIS-Editor 开发笔记 - 框架组件 基于 gis-web-ui 组件是基于vue2.0 开发的组件，可以通过配置快速搭建可拖动UI 面板，支持导入自定义svg 图标，支持扩展组件库。 原创 发布博客 2024.03.20 · 242 阅读 · 3 点赞 · 0 评论 · 0 收藏",
+            "semantic": "WebGIS-Editor 开发笔记 - 框架组件 基于 gis-web-ui 组件是基于vue2.0 开发的组件，可以通过配置快速搭建可拖动UI 面板，支持导入自定义svg 图标，支持扩展组件库。 原创 发布博客 2024.03.20 · 242 阅读 · 3 点赞 · 0 评论 · 0 收藏"
+          },
+          {
+            "id": 216,
+            "type": "text",
+            "bbox": [
+              628,
+              800,
+              68,
+              17
+            ],
+            "text": "TA的专栏",
+            "semantic": "TA的专栏"
+          },
+          {
+            "id": 218,
+            "type": "text",
+            "bbox": [
+              1178,
+              820,
+              287,
+              24
+            ],
+            "text": "WebGIS-Editor 开发笔记 - 框架组件",
+            "semantic": "WebGIS-Editor 开发笔记 - 框架组件"
+          },
+          {
+            "id": 221,
+            "type": "group",
+            "bbox": [
+              628,
+              850,
+              307,
+              24
+            ],
+            "text": ""
+          },
+          {
+            "id": 222,
+            "type": "button",
+            "bbox": [
+              629,
+              850,
+              306,
+              24
+            ],
+            "text": "webgis-editor3篇",
+            "semantic": "webgis-editor3篇"
+          },
+          {
+            "id": 223,
+            "type": "button",
+            "bbox": [
+              629,
+              850,
+              268,
+              24
+            ],
+            "text": "webgis-editor",
+            "semantic": "webgis-editor"
+          },
+          {
+            "id": 225,
+            "type": "text",
+            "bbox": [
+              912,
+              854,
+              23,
+              16
+            ],
+            "text": "3篇",
+            "semantic": "3篇"
+          },
+          {
+            "id": 227,
+            "type": "group",
+            "bbox": [
+              628,
+              902,
+              307,
+              46
+            ],
+            "text": ""
+          },
+          {
+            "id": 229,
+            "type": "text",
+            "bbox": [
+              628,
+              916,
+              88,
+              16
+            ],
+            "text": "TA关注的专栏",
+            "semantic": "TA关注的专栏"
+          },
+          {
+            "id": 230,
+            "type": "text",
+            "bbox": [
+              926,
+              916,
+              9,
+              16
+            ],
+            "text": "2",
+            "semantic": "2"
+          },
+          {
+            "id": 231,
+            "type": "group",
+            "bbox": [
+              960,
+              945,
+              973,
+              149
+            ],
+            "text": "mio-cua run“读取D:\\报表\\今日订单.csv 的金额列，算出合计，保存到合计.txt“",
+            "semantic": "mio-cua run“读取D:\\报表\\今日订单.csv 的金额列，算出合计，保存到合计.txt“"
+          },
+          {
+            "id": 232,
+            "type": "button",
+            "bbox": [
+              984,
+              945,
+              925,
+              149
+            ],
+            "text": "基于SuperMap 的城市地下管网数据处理工具 基于SuperMap 的城市地下管网数据处理系统 原创 发布博客 2024.02.29 · 734 阅读 · 2 点赞 · 0 评论 · 4 收藏",
+            "semantic": "基于SuperMap 的城市地下管网数据处理工具 基于SuperMap 的城市地下管网数据处理系统 原创 发布博客 2024.02.29 · 734 阅读 · 2 点赞 · 0 评论 · 4 收藏"
+          },
+          {
+            "id": 233,
+            "type": "group",
+            "bbox": [
+              628,
+              948,
+              307,
+              46
+            ],
+            "text": ""
+          },
+          {
+            "id": 235,
+            "type": "text",
+            "bbox": [
+              628,
+              962,
+              102,
+              16
+            ],
+            "text": "TA关注的收藏夹",
+            "semantic": "TA关注的收藏夹"
+          },
+          {
+            "id": 236,
+            "type": "text",
+            "bbox": [
+              926,
+              962,
+              9,
+              16
+            ],
+            "text": "0",
+            "semantic": "0"
+          },
+          {
+            "id": 237,
+            "type": "text",
+            "bbox": [
+              1178,
+              969,
+              359,
+              24
+            ],
+            "text": "基于SuperMap 的城市地下管网数据处理工具",
+            "semantic": "基于SuperMap 的城市地下管网数据处理工具"
+          },
+          {
+            "id": 239,
+            "type": "group",
+            "bbox": [
+              628,
+              994,
+              307,
+              46
+            ],
+            "text": ""
+          },
+          {
+            "id": 240,
+            "type": "text",
+            "bbox": [
+              628,
+              1008,
+              88,
+              16
+            ],
+            "text": "TA关注的社区",
+            "semantic": "TA关注的社区"
+          },
+          {
+            "id": 241,
+            "type": "text",
+            "bbox": [
+              926,
+              1008,
+              9,
+              16
+            ],
+            "text": "6",
+            "semantic": "6"
+          },
+          {
+            "id": 242,
+            "type": "group",
+            "bbox": [
+              628,
+              1040,
+              307,
+              46
+            ],
+            "text": ""
+          },
+          {
+            "id": 244,
+            "type": "text",
+            "bbox": [
+              628,
+              1054,
+              88,
+              17
+            ],
+            "text": "TA参与的活动",
+            "semantic": "TA参与的活动"
+          },
+          {
+            "id": 245,
+            "type": "text",
+            "bbox": [
+              926,
+              1054,
+              9,
+              17
+            ],
+            "text": "0",
+            "semantic": "0"
+          },
+          {
+            "id": 247,
+            "type": "group",
+            "bbox": [
+              960,
+              1094,
+              973,
+              149
+            ],
+            "text": ""
+          },
+          {
+            "id": 248,
+            "type": "button",
+            "bbox": [
+              984,
+              1094,
+              925,
+              149
+            ],
+            "text": "threejs 三维地图 《三维行政区划可视化平台》是一个基于 Vue 3 + Three.js 的纯前端 3D 地图工具。支持城市切换、卫星贴图合成、数据染色、动态边界流光线等交互功能。无需后端，所有数据来自公开 CDN（DataV GeoJSON、ESRI 瓦片），一条 nginx 命令即可部署。 原创 发布博客 2023.07.24 · 488 阅读 · 1 点赞 · 0 评论 · 0 收藏",
+            "semantic": "threejs 三维地图 《三维行政区划可视化平台》是一个基于 Vue 3 + Three.js 的纯前端 3D 地图工具。支持城市切换、卫星贴图合成、数据染色、动态边界流光线等交互功能。无需后端，所有数据来自公开 CDN（DataV GeoJSON、ESRI 瓦片），一条 nginx 命令即可部署。 原创 发布博客 2023.07.24 · 488 阅读 · 1 点赞 · 0 评论 · 0 收藏"
+          },
+          {
+            "id": 249,
+            "type": "button",
+            "bbox": [
+              892,
+              1098,
+              43,
+              48
+            ],
+            "text": "设置 ",
+            "semantic": "设置 "
+          },
+          {
+            "id": 251,
+            "type": "text",
+            "bbox": [
+              628,
+              1113,
+              65,
+              17
+            ],
+            "text": "兴趣领域",
+            "semantic": "兴趣领域"
+          },
+          {
+            "id": 252,
+            "type": "text",
+            "bbox": [
+              984,
+              1118,
+              132,
+              24
+            ],
+            "text": "threejs 三维地图",
+            "semantic": "threejs 三维地图"
+          },
+          {
+            "id": 254,
+            "type": "group",
+            "bbox": [
+              628,
+              1163,
+              307,
+              200
+            ],
+            "text": ""
+          },
+          {
+            "id": 255,
+            "type": "button",
+            "bbox": [
+              628,
+              1163,
+              307,
+              56
+            ],
+            "text": "Javajava",
+            "semantic": "Javajava"
+          },
+          {
+            "id": 256,
+            "type": "text",
+            "bbox": [
+              628,
+              1166,
+              35,
+              17
+            ],
+            "text": "Java",
+            "semantic": "Java"
+          },
+          {
+            "id": 259,
+            "type": "button",
+            "bbox": [
+              648,
+              1199,
+              27,
+              16
+            ],
+            "text": "java",
+            "semantic": "java"
+          },
+          {
+            "id": 260,
+            "type": "button",
+            "bbox": [
+              628,
+              1235,
+              307,
+              56
+            ],
+            "text": "前端vue.jses6",
+            "semantic": "前端vue.jses6"
+          },
+          {
+            "id": 261,
+            "type": "text",
+            "bbox": [
+              628,
+              1238,
+              33,
+              17
+            ],
+            "text": "前端",
+            "semantic": "前端"
+          },
+          {
+            "id": 264,
+            "type": "group",
+            "bbox": [
+              960,
+              1243,
+              973,
+              149
+            ],
+            "text": "跨应用：读文件→计算器求和一存结果",
+            "semantic": "跨应用：读文件→计算器求和一存结果"
+          },
+          {
+            "id": 265,
+            "type": "button",
+            "bbox": [
+              984,
+              1243,
+              925,
+              149
+            ],
+            "text": "WebGIS-Editor 开发笔记 - 图层管理（2） GIS 图层管理功能中一个重要的需求是对各种数据格式的支持，针对不同的数据文件格式可以进行通过添加文件功能导入到地图中进行展示，这里是对各个数据文件进行解析，统一转为geojson 格式。可以支持将 shp 文件、kml文件、wkt文件、geojson文件、gpx文件、csv文件类型添加到地图中 原创 发布博客 2023.07.17 · 858 阅读 · 5 点赞 · 0 评论 · 7 收藏",
+            "semantic": "WebGIS-Editor 开发笔记 - 图层管理（2） GIS 图层管理功能中一个重要的需求是对各种数据格式的支持，针对不同的数据文件格式可以进行通过添加文件功能导入到地图中进行展示，这里是对各个数据文件进行解析，统一转为geojson 格式。可以支持将 shp 文件、kml文件、wkt文件、geojson文件、gpx文件、csv文件类型添加到地图中 原创 发布博客 2023.07.17 · 858 阅读 · 5 点赞 · 0 评论 · 7 收藏"
+          },
+          {
+            "id": 266,
+            "type": "text",
+            "bbox": [
+              1178,
+              1267,
+              333,
+              24
+            ],
+            "text": "WebGIS-Editor 开发笔记 - 图层管理（2）",
+            "semantic": "WebGIS-Editor 开发笔记 - 图层管理（2）"
+          },
+          {
+            "id": 267,
+            "type": "button",
+            "bbox": [
+              648,
+              1271,
+              38,
+              16
+            ],
+            "text": "vue.js",
+            "semantic": "vue.js"
+          },
+          {
+            "id": 268,
+            "type": "button",
+            "bbox": [
+              697,
+              1271,
+              23,
+              16
+            ],
+            "text": "es6",
+            "semantic": "es6"
+          },
+          {
+            "id": 271,
+            "type": "button",
+            "bbox": [
+              2477,
+              1304,
+              44,
+              44
+            ],
+            "text": ""
+          },
+          {
+            "id": 272,
+            "type": "button",
+            "bbox": [
+              628,
+              1307,
+              307,
+              56
+            ],
+            "text": "前沿技术低代码",
+            "semantic": "前沿技术低代码"
+          },
+          {
+            "id": 273,
+            "type": "text",
+            "bbox": [
+              628,
+              1310,
+              65,
+              17
+            ],
+            "text": "前沿技术",
+            "semantic": "前沿技术"
+          },
+          {
+            "id": 276,
+            "type": "button",
+            "bbox": [
+              648,
+              1343,
+              43,
+              16
+            ],
+            "text": "低代码",
+            "semantic": "低代码"
+          },
+          {
+            "id": 279,
+            "type": "button",
+            "bbox": [
+              894,
+              1389,
+              41,
+              48
+            ],
+            "text": "更多",
+            "semantic": "更多"
+          },
+          {
+            "id": 280,
+            "type": "group",
+            "bbox": [
+              960,
+              1392,
+              973,
+              149
+            ],
+            "text": "这些场景在真实 Windows 电脑上跑通，且能隔离在独立虚拟桌面运行，不打扰你的日常工作。",
+            "semantic": "这些场景在真实 Windows 电脑上跑通，且能隔离在独立虚拟桌面运行，不打扰你的日常工作。"
+          },
+          {
+            "id": 281,
+            "type": "button",
+            "bbox": [
+              984,
+              1392,
+              925,
+              149
+            ],
+            "text": "WebGIS-Editor 开发笔记 - 图层管理（1） GIS 图层管理器是地理信息软件一个重要的组成部分，是渲染地理数据的基础功能。每个项目的图层管理可能功能名称不同，但是核心功能都是一样的，是对地图中的数据图层进行显示、隐藏、删除、编辑等。 原创 发布博客 2023.07.14 · 476 阅读 · 2 点赞 · 0 评论 · 2 收藏",
+            "semantic": "WebGIS-Editor 开发笔记 - 图层管理（1） GIS 图层管理器是地理信息软件一个重要的组成部分，是渲染地理数据的基础功能。每个项目的图层管理可能功能名称不同，但是核心功能都是一样的，是对地图中的数据图层进行显示、隐藏、删除、编辑等。 原创 发布博客 2023.07.14 · 476 阅读 · 2 点赞 · 0 评论 · 2 收藏"
+          },
+          {
+            "id": 282,
+            "type": "text",
+            "bbox": [
+              628,
+              1404,
+              65,
+              17
+            ],
+            "text": "创作活动",
+            "semantic": "创作活动"
+          },
+          {
+            "id": 283,
+            "type": "text",
+            "bbox": [
+              1178,
+              1416,
+              333,
+              24
+            ],
+            "text": "WebGIS-Editor 开发笔记 - 图层管理（1）",
+            "semantic": "WebGIS-Editor 开发笔记 - 图层管理（1）"
+          },
+          {
+            "id": 285,
+            "type": "button",
+            "bbox": [
+              628,
+              1454,
+              307,
+              24
+            ],
+            "text": "【多重好礼】鸿蒙心迹 · 开发录原创征稿活动",
+            "semantic": "【多重好礼】鸿蒙心迹 · 开发录原创征稿活动"
+          },
+          {
+            "id": 287,
+            "type": "text",
+            "bbox": [
+              628,
+              1490,
+              303,
+              352
+            ],
+            "text": "鸿蒙开发者的实战经验，值得被记录。从踩坑排查到项目复盘，从工具脚本到学习笔记，每一段真实的开发经历，都是社区最宝贵的技术资产。「鸿蒙心迹 · 开发录」正式启航，不限主题、随时可写，只要是鸿蒙开发相关的真实经验都欢迎投稿。 本活动为 [HarmonyOS 7.0 创新内容共创季](https://builderx.csdn.net/activity-site/harmonyos/activity2026)双轨征文之一，与[「共创季 · 稿事节」](https://harmonyosdev.csdn.net/6a97f0de2b83d06f0ecadec5.html)深度征文互补——「稿事节」写深度技术长文，「开发录」写日常开发实战笔记。 「开发录」每月一期，12月截止，本季共三期，投稿即有机会获得京东卡、CSDN博客流量券、亿万Token、社区定制周边好礼！",
+            "semantic": "鸿蒙开发者的实战经验，值得被记录。从踩坑排查到项目复盘，从工具脚本到学习笔记，每一段真实的开发经历，都是社区最宝贵的技术资产。「鸿蒙心迹 · 开发录」正式启航，不限主题、随时可写，只要是鸿蒙开发相关的真实经验都欢迎投稿。 本活动为 [HarmonyOS 7.0 创新内容共创季](https://builderx.csdn.net/activity-site/harmonyos/activity2026)双轨征文之一，与[「共创季 · 稿事节」](https://harmonyosdev.csdn.net/6a97f0de2b83d06f0ecadec5.html)深度征文互补——「稿事节」写深度技术长文，「开发录」写日常开发实战笔记。 「开发录」每月一期，12月截止，本季共三期，投稿即有机会获得京东卡、CSDN博客流量券、亿万Token、社区定制周边好礼！"
+          },
+          {
+            "id": 291,
+            "type": "group",
+            "bbox": [
+              -1,
+              1538,
+              488,
+              23
+            ],
+            "text": "javascript:",
+            "semantic": "javascript:"
+          },
+          {
+            "id": 292,
+            "type": "group",
+            "bbox": [
+              -1,
+              1538,
+              488,
+              23
+            ],
+            "text": ""
+          },
+          {
+            "id": 293,
+            "type": "group",
+            "bbox": [
+              -1,
+              1538,
+              488,
+              23
+            ],
+            "text": ""
+          },
+          {
+            "id": 294,
+            "type": "text",
+            "bbox": [
+              5,
+              1539,
+              476,
+              21
+            ],
+            "text": "https://blog.csdn.net/q7GS7/article/details/166895505?spm=1001.2014.3001.5502",
+            "semantic": "https://blog.csdn.net/q7GS7/article/details/166895505?spm=1001.2014.3001.5502"
+          },
+          {
+            "id": 295,
+            "type": "group",
+            "bbox": [
+              960,
+              1541,
+              973,
+              149
+            ],
+            "text": ""
+          },
+          {
+            "id": 296,
+            "type": "button",
+            "bbox": [
+              984,
+              1541,
+              925,
+              149
+            ],
+            "text": "二维GIS应用平台 是基于 GeoServer/Leaflet/PostGis 软件开发的GIS应用框架。产品提供了空间数据发布管理、分析、可视化浏览等GIS通用功能。访问地址http://www.crlkcloud.com 原创 发布博客 2019.02.13 · 571 阅读 · 6 点赞 · 0 评论 · 2 收藏",
+            "semantic": "二维GIS应用平台 是基于 GeoServer/Leaflet/PostGis 软件开发的GIS应用框架。产品提供了空间数据发布管理、分析、可视化浏览等GIS通用功能。访问地址http://www.crlkcloud.com 原创 发布博客 2019.02.13 · 571 阅读 · 6 点赞 · 0 评论 · 2 收藏"
+          },
+          {
+            "id": 297,
+            "type": "button",
+            "bbox": [
+              870,
+              1542,
+              65,
+              26
+            ],
+            "text": "去参加",
+            "semantic": "去参加"
+          },
+          {
+            "id": 298,
+            "type": "text",
+            "bbox": [
+              628,
+              1546,
+              66,
+              17
+            ],
+            "text": "161人参与",
+            "semantic": "161人参与"
+          },
+          {
+            "id": 105,
+            "type": "text",
+            "bbox": [
+              928,
+              132,
+              658,
+              25
+            ],
+            "text": "网页场景尤其能体现这个理念：直接\"看\"页面上的按钮和链接就行，不需要浏览器插件、扩展，",
+            "semantic": "网页场景尤其能体现这个理念：直接\"看\"页面上的按钮和链接就行，不需要浏览器插件、扩展，"
+          },
+          {
+            "id": 106,
+            "type": "text",
+            "bbox": [
+              930,
+              159,
+              384,
+              22
+            ],
+            "text": "也不需要读网页源码一一就像人打开网页直接操作一样。",
+            "semantic": "也不需要读网页源码一一就像人打开网页直接操作一样。"
+          },
+          {
+            "id": 107,
+            "type": "text",
+            "bbox": [
+              933,
+              204,
+              359,
+              22
+            ],
+            "text": "格局：它不是小工具，是AI的操作层",
+            "semantic": "格局：它不是小工具，是AI的操作层"
+          },
+          {
+            "id": 108,
+            "type": "text",
+            "bbox": [
+              928,
+              242,
+              239,
+              20
+            ],
+            "text": "把mio-cua放到更大的图景里看：",
+            "semantic": "把mio-cua放到更大的图景里看："
+          },
+          {
+            "id": 137,
+            "type": "text",
+            "bbox": [
+              963,
+              345,
+              533,
+              24
+            ],
+            "text": "作电脑桌面的能力。AI的边界从“会调接口\"扩展到\"能操作任何软件\"",
+            "semantic": "作电脑桌面的能力。AI的边界从“会调接口\"扩展到\"能操作任何软件\""
+          },
+          {
+            "id": 140,
+            "type": "text",
+            "bbox": [
+              945,
+              382,
+              128,
+              22
+            ],
+            "text": "·对自动化行业",
+            "semantic": "·对自动化行业"
+          },
+          {
+            "id": 189,
+            "type": "text",
+            "bbox": [
+              946,
+              583,
+              652,
+              26
+            ],
+            "text": "以上是它的定位和方向，不是某个已落地的客户案例。判断一个工具的价值，要看它能在哪个",
+            "semantic": "以上是它的定位和方向，不是某个已落地的客户案例。判断一个工具的价值，要看它能在哪个"
+          },
+          {
+            "id": 192,
+            "type": "text",
+            "bbox": [
+              948,
+              613,
+              87,
+              22
+            ],
+            "text": "层面被复用。",
+            "semantic": "层面被复用。"
+          },
+          {
+            "id": 204,
+            "type": "text",
+            "bbox": [
+              927,
+              694,
+              46,
+              29
+            ],
+            "text": "安装",
+            "semantic": "安装"
+          },
+          {
+            "id": 211,
+            "type": "text",
+            "bbox": [
+              964,
+              748,
+              159,
+              24
+            ],
+            "text": "pip install mio-cue",
+            "semantic": "pip install mio-cue"
+          },
+          {
+            "id": 212,
+            "type": "text",
+            "bbox": [
+              1163,
+              769,
+              190,
+              22
+            ],
+            "text": "即将前往微信打开此文章，",
+            "semantic": "即将前往微信打开此文章，"
+          },
+          {
+            "id": 217,
+            "type": "text",
+            "bbox": [
+              928,
+              801,
+              82,
+              26
+            ],
+            "text": "配置模型",
+            "semantic": "配置模型"
+          },
+          {
+            "id": 219,
+            "type": "text",
+            "bbox": [
+              1184,
+              840,
+              37,
+              23
+            ],
+            "text": "取消",
+            "semantic": "取消"
+          },
+          {
+            "id": 220,
+            "type": "text",
+            "bbox": [
+              1306,
+              840,
+              40,
+              24
+            ],
+            "text": "前往",
+            "semantic": "前往"
+          },
+          {
+            "id": 224,
+            "type": "text",
+            "bbox": [
+              967,
+              853,
+              155,
+              21
+            ],
+            "text": "$env:OPENAI_API_KEY",
+            "semantic": "$env:OPENAI_API_KEY"
+          },
+          {
+            "id": 226,
+            "type": "text",
+            "bbox": [
+              1212,
+              901,
+              103,
+              22
+            ],
+            "text": "使用完整服务",
+            "semantic": "使用完整服务"
+          },
+          {
+            "id": 246,
+            "type": "text",
+            "bbox": [
+              927,
+              1072,
+              674,
+              25
+            ],
+            "text": "把 mio-cua 装成插件（MCP Server），Claude / Cursor / ChatGPT 就能直接操作你的桌",
+            "semantic": "把 mio-cua 装成插件（MCP Server），Claude / Cursor / ChatGPT 就能直接操作你的桌"
+          },
+          {
+            "id": 250,
+            "type": "text",
+            "bbox": [
+              927,
+              1099,
+              27,
+              22
+            ],
+            "text": "面。",
+            "semantic": "面。"
+          },
+          {
+            "id": 257,
+            "type": "text",
+            "bbox": [
+              940,
+              1193,
+              36,
+              25
+            ],
+            "text": "场景",
+            "semantic": "场景"
+          },
+          {
+            "id": 258,
+            "type": "text",
+            "bbox": [
+              1487,
+              1193,
+              37,
+              25
+            ],
+            "text": "结果",
+            "semantic": "结果"
+          },
+          {
+            "id": 269,
+            "type": "text",
+            "bbox": [
+              1490,
+              1284,
+              58,
+              23
+            ],
+            "text": "通过",
+            "semantic": "通过"
+          },
+          {
+            "id": 270,
+            "type": "text",
+            "bbox": [
+              940,
+              1285,
+              181,
+              22
+            ],
+            "text": "桌面整理：按类型归档文件",
+            "semantic": "桌面整理：按类型归档文件"
+          },
+          {
+            "id": 274,
+            "type": "text",
+            "bbox": [
+              940,
+              1329,
+              292,
+              23
+            ],
+            "text": "网页：直接者页面点击/输入 （无插件无源码）",
+            "semantic": "网页：直接者页面点击/输入 （无插件无源码）"
+          },
+          {
+            "id": 275,
+            "type": "text",
+            "bbox": [
+              1490,
+              1329,
+              59,
+              23
+            ],
+            "text": "通过",
+            "semantic": "通过"
+          },
+          {
+            "id": 277,
+            "type": "text",
+            "bbox": [
+              1490,
+              1373,
+              59,
+              23
+            ],
+            "text": "通过",
+            "semantic": "通过"
+          },
+          {
+            "id": 278,
+            "type": "text",
+            "bbox": [
+              940,
+              1374,
+              343,
+              20
+            ],
+            "text": "记事本输入保存/计算器计算/资源管理器建文件夹",
+            "semantic": "记事本输入保存/计算器计算/资源管理器建文件夹"
+          },
+          {
+            "id": 288,
+            "type": "text",
+            "bbox": [
+              1332,
+              1509,
+              274,
+              22
+            ],
+            "text": "赞分享推荐写留言",
+            "semantic": "赞分享推荐写留言"
+          },
+          {
+            "id": 289,
+            "type": "text",
+            "bbox": [
+              967,
+              1512,
+              77,
+              18
+            ],
+            "text": "日落有归途",
+            "semantic": "日落有归途"
+          }
+        ],
+        "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1790746686320.png",
+        "metadata": {
+          "step": 0
+        }
+      },
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1790746686.7900338,
+        "result": {
+          "sent": true,
+          "success": true
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    }
+  ]
+}

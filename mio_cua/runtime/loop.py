@@ -277,7 +277,10 @@ class AgentLoopV2(AgentLoop):
                     try:
                         result = self.registry.call(action.type, action.params, ctx)
                     except Exception as e:
-                        result = ActionResult(action.id, success=False, message=str(e), retryable=True)
+                        # Grounding ambiguity must replan (not blind-retry);
+                        # other errors stay retryable so Recover can act.
+                        retryable = not getattr(e, "ambiguous", False)
+                        result = ActionResult(action.id, success=False, message=str(e), retryable=retryable)
                     if not result.success and result.retryable and self.recover is not None:
                         result = self.recover(action, result, ctx)
                     self._save_artifact(obs, action, result)
@@ -390,15 +393,27 @@ class AgentLoopV2(AgentLoop):
                     if action.type == "click":
                         pending = self._capture_expected(obs, action)
                         expected = pending[1] if pending else None
+                    elif action.type == "focus_window":
+                        title = (action.params.get("title") or "").strip()
+                        if title:
+                            pending = (None, {"window_title": title}, obs)
                     light_observe = getattr(self.perception, "observe_light", None)
                     has_successor = (i + 1 < len(plan.actions)) and (batch_executed < config_batch_limit)
-                    if not has_successor or light_observe is None:
-                        if getattr(self.config, "enable_verification", True) and action.type == "click" and pending is not None:
+                    _needs_full = bool(expected) and any(
+                        k in expected for k in ("state_toggle", "window_title"))
+
+                    if getattr(self.config, "enable_verification", True) and action.type == "click" and (
+                        _needs_full or not has_successor or light_observe is None
+                    ):
+                        if _needs_full or pending is not None:
                             self._pending_verify = pending
                         break
-                    if getattr(self.config, "enable_verification", True):
+                    if getattr(self.config, "enable_verification", True) and action.type == "click" and light_observe is not None:
                         light = light_observe()
-                        ok, detail = verify_action(light_base, light, action, expected)
+                        ok, detail = verify_action(
+                            light_base, light, action, expected,
+                            node_id=action.params.get("element_id"),
+                        )
                         self.emit("verification", steps, {
                             "verification": {
                                 "expected_state": expected,
@@ -413,6 +428,8 @@ class AgentLoopV2(AgentLoop):
                             self._batch_failed = detail
                             break
                         light_base = light
+                    elif action.type == "focus_window" and pending is not None:
+                        self._pending_verify = pending
                 if finished_status in ("SUCCESS", "FAIL"):
                     break
                 prev = obs

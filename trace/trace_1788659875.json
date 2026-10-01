@@ -1,0 +1,1096 @@
+{
+  "trace_id": "trace_1788659875",
+  "created_at": 1788659875.3341975,
+  "task": {
+    "instruction": "打开浏览器，在搜索引擎中搜索「今日新闻」",
+    "target_context": {
+      "app": "Edge"
+    },
+    "metadata": {}
+  },
+  "metadata": {
+    "steps": 5,
+    "final_status": "FAIL",
+    "final_summary": "loop error: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /v1/chat/completions (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=8000): Failed to e"
+  },
+  "entries": [
+    {
+      "obs_before": {
+        "id": 1,
+        "timestamp": 1788659875.3341722,
+        "active_window": "OpenCode",
+        "scene_nodes": [
+          {
+            "id": 0,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 1,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": "OpenCode",
+            "semantic": "OpenCode"
+          },
+          {
+            "id": 2,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 3,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 4,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 5,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 6,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 7,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 8,
+            "type": "input",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": "Taskhub",
+            "semantic": "Taskhub"
+          },
+          {
+            "id": 9,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1625,
+              36
+            ],
+            "text": "New session - 2026-09-03T0",
+            "semantic": "New session - 2026-09-03T0"
+          },
+          {
+            "id": 10,
+            "type": "group",
+            "bbox": [
+              597,
+              130,
+              1762,
+              1035
+            ],
+            "text": ""
+          },
+          {
+            "id": 11,
+            "type": "group",
+            "bbox": [
+              2222,
+              131,
+              137,
+              39
+            ],
+            "text": ""
+          },
+          {
+            "id": 12,
+            "type": "button",
+            "bbox": [
+              2222,
+              131,
+              45,
+              39
+            ],
+            "text": "最小化",
+            "semantic": "最小化"
+          },
+          {
+            "id": 13,
+            "type": "button",
+            "bbox": [
+              2267,
+              131,
+              46,
+              39
+            ],
+            "text": "最大化",
+            "semantic": "最大化"
+          },
+          {
+            "id": 14,
+            "type": "button",
+            "bbox": [
+              2313,
+              131,
+              46,
+              39
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 15,
+            "type": "button",
+            "bbox": [
+              617,
+              138,
+              28,
+              28
+            ],
+            "text": "OpenCode 菜单",
+            "semantic": "OpenCode 菜单"
+          },
+          {
+            "id": 16,
+            "type": "button",
+            "bbox": [
+              655,
+              138,
+              36,
+              28
+            ],
+            "text": "主页",
+            "semantic": "主页"
+          },
+          {
+            "id": 17,
+            "type": "button",
+            "bbox": [
+              697,
+              138,
+              224,
+              28
+            ],
+            "text": "Taskhub 关闭标签页",
+            "semantic": "Taskhub 关闭标签页"
+          },
+          {
+            "id": 18,
+            "type": "button",
+            "bbox": [
+              703,
+              138,
+              212,
+              28
+            ],
+            "text": "Taskhub",
+            "semantic": "Taskhub"
+          },
+          {
+            "id": 19,
+            "type": "button",
+            "bbox": [
+              927,
+              138,
+              224,
+              28
+            ],
+            "text": "Mneme",
+            "semantic": "Mneme"
+          },
+          {
+            "id": 20,
+            "type": "button",
+            "bbox": [
+              933,
+              138,
+              212,
+              28
+            ],
+            "text": "A Mneme",
+            "semantic": "A Mneme"
+          },
+          {
+            "id": 21,
+            "type": "button",
+            "bbox": [
+              1157,
+              138,
+              224,
+              28
+            ],
+            "text": "Miocua",
+            "semantic": "Miocua"
+          },
+          {
+            "id": 22,
+            "type": "button",
+            "bbox": [
+              1163,
+              138,
+              212,
+              28
+            ],
+            "text": "Miocua",
+            "semantic": "Miocua"
+          },
+          {
+            "id": 23,
+            "type": "button",
+            "bbox": [
+              1387,
+              138,
+              224,
+              28
+            ],
+            "text": "报 报销发票 关闭标签页",
+            "semantic": "报 报销发票 关闭标签页"
+          },
+          {
+            "id": 24,
+            "type": "button",
+            "bbox": [
+              1393,
+              138,
+              212,
+              28
+            ],
+            "text": "报 报销发票",
+            "semantic": "报 报销发票"
+          },
+          {
+            "id": 25,
+            "type": "button",
+            "bbox": [
+              1617,
+              138,
+              224,
+              28
+            ],
+            "text": "A New session - 2026-09-03T05:06:07.908Z 关闭标签页",
+            "semantic": "A New session - 2026-09-03T05:06:07.908Z 关闭标签页"
+          },
+          {
+            "id": 26,
+            "type": "button",
+            "bbox": [
+              1623,
+              138,
+              212,
+              28
+            ],
+            "text": "A New session - 2026-09-03T05:06:07.908Z",
+            "semantic": "A New session - 2026-09-03T05:06:07.908Z"
+          },
+          {
+            "id": 27,
+            "type": "button",
+            "bbox": [
+              1847,
+              138,
+              28,
+              28
+            ],
+            "text": "新建会话",
+            "semantic": "新建会话"
+          },
+          {
+            "id": 28,
+            "type": "button",
+            "bbox": [
+              2174,
+              138,
+              36,
+              28
+            ],
+            "text": "切换审查",
+            "semantic": "切换审查"
+          },
+          {
+            "id": 31,
+            "type": "button",
+            "bbox": [
+              897,
+              142,
+              20,
+              20
+            ],
+            "text": "关闭标签页",
+            "semantic": "关闭标签页"
+          },
+          {
+            "id": 32,
+            "type": "button",
+            "bbox": [
+              1127,
+              142,
+              20,
+              20
+            ],
+            "text": "关闭标签页",
+            "semantic": "关闭标签页"
+          },
+          {
+            "id": 33,
+            "type": "button",
+            "bbox": [
+              1357,
+              142,
+              20,
+              20
+            ],
+            "text": "关闭标签页",
+            "semantic": "关闭标签页"
+          },
+          {
+            "id": 35,
+            "type": "button",
+            "bbox": [
+              1587,
+              142,
+              20,
+              20
+            ],
+            "text": "关闭标签页",
+            "semantic": "关闭标签页"
+          },
+          {
+            "id": 36,
+            "type": "button",
+            "bbox": [
+              1817,
+              142,
+              20,
+              20
+            ],
+            "text": "关闭标签页",
+            "semantic": "关闭标签页"
+          },
+          {
+            "id": 39,
+            "type": "group",
+            "bbox": [
+              597,
+              166,
+              1762,
+              999
+            ],
+            "text": ""
+          },
+          {
+            "id": 40,
+            "type": "group",
+            "bbox": [
+              605,
+              174,
+              1746,
+              750
+            ],
+            "text": "可滚动内容",
+            "semantic": "可滚动内容"
+          },
+          {
+            "id": 41,
+            "type": "button",
+            "bbox": [
+              2275,
+              184,
+              28,
+              28
+            ],
+            "text": "查看上下文用量",
+            "semantic": "查看上下文用量"
+          },
+          {
+            "id": 42,
+            "type": "button",
+            "bbox": [
+              2311,
+              184,
+              28,
+              28
+            ],
+            "text": "更多选项",
+            "semantic": "更多选项"
+          },
+          {
+            "id": 43,
+            "type": "text",
+            "bbox": [
+              615,
+              186,
+              62,
+              24
+            ],
+            "text": "Miocua",
+            "semantic": "Miocua"
+          },
+          {
+            "id": 45,
+            "type": "text",
+            "bbox": [
+              2282,
+              191,
+              14,
+              14
+            ],
+            "text": ""
+          },
+          {
+            "id": 60,
+            "type": "group",
+            "bbox": [
+              998,
+              840,
+              42,
+              20
+            ],
+            "text": "思考中",
+            "semantic": "思考中"
+          },
+          {
+            "id": 61,
+            "type": "group",
+            "bbox": [
+              1048,
+              840,
+              910,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 62,
+            "type": "text",
+            "bbox": [
+              1048,
+              841,
+              5,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 64,
+            "type": "button",
+            "bbox": [
+              1465,
+              874,
+              26,
+              24
+            ],
+            "text": "跳转到最新",
+            "semantic": "跳转到最新"
+          },
+          {
+            "id": 65,
+            "type": "button",
+            "bbox": [
+              991,
+              925,
+              974,
+              42
+            ],
+            "text": "已完成 0 个任务（共 3 个）     折叠",
+            "semantic": "已完成 0 个任务（共 3 个）     折叠"
+          },
+          {
+            "id": 66,
+            "type": "button",
+            "bbox": [
+              1933,
+              932,
+              24,
+              25
+            ],
+            "text": "折叠",
+            "semantic": "折叠"
+          },
+          {
+            "id": 67,
+            "type": "group",
+            "bbox": [
+              1007,
+              936,
+              161,
+              20
+            ],
+            "text": "已完成 0 个任务（共 3 个）",
+            "semantic": "已完成 0 个任务（共 3 个）"
+          },
+          {
+            "id": 68,
+            "type": "group",
+            "bbox": [
+              1179,
+              936,
+              746,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 70,
+            "type": "group",
+            "bbox": [
+              1049,
+              940,
+              9,
+              13
+            ],
+            "text": "0",
+            "semantic": "0"
+          },
+          {
+            "id": 71,
+            "type": "group",
+            "bbox": [
+              1129,
+              940,
+              9,
+              13
+            ],
+            "text": "3",
+            "semantic": "3"
+          },
+          {
+            "id": 72,
+            "type": "group",
+            "bbox": [
+              991,
+              967,
+              974,
+              111
+            ],
+            "text": "更新 record_scenario_1.py 为浏览器搜索场景",
+            "semantic": "更新 record_scenario_1.py 为浏览器搜索场景"
+          },
+          {
+            "id": 73,
+            "type": "group",
+            "bbox": [
+              1003,
+              967,
+              950,
+              19
+            ],
+            "text": "创建浏览器搜索场景：搜索今日新闻\"",
+            "semantic": "创建浏览器搜索场景：搜索今日新闻\""
+          },
+          {
+            "id": 74,
+            "type": "button",
+            "bbox": [
+              1003,
+              967,
+              1,
+              1
+            ],
+            "text": "创建浏览器搜索场景：搜索“今日新闻”",
+            "semantic": "创建浏览器搜索场景：搜索“今日新闻”"
+          },
+          {
+            "id": 75,
+            "type": "text",
+            "bbox": [
+              1031,
+              967,
+              235,
+              18
+            ],
+            "text": "创建浏览器搜索场景：搜索“今日新闻”",
+            "semantic": "创建浏览器搜索场景：搜索“今日新闻”"
+          },
+          {
+            "id": 77,
+            "type": "text",
+            "bbox": [
+              1006,
+              970,
+              10,
+              12
+            ],
+            "text": ""
+          },
+          {
+            "id": 78,
+            "type": "group",
+            "bbox": [
+              1003,
+              991,
+              950,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 79,
+            "type": "button",
+            "bbox": [
+              1003,
+              991,
+              1,
+              2
+            ],
+            "text": "更新 record_scenario_1.py 为浏览器搜索场景",
+            "semantic": "更新 record_scenario_1.py 为浏览器搜索场景"
+          },
+          {
+            "id": 80,
+            "type": "text",
+            "bbox": [
+              1031,
+              991,
+              288,
+              19
+            ],
+            "text": "更新 record_scenario_1.py 为浏览器搜索场景",
+            "semantic": "更新 record_scenario_1.py 为浏览器搜索场景"
+          },
+          {
+            "id": 82,
+            "type": "text",
+            "bbox": [
+              1006,
+              994,
+              10,
+              13
+            ],
+            "text": ""
+          },
+          {
+            "id": 83,
+            "type": "group",
+            "bbox": [
+              1003,
+              1015,
+              950,
+              19
+            ],
+            "text": "运行场景测试",
+            "semantic": "运行场景测试"
+          },
+          {
+            "id": 84,
+            "type": "button",
+            "bbox": [
+              1003,
+              1015,
+              1,
+              2
+            ],
+            "text": "运行场景测试",
+            "semantic": "运行场景测试"
+          },
+          {
+            "id": 86,
+            "type": "text",
+            "bbox": [
+              1031,
+              1015,
+              84,
+              19
+            ],
+            "text": "运行场景测试",
+            "semantic": "运行场景测试"
+          },
+          {
+            "id": 87,
+            "type": "input",
+            "bbox": [
+              990,
+              1041,
+              976,
+              60
+            ],
+            "text": "​",
+            "semantic": "​"
+          },
+          {
+            "id": 89,
+            "type": "text",
+            "bbox": [
+              1006,
+              1059,
+              291,
+              16
+            ],
+            "text": "随便问点什么， / 可查看命令， @ 可添加上下文...",
+            "semantic": "随便问点什么， / 可查看命令， @ 可添加上下文..."
+          },
+          {
+            "id": 90,
+            "type": "group",
+            "bbox": [
+              998,
+              1109,
+              932,
+              28
+            ],
+            "text": "2 MiMo V2.5Free",
+            "semantic": "2 MiMo V2.5Free"
+          },
+          {
+            "id": 91,
+            "type": "button",
+            "bbox": [
+              998,
+              1109,
+              28,
+              28
+            ],
+            "text": "添加图片和文件",
+            "semantic": "添加图片和文件"
+          },
+          {
+            "id": 92,
+            "type": "button",
+            "bbox": [
+              1030,
+              1109,
+              158,
+              28
+            ],
+            "text": "MiMo V2.5 Free",
+            "semantic": "MiMo V2.5 Free"
+          },
+          {
+            "id": 93,
+            "type": "button",
+            "bbox": [
+              1930,
+              1109,
+              28,
+              28
+            ],
+            "text": "停止",
+            "semantic": "停止"
+          },
+          {
+            "id": 95,
+            "type": "text",
+            "bbox": [
+              1041,
+              1115,
+              16,
+              16
+            ],
+            "text": ""
+          },
+          {
+            "id": 96,
+            "type": "text",
+            "bbox": [
+              1063,
+              1115,
+              98,
+              16
+            ],
+            "text": "MiMo V2.5 Free",
+            "semantic": "MiMo V2.5 Free"
+          },
+          {
+            "id": 46,
+            "type": "text",
+            "bbox": [
+              998,
+              231,
+              504,
+              19
+            ],
+            "text": "写入 debug_trace_types.py /E:/work/code/agent-dev/desktop-agent/trace",
+            "semantic": "写入 debug_trace_types.py /E:/work/code/agent-dev/desktop-agent/trace"
+          },
+          {
+            "id": 47,
+            "type": "text",
+            "bbox": [
+              997,
+              275,
+              749,
+              19
+            ],
+            "text": "Shell cd \"E:workicodelagent-dev/desktop-agent\"; E:\\Python313\\python.exe trace/debug_trace_types.py 2>&1",
+            "semantic": "Shell cd \"E:workicodelagent-dev/desktop-agent\"; E:\\Python313\\python.exe trace/debug_trace_types.py 2>&1"
+          },
+          {
+            "id": 48,
+            "type": "text",
+            "bbox": [
+              997,
+              319,
+              939,
+              19
+            ],
+            "text": "Shell Get-Childltem \"E:(workicodelagent-devdesktop-agentitrace(trace*json\" I Sort-Object LastWriteTime -Descending I Select-Object -Fir",
+            "semantic": "Shell Get-Childltem \"E:(workicodelagent-devdesktop-agentitrace(trace*json\" I Sort-Object LastWriteTime -Descending I Select-Object -Fir"
+          },
+          {
+            "id": 49,
+            "type": "text",
+            "bbox": [
+              998,
+              364,
+              167,
+              17
+            ],
+            "text": "已探索2次读取，1次搜索",
+            "semantic": "已探索2次读取，1次搜索"
+          },
+          {
+            "id": 50,
+            "type": "text",
+            "bbox": [
+              995,
+              412,
+              102,
+              23
+            ],
+            "text": "I の edit 失败",
+            "semantic": "I の edit 失败"
+          },
+          {
+            "id": 51,
+            "type": "text",
+            "bbox": [
+              997,
+              467,
+              108,
+              20
+            ],
+            "text": "已探索2次读取",
+            "semantic": "已探索2次读取"
+          },
+          {
+            "id": 52,
+            "type": "text",
+            "bbox": [
+              996,
+              509,
+              584,
+              21
+            ],
+            "text": "编辑 recorder.py /E:/work/code/agent-dev/desktop-agent/mio_cua/evaluation +16 -8",
+            "semantic": "编辑 recorder.py /E:/work/code/agent-dev/desktop-agent/mio_cua/evaluation +16 -8"
+          },
+          {
+            "id": 53,
+            "type": "text",
+            "bbox": [
+              996,
+              554,
+              579,
+              20
+            ],
+            "text": "编辑 recorder.py /E:/work/code/agent-dev/desktop-agent/mio_cua/evaluation +4 -4",
+            "semantic": "编辑 recorder.py /E:/work/code/agent-dev/desktop-agent/mio_cua/evaluation +4 -4"
+          },
+          {
+            "id": 54,
+            "type": "text",
+            "bbox": [
+              997,
+              618,
+              215,
+              20
+            ],
+            "text": "现在更新目标为 Edge（已打开）。",
+            "semantic": "现在更新目标为 Edge（已打开）。"
+          },
+          {
+            "id": 55,
+            "type": "text",
+            "bbox": [
+              996,
+              654,
+              576,
+              22
+            ],
+            "text": "编辑 record_browser search.py /E:/work/code/agent-dev/desktop-agent/trace +1 -1",
+            "semantic": "编辑 record_browser search.py /E:/work/code/agent-dev/desktop-agent/trace +1 -1"
+          },
+          {
+            "id": 56,
+            "type": "text",
+            "bbox": [
+              997,
+              700,
+              575,
+              19
+            ],
+            "text": "编辑 record browser_ search.py /E:/work/code/agent-dev/desktop-agent/trace +1 -1",
+            "semantic": "编辑 record browser_ search.py /E:/work/code/agent-dev/desktop-agent/trace +1 -1"
+          },
+          {
+            "id": 57,
+            "type": "text",
+            "bbox": [
+              997,
+              765,
+              91,
+              17
+            ],
+            "text": "现在重跑测试。",
+            "semantic": "现在重跑测试。"
+          },
+          {
+            "id": 58,
+            "type": "text",
+            "bbox": [
+              996,
+              802,
+              776,
+              20
+            ],
+            "text": "Shell cd\"E:(worklcodelagent-dev/desktop-agent\"; E:\\Python313\\python.exe trace/record_browser_search.py 2>&1",
+            "semantic": "Shell cd\"E:(worklcodelagent-dev/desktop-agent\"; E:\\Python313\\python.exe trace/record_browser_search.py 2>&1"
+          }
+        ],
+        "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1788659853520.png",
+        "metadata": {
+          "step": 0
+        }
+      },
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1788659853.9303312,
+        "result": {
+          "sent": true,
+          "success": false
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": null,
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1788659855.7186446,
+        "result": {
+          "sent": true,
+          "success": false
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": null,
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1788659858.005079,
+        "result": {
+          "sent": true,
+          "success": false
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": null,
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1788659860.7877657,
+        "result": {
+          "sent": true,
+          "success": false
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": null,
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1788659864.071836,
+        "result": {
+          "sent": true,
+          "success": false
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    }
+  ]
+}

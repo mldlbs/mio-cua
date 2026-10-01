@@ -224,3 +224,153 @@ def test_exploration_hints_generated():
     _planner().plan(_task("兴蓉"), _obs(nodes), None, [{"name": "click", "parameters": {}}])
     c = _FakeProvider.captured
     assert "TARGET NOT VISIBLE" in c or "TARGET FOUND" in c
+
+
+def _obs_ctx(window, process=None):
+    """Observation carrying the process identity, as Perception now emits."""
+
+    class _Obs:
+        active_window = window
+        active_process = process
+        screenshot_path = None
+        elements = []
+
+    o = _Obs()
+    o.scene = SceneGraph(nodes=[], active_window=window)
+    return o
+
+
+def test_context_verified_by_process_when_title_is_unrelated():
+    """A window TITLE is content, not identity.
+
+    The Edge window hosting mio-taskhub is titled "MIO·HUB — 任务总线".
+    Title-only matching reported context_verified=false, so the prompt kept
+    injecting the focus_window INVARIANT and the model looped on focus_window
+    forever (trace 1790779553: 3 steps, 0 progress).
+    """
+    _planner().plan(
+        _task(app="Edge"), _obs_ctx("MIO·HUB — 任务总线", "msedge"), None,
+        [{"name": "click", "parameters": {}}],
+    )
+    c = _FakeProvider.captured
+
+    assert '"context_verified": true' in c
+    assert "INVARIANT" not in c  # only injected when the context is wrong
+    assert '"active_process": "msedge"' in c
+
+
+def test_context_still_unverified_for_a_different_process():
+    _planner().plan(
+        _task(app="Edge"), _obs_ctx("无标题 - 记事本", "notepad.exe"), None,
+        [{"name": "click", "parameters": {}}],
+    )
+    c = _FakeProvider.captured
+
+    assert '"context_verified": false' in c
+    assert "INVARIANT" in c
+    assert "focus_window" in c
+
+
+def test_context_verified_by_title_when_process_unknown():
+    """Back-compat: an Observation without a process still matches on title."""
+    _planner().plan(
+        _task(app="Edge"), _obs_ctx("Edge - 新标签页"), None,
+        [{"name": "click", "parameters": {}}],
+    )
+    c = _FakeProvider.captured
+
+    assert '"context_verified": true' in c
+    assert "INVARIANT" not in c
+
+
+class _ImageAwareProvider:
+    """Captures the TEXT user message, even when an image message follows it."""
+
+    captured = None
+    calls = []  # one {"has_image": bool} per generate()
+    fail_with_image = False
+
+    @staticmethod
+    def generate(messages, tools=None):
+        has_image = any(isinstance(m.get("content"), list) for m in messages)
+        _ImageAwareProvider.calls.append({"has_image": has_image})
+        for m in messages:
+            if m["role"] == "user" and isinstance(m.get("content"), str):
+                _ImageAwareProvider.captured = m["content"]
+        if has_image and _ImageAwareProvider.fail_with_image:
+            # The endpoint answered 404 "No endpoints found that support image
+            # input"; a transport-level reset is the other observed shape.
+            raise ConnectionResetError(10054, "forcibly closed by remote host")
+        return _FakeResp()
+
+
+def test_screenshot_hint_reaches_the_prompt(tmp_path):
+    """The hint must be in the message we send, not only in the local name.
+
+    It used to be appended to `user_content` AFTER `messages` was built, so the
+    model never saw it.
+    """
+    shot = tmp_path / "shot.png"
+    shot.write_bytes(b"\x89PNG\r\n\x1a\nnot-a-real-png")
+
+    _ImageAwareProvider.calls = []
+    _ImageAwareProvider.fail_with_image = False
+    obs = _obs_ctx("Edge - 新标签页", "msedge")
+    obs.screenshot_path = str(shot)
+
+    _planner_for(_ImageAwareProvider()).plan(
+        _task(app="Edge"), obs, None, [{"name": "click", "parameters": {}}]
+    )
+
+    assert "attached screenshot" in _ImageAwareProvider.captured
+    assert _ImageAwareProvider.calls[0]["has_image"] is True
+
+
+def test_screenshot_is_dropped_permanently_after_one_failure(tmp_path):
+    """A 461 KiB upload that the endpoint rejects must not be retried every step."""
+    shot = tmp_path / "shot.png"
+    shot.write_bytes(b"\x89PNG\r\n\x1a\nnot-a-real-png")
+
+    _ImageAwareProvider.calls = []
+    _ImageAwareProvider.fail_with_image = True
+    planner = _planner_for(_ImageAwareProvider())
+
+    def _obs():
+        o = _obs_ctx("Edge - 新标签页", "msedge")
+        o.screenshot_path = str(shot)
+        return o
+
+    # Attempt 1: with image -> rejected -> blind retry succeeds.
+    planner.plan(_task(app="Edge"), _obs(), None, [{"name": "click", "parameters": {}}])
+    assert [c["has_image"] for c in _ImageAwareProvider.calls] == [True, False]
+
+    # Every later step must skip the image entirely.
+    _ImageAwareProvider.calls = []
+    planner.plan(_task(app="Edge"), _obs(), None, [{"name": "click", "parameters": {}}])
+    assert [c["has_image"] for c in _ImageAwareProvider.calls] == [False]
+
+    # And the model is told it is operating blind-free (no dangling hint).
+    assert "attached screenshot" not in _ImageAwareProvider.captured
+
+
+def test_transport_error_without_image_propagates():
+    """No image attached -> nothing to fall back to; the caller must see it."""
+
+    class _Dead:
+        @staticmethod
+        def generate(messages, tools=None):
+            raise ConnectionResetError(10054, "forcibly closed by remote host")
+
+    import pytest
+
+    with pytest.raises(ConnectionResetError):
+        _planner_for(_Dead()).plan(
+            _task(app="Edge"), _obs_ctx("Edge - 新标签页", "msedge"), None,
+            [{"name": "click", "parameters": {}}],
+        )
+
+
+def _planner_for(provider):
+    return Planner(provider, "You are a desktop GUI agent.")
+
+

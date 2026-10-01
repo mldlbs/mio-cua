@@ -14,35 +14,42 @@ def _element_from_rect(rect, source: str, text: str, role: str, enabled: bool = 
 
 
 def get_elements() -> list:
-    """Enumerate UIA elements from the foreground window's tree only."""
+    """Enumerate UIA elements from the foreground window's tree only.
+
+    Resolve the foreground window DIRECTLY from its hwnd. The previous
+    implementation did ``for w in Desktop(backend="uia").windows(): if
+    w.handle == fg_hwnd``, which enumerates every top-level window on the
+    desktop just to find one: measured at 120.16s for 14 windows (~8.6s each)
+    on this machine, against 0.01s + 0.9s for the direct-handle path. That
+    single call was 95% of ``Perception.observe()`` (122s -> ~3s).
+    """
     import win32gui
-    from pywinauto import Desktop
+    from pywinauto.controls.uiawrapper import UIAWrapper
+    from pywinauto.uia_element_info import UIAElementInfo
 
     elements = []
     try:
-        desktop = Desktop(backend="uia")
         fg_hwnd = win32gui.GetForegroundWindow()
+        if not fg_hwnd:
+            return elements
+        window = UIAWrapper(UIAElementInfo(fg_hwnd))
+        if not window.is_visible():
+            return elements
+        children = window.descendants()
     except Exception:
         return elements
-    for w in desktop.windows():
+
+    for c in children:
         try:
-            if w.handle != fg_hwnd:
-                continue
-            if not w.is_visible():
-                continue
-            for c in w.descendants():
-                try:
-                    info = c.element_info
-                    elements.append(_element_from_rect(
-                        c.rectangle(),
-                        source="uia",
-                        text=c.window_text(),
-                        role=info.control_type,
-                        enabled=c.is_enabled(),
-                        visible=c.is_visible(),
-                    ))
-                except Exception:
-                    continue
+            info = c.element_info
+            elements.append(_element_from_rect(
+                c.rectangle(),
+                source="uia",
+                text=c.window_text(),
+                role=info.control_type,
+                enabled=c.is_enabled(),
+                visible=c.is_visible(),
+            ))
         except Exception:
             continue
     return elements

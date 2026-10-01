@@ -46,76 +46,131 @@ def get_active_window_rect():
     return rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top
 
 
+def _process_name_of(pid) -> str:
+    """Base process name for a pid (e.g. 'msedge'), or '' when unreadable."""
+    import os
+
+    try:
+        h = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)
+        if not h:
+            return ""
+        try:
+            buf = ctypes.create_unicode_buffer(512)
+            ctypes.windll.psapi.GetModuleFileNameExW(h, None, buf, 512)
+            return os.path.splitext(os.path.basename(buf.value or ""))[0].lower()
+        finally:
+            ctypes.windll.kernel32.CloseHandle(h)
+    except Exception:
+        return ""
+
+
+def get_active_process() -> str:
+    """Base process name of the foreground window (e.g. 'msedge'), or ''.
+
+    The window TITLE is whatever content the app is showing — an Edge window
+    may be titled "MIO·HUB — 任务总线" and never mention Edge at all. The
+    owning process is the only title-independent identity available.
+    """
+    import win32gui
+    import win32process
+
+    try:
+        hwnd = win32gui.GetForegroundWindow()
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+        return _process_name_of(pid)
+    except Exception:
+        return ""
+
+
+def matches_target(target: str, window_title=None, window_process=None) -> bool:
+    """True when `target` names the given (or current foreground) window.
+
+    `target` may be an app name ("Edge", "wechat") or a literal window-title
+    substring. With no arguments the live foreground window is used. Passing
+    only ``window_title`` (a stored string) restricts matching to the title —
+    a title carries no process information, so an Edge window titled
+    "MIO·HUB — 任务总线" cannot be recognized from its title alone. Pass
+    ``window_process`` too (as Observations now do) to make it title-
+    independent.
+    """
+    if not target:
+        return False
+
+    live = window_title is None and window_process is None
+    if live:
+        window_title = get_active_window()
+        window_process = get_active_process()
+
+    title = (window_title or "").lower()
+    if target.lower() in title:
+        return True
+
+    # Known localized display titles (wechat -> 微信)
+    if title:
+        for kw in _title_keywords(target):
+            if kw.lower() in title:
+                return True
+
+    # Owning-process match: the only identity a page title cannot hide.
+    proc = (window_process or "").lower()
+    if proc and proc in _proc_names(target):
+        return True
+    return False
+
+
 def focus_window(title: str, exact: bool = False) -> bool:
     """Bring the window whose title matches `title` to the foreground.
 
     Matching strategy:
     1. Exact title match
-    2. Known app aliases (e.g. WeChat -> 微信)
-    3. Substring match (case-insensitive)
+    2. Process name of a known app (WeChat -> weixin, Edge -> msedge, ...)
+    3. Known localized titles (WeChat -> 微信)
+    4. Substring match
+
+    Step 2 matters: a browser/tab window's title is the PAGE title, so it
+    rarely contains the app name ("MIO·HUB — 任务总线" is an Edge window, not
+    "Edge"). Matching the owning process is title-independent.
     """
     if not title:
         return False
 
-    # Known app aliases: English name -> process name (for focus matching)
-    _ALIASES = {
-        "wechat": "weixin",
-        "chrome": "chrome",
-        "firefox": "firefox",
-        "edge": "msedge",
-    }
-
-    # Try exact match first
-    for hwnd in _windows_matching_title(title, exact=True):
-        if _focus_latest([hwnd]):
-            return True
-
-    # Try process name match for known apps - use pywinauto which handles foreground lock
-    # WeChat window title is "微信" not "weixin", so map to actual window titles
+    # Known localized UIA titles for the alias lookup in step 3.
     _UIA_TITLES = {
         "wechat": "微信",
         "chrome": "Chrome",
         "firefox": "Firefox",
         "edge": "Edge",
     }
-    alias = _ALIASES.get(title.lower())
-    uia_title = _UIA_TITLES.get(title.lower())
-    if alias:
-        from pywinauto import Desktop
-        try:
-            for w in Desktop(backend="uia").windows():
-                try:
-                    text = w.window_text()
-                    if text:
-                        # Match by process name OR UIA window title
-                        if (alias.lower() in text.lower()) or (uia_title and uia_title in text):
-                            w.set_focus()
-                            return True
-                except Exception:
-                    continue
-        except Exception:
-            pass
 
-    # Fallback to substring match
+    # 1. Exact title match
+    for hwnd in _windows_matching_title(title, exact=True):
+        if _focus_latest([hwnd]):
+            return True
+
+    # 2. Process-name match for known apps (title-independent).
+    #    Only for recognized app names: a literal window title that happens to
+    #    be a single unknown word must not waste an enumeration of every
+    #    top-level process on the desktop.
+    if _process_base(title) in _PROC_ALIASES:
+        if _focus_latest(_windows_matching_process(_proc_names(title))):
+            return True
+
+    # 3. Known localized titles (WeChat's window says 微信, not "wechat")
+    uia_title = _UIA_TITLES.get(title.lower())
+    if uia_title:
+        for hwnd in _windows_matching_title(uia_title, exact=False):
+            if _focus_latest([hwnd]):
+                return True
+
+    # 4. Substring match
     for hwnd in _windows_matching_title(title, exact=False):
         if _focus_latest([hwnd]):
             return True
 
-    # UIA fallback
-    from pywinauto import Desktop
-    try:
-        for w in Desktop(backend="uia").windows():
-            text = w.window_text()
-            if text == title:
-                w.set_focus()
-                return True
-        for w in Desktop(backend="uia").windows():
-            text = w.window_text()
-            if title.lower() in text.lower():
-                w.set_focus()
-                return True
-    except Exception:
-        pass
+    # No match. Deliberately NO UIA full-desktop fallback: steps 1 and 4
+    # already perform exact and substring matching via win32gui.EnumWindows
+    # (which also filters IsWindowVisible), so a UIA pass over every top-level
+    # window added no coverage — it only hung for minutes here.
     return False
 
 
@@ -266,8 +321,6 @@ def _window_text(hwnd):
 
 
 def _windows_matching_process(names: tuple) -> list:
-    import ctypes
-    import os
     import win32gui
     import win32process
 
@@ -276,15 +329,7 @@ def _windows_matching_process(names: tuple) -> list:
     def _cb(hwnd, _):
         try:
             _, pid = win32process.GetWindowThreadProcessId(hwnd)
-            h = ctypes.windll.kernel32.OpenProcess(0x1000, False, pid)
-            if not h:
-                return True
-            try:
-                buf = ctypes.create_unicode_buffer(512)
-                ctypes.windll.psapi.GetModuleFileNameExW(h, None, buf, 512)
-                name = os.path.splitext(os.path.basename(buf.value or ""))[0].lower()
-            finally:
-                ctypes.windll.kernel32.CloseHandle(h)
+            name = _process_name_of(pid)
         except Exception:
             return True
         if name not in names:
@@ -366,3 +411,146 @@ def _fg_owned_by(candidates, fg):
     except Exception:
         pass
     return False
+
+
+_TASKBAR_CLASS = "Shell_TrayWnd"
+_TASKBAR_MAX_NODES = 200
+_TASKBAR_MAX_DEPTH = 6
+
+
+def locate_taskbar_hwnd() -> int:
+    """Return the taskbar top-level window handle, or 0 when unavailable.
+
+    Resolved by window class name only -- never by enumerating the desktop,
+    which is what made the old focus_window UIA fallback hang.
+    """
+    import win32gui
+
+    try:
+        return int(win32gui.FindWindow(_TASKBAR_CLASS, None) or 0)
+    except Exception:
+        return 0
+
+
+def enumerate_taskbar(
+    hwnd: int,
+    max_nodes: int = _TASKBAR_MAX_NODES,
+    max_depth: int = _TASKBAR_MAX_DEPTH,
+) -> tuple:
+    """Walk the taskbar UIA subtree into ``[{name, kind, rect}]``.
+
+    Returns ``(items, truncated)``. The root taskbar element itself is not
+    included, only its descendants. Per-element property failures are skipped
+    rather than aborting the walk.
+    """
+    from pywinauto import Desktop
+
+    items = []
+    truncated = False
+    if not hwnd:
+        return items, truncated
+
+    try:
+        root = Desktop(backend="uia").window(handle=hwnd)
+    except Exception:
+        return items, truncated
+
+    try:
+        root_children = list(root.children())
+    except Exception:
+        root_children = []
+    stack = [(child, 1) for child in reversed(root_children)]
+    while stack:
+        node, depth = stack.pop()
+        if len(items) >= max_nodes:
+            truncated = True
+            break
+        if depth > max_depth:
+            continue
+
+        name = ""
+        kind = ""
+        rect = [0, 0, 0, 0]
+        try:
+            name = node.window_text() or ""
+        except Exception:
+            pass
+        try:
+            kind = node.friendly_class_name() or ""
+        except Exception:
+            pass
+        try:
+            r = node.rectangle()
+            rect = [int(r.left), int(r.top), int(r.right) - int(r.left), int(r.bottom) - int(r.top)]
+        except Exception:
+            pass
+        items.append({"name": name, "kind": kind, "rect": rect})
+
+        if depth >= max_depth:
+            continue
+        try:
+            children = list(node.children())
+        except Exception:
+            children = []
+        for child in reversed(children):
+            stack.append((child, depth + 1))
+
+    return items, truncated
+
+
+def find_taskbar_element(
+    hwnd: int,
+    target: str,
+    max_nodes: int = _TASKBAR_MAX_NODES,
+    max_depth: int = _TASKBAR_MAX_DEPTH,
+) -> tuple:
+    """Return ``(element, matched_name, candidate_count)`` for a substring target.
+
+    Walks the same subtree as :func:`enumerate_taskbar` but hands back the live
+    UIA wrapper so the caller can invoke it. Every matching name is counted so
+    the caller can tell an ambiguous target from a precise one.
+    """
+    from pywinauto import Desktop
+
+    if not hwnd or not target:
+        return None, "", 0
+    needle = str(target).strip().lower()
+    if not needle:
+        return None, "", 0
+
+    try:
+        root = Desktop(backend="uia").window(handle=hwnd)
+        root_children = list(root.children())
+    except Exception:
+        return None, "", 0
+
+    first = None
+    first_name = ""
+    candidates = 0
+    seen = 0
+    stack = [(child, 1) for child in reversed(root_children)]
+    while stack and seen < max_nodes:
+        node, depth = stack.pop()
+        seen += 1
+
+        try:
+            name = node.window_text() or ""
+        except Exception:
+            name = ""
+        if needle in name.lower():
+            candidates += 1
+            if first is None:
+                first, first_name = node, name
+
+        if depth >= max_depth:
+            continue
+        try:
+            children = list(node.children())
+        except Exception:
+            children = []
+        for child in reversed(children):
+            stack.append((child, depth + 1))
+
+    if first is None:
+        return None, "", 0
+    return first, first_name, candidates

@@ -6,7 +6,11 @@ from mio_cua.providers.base import Provider, LLMResponse
 
 
 class OpenAICompatProvider(Provider):
-    def __init__(self, base_url: str, api_key: str, model: str, timeout: float = 60):
+    def __init__(self, base_url: str, api_key: str, model: str, timeout: float = 180):
+        # 180s, not 60s: the default model is a reasoning model whose
+        # responses measured 60-93s wall clock. At timeout=60 every plan
+        # looked like a read timeout, burned all retries, and surfaced as a
+        # run-killing ConnectionError/10054 instead of an answer.
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.model = model

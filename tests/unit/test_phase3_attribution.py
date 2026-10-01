@@ -216,3 +216,27 @@ class TestUnknown:
         ])
         a = FailureAttributor().classify(trace)
         assert a.category == FailureCategory.UNKNOWN.value
+
+
+# ---- CONTEXT IDENTITY (title vs process) -----------------------------------
+
+
+class TestContextIdentity:
+    def test_process_identity_beats_an_unrelated_title(self):
+        """An Edge window hosting mio-taskhub is titled "MIO·HUB — 任务总线".
+
+        Title rules alone can never recognise it, so the run used to be
+        mis-attributed toward environment_error; the owning process can.
+        """
+        a = FailureAttributor()
+        assert a._context_matches("MIO·HUB — 任务总线", "Edge") is False
+        assert a._context_matches("MIO·HUB — 任务总线", "Edge", "msedge") is True
+
+    def test_wrong_process_is_still_a_mismatch(self):
+        a = FailureAttributor()
+        assert a._context_matches("MIO·HUB — 任务总线", "Edge", "chrome") is False
+
+    def test_process_check_does_not_widen_a_title_match(self):
+        # process only consulted after the title/alias rules failed
+        a = FailureAttributor()
+        assert a._context_matches("Edge - 新标签页", "Edge", "chrome") is True
