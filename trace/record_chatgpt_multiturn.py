@@ -508,13 +508,13 @@ def _squash(text):
     return re.sub(r"\s+", "", text or "")
 
 
-def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
-    """Reply to the LAST message we sent, plus layout metadata for drift checks.
+def _reply_pieces(nodes, own_tokens, stop_token=None, prompt=None):
+    """Ordered reply pieces from ONE observation: (pieces, why, meta, anchored).
 
-    Returns (text, why, meta). Anchoring on ``own_tokens`` (only the current
-    turn's token) is what keeps earlier turns out of both the anchor and the
-    band above the reply -- and the anchor itself must be our *message*, not
-    the reply that carries the same token (see ``_is_our_message``).
+    Anchoring on ``own_tokens`` (only the current turn's token) is what keeps
+    earlier turns out of both the anchor and the band above the reply -- and
+    the anchor itself must be our *message*, not the reply that carries the
+    same token (see ``_is_our_message``).
 
     DeepSeek keeps the newest reply bottom-anchored while streaming, so a long
     answer can scroll our own bubble out of the viewport (sometimes out of the
@@ -523,19 +523,21 @@ def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
     previous turn's badge/bubble (``stop_token``) or the viewport top; this
     turn's reply is the only content after that boundary.
 
+    ``anchored`` is True when our own message was visible, i.e. this view holds
+    the HEAD of the reply -- the scroll-stitch loop stops on it.
+
     ``prompt`` is the message we just sent: any node that is a verbatim
     (whitespace-free) slice of it is a wrapped continuation row of our own
     prompt, not answer text, and is skipped.
     """
-    nodes = base._node_tuples(obs)
     meta = {"nodes": len(nodes)}
     if not nodes:
-        return "", "no scene nodes", meta
+        return [], "no scene nodes", meta, False
 
     left, right, floor = _layout(nodes)
     meta.update({"left": left, "right": right, "floor": floor})
     if left is None:
-        return "", "composer not found", meta
+        return [], "composer not found", meta, False
 
     def _in_band(bbox):
         x, y = bbox[0], bbox[1]
@@ -561,6 +563,7 @@ def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
                 user_y = y if user_y is None else max(user_y, y)
     if user_y is None:
         user_y = user_y_any
+    anchored = user_y is not None
     anchor_note = ""
     if user_y is None:
         # DeepSeek renders the trailing token badge only when the stream ENDS
@@ -587,6 +590,7 @@ def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
         user_y = top
         anchor_note = f", fallback band (top={top})"
     meta["user_y"] = user_y
+    meta["anchored"] = anchored
 
     norm_prompt = _squash(prompt)
     pieces = []
@@ -602,7 +606,14 @@ def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
             continue
         if y <= user_y:
             continue
-        if floor is not None and y >= floor:
+        # The trailing exact-token badge can sit a few px BELOW the detected
+        # composer top: DeepSeek's input element is a DOM box tall/early enough
+        # to overlap the last message's action row, so the badge landed under
+        # the floor and long replies read tagged=0 even though the body was
+        # extracted correctly. An exact bare token is identity, never chrome,
+        # so it is collected regardless of the floor.
+        is_badge = text in own_tokens
+        if floor is not None and y >= floor and not is_badge:
             continue
         # Noise is SKIPPED, never a break: the UIA tree order is not y order
         # (a trailing copy button at y=1089 listed before the reply's lines
@@ -621,7 +632,7 @@ def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
         pieces.append((y, x, text, y + bbox[3]))
 
     if not pieces:
-        return "", f"no prose below turn anchor (y={user_y}){anchor_note}", meta
+        return [], f"no prose below turn anchor (y={user_y}){anchor_note}", meta, anchored
 
     pieces.sort()
     # UIA exposes the same reply BOTH as one tall container node and as its
@@ -648,14 +659,88 @@ def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
         pieces = pieces[: badge_idx[-1] + 1]
     meta["reply_y"] = pieces[0][0]
     meta["pieces"] = len(pieces)
-    return (
-        " ".join(p[2] for p in pieces),
-        f"{len(pieces)} node(s) below turn anchor y={user_y}{anchor_note}",
-        meta,
+    why = f"{len(pieces)} node(s) below turn anchor y={user_y}{anchor_note}"
+    return pieces, why, meta, anchored
+
+
+def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
+    """Single-view reply text -- the thin wrapper over ``_reply_pieces``.
+
+    Kept as the public entry point (tests and the smoke probes use it); the
+    full, scroll-stitched read lives in ``sweep_reply``.
+    """
+    pieces, why, meta, _anchored = _reply_pieces(
+        base._node_tuples(obs), own_tokens, stop_token, prompt
     )
+    if not pieces:
+        return "", why, meta
+    return " ".join(p[2] for p in pieces), why, meta
 
 
-def settle(perception, token, pin=None, prompt=None,
+def _stitch_lines(acc, lines):
+    """Prepend the non-overlapping head of ``lines`` to ``acc``.
+
+    Views from consecutive scroll-ups overlap by a few lines. The overlap is
+    the longest run where the accumulated head equals the new view's tail;
+    whitespace is normalized first because OCR of the same line can differ
+    slightly between positions. No overlap found -> the new view is assumed to
+    sit entirely above and is prepended whole.
+    """
+    if not acc:
+        return list(lines)
+    a = [_squash(x) for x in acc]
+    b = [_squash(x) for x in lines]
+    for k in range(min(len(a), len(b)), 0, -1):
+        if a[:k] == b[-k:]:
+            return list(lines[:-k]) + list(acc)
+    return list(lines) + list(acc)
+
+
+def sweep_reply(pc, perception, own_tokens, stop_token=None, prompt=None,
+                max_views=8):
+    """Full reply text, stitched across scroll positions.
+
+    The transcript viewport is ~900px, so an answer taller than that (the
+    bullet-heavy ones are) is only PARTLY in the UIA tree, and DeepSeek does
+    not follow the streaming tail -- a single observation captured the head and
+    silently lost the rest plus the token badge (scale run: 13/20 turns read
+    tagged=0 with visibly truncated tails). Read the end first, then page up
+    collecting views until our own message comes into view (``anchored``) or
+    the view stops changing, and stitch them by overlap.
+    """
+    obs = perception.observe()
+    nodes = base._node_tuples(obs)
+    left, right, floor = _layout(nodes)
+    if left is None:
+        return "", "composer not found", False
+    # Click the blank gutter so PageUp/PageDown drive the transcript, not the
+    # composer: a click inside the message column could hit a link.
+    pc.execute(Action("click", "click", {"x": max(0, left + 8), "y": 420}))
+    time.sleep(0.3)
+    for _ in range(12):
+        pc.execute(Action("key", "key", {"keys": "pagedown"}))
+    time.sleep(0.6)
+
+    acc, anchored, last_lines = [], False, None
+    for _ in range(max_views):
+        nodes = base._node_tuples(perception.observe())
+        pieces, _why, _meta, anchored = _reply_pieces(
+            nodes, own_tokens, stop_token, prompt
+        )
+        lines = [p[2] for p in pieces]
+        if lines:
+            acc = _stitch_lines(acc, lines)
+        if anchored or lines == last_lines:
+            break
+        last_lines = lines
+        pc.execute(Action("key", "key", {"keys": "pageup"}))
+        time.sleep(0.7)
+    for _ in range(12):  # leave the page at the newest message again
+        pc.execute(Action("key", "key", {"keys": "pagedown"}))
+    return " ".join(acc), "sweep", anchored
+
+
+def settle(pc, perception, token, pin=None, prompt=None,
            timeout_s=180.0, quiet_s=5.0, interval_s=2.0):
     """Poll until this turn's reply stops changing (mirrors base._settle).
 
@@ -682,6 +767,15 @@ def settle(perception, token, pin=None, prompt=None,
         text, w, m = extract_last_reply(obs, [token], stop_token=pin, prompt=prompt)
         if text and text == last:
             if stable_since and time.time() - stable_since >= quiet_s:
+                # A reply taller than the viewport was only partly in the tree
+                # (see sweep_reply); read the whole thing before returning.
+                full, _swhy, _anch = sweep_reply(
+                    pc, perception, [token], stop_token=pin, prompt=prompt
+                )
+                # Only trust the sweep if it read at least as much as the
+                # single view did; a botched stitch must not shrink the reply.
+                if full and base._char_count(full) >= base._char_count(text):
+                    text = full
                 return text, w, obs, True, m
         else:
             stable_since = time.time() if text else None
@@ -745,6 +839,16 @@ def send_turn(pc, perception, obs, prompt, token):
     for attempt in (1, 2):
         cx, cy = find_composer(base._node_tuples(obs))
         if cx is None:
+            # A freshly opened page can be read one beat too early: the hero
+            # composer is not in the tree yet and the whole turn is lost to
+            # "composer not found" (turn 341 of the scale run). Re-focus and
+            # re-read once before giving up.
+            if attempt == 1:
+                time.sleep(2.0)
+                ok, _how, fresh = focus_chatgpt(perception, None)
+                if ok and fresh is not None:
+                    obs = fresh
+                    continue
             return False, "composer not found"
         pc.execute(Action("click", "click", {"x": cx, "y": cy}))
         time.sleep(0.4)
@@ -829,7 +933,7 @@ def run(turns, limit, out_path, resume_from=1):
                 continue
 
             time.sleep(2.0)
-            text, why, obs2, stable, meta = settle(perception, tok, pin, prompt=prompt)
+            text, why, obs2, stable, meta = settle(pc, perception, tok, pin, prompt=prompt)
             chars = base._char_count(text)
             tagged = tok in text
             under = bool(text) and chars <= limit

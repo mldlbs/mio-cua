@@ -167,6 +167,19 @@ def test_inside_a_line_span_is_still_kept():
     assert text.rstrip().endswith("R400")
 
 
+def test_badge_below_the_composer_top_is_still_collected():
+    """DeepSeek's input element is a DOM box that overlaps the last message's
+    action row, so the trailing badge can render just below the detected
+    floor. An exact bare token is identity, not chrome, so it must survive the
+    floor cut -- otherwise long replies read tagged=0."""
+    bubble = node("R400 回顾这20轮", [1143, 719, 621, 44])
+    reply = node("答复正文。", [1039, 900, 753, 120])
+    badge = node("R400", [1013, 1166, 41, 20])   # floor is 1156
+    text, _why, _meta = mt.extract_last_reply(obs(page(bubble, reply, badge)), ["R400"])
+    assert "答复正文" in text
+    assert text.rstrip().endswith("R400")
+
+
 # ── prompt echo ──
 
 def test_wrapped_prompt_row_is_not_mistaken_for_the_reply():
@@ -180,6 +193,31 @@ def test_wrapped_prompt_row_is_not_mistaken_for_the_reply():
     )
     assert "原样带上" not in text
     assert "最终看法" in text
+
+
+# ── sweep stitching ──
+
+def test_stitch_lines_merges_overlapping_views():
+    """Read bottom-up: the scrolled-up view's tail repeats the accumulated
+    head, and only its non-overlapping head is prepended."""
+    bottom = ["d", "e", "f"]
+    upper = ["a", "b", "c", "d", "e"]
+    assert mt._stitch_lines(bottom, upper) == ["a", "b", "c", "d", "e", "f"]
+
+
+def test_stitch_lines_prepends_when_views_do_not_overlap():
+    assert mt._stitch_lines(["c", "d"], ["a", "b"]) == ["a", "b", "c", "d"]
+
+
+def test_stitch_lines_tolerates_ocr_spacing():
+    """The same line can OCR with different spacing at another scroll
+    position; the overlap match must normalize before comparing."""
+    bottom = ["答复 第一句。", "第二句。"]
+    upper = ["开头。", "答复第一句。"]
+    out = mt._stitch_lines(bottom, upper)
+    assert out[0] == "开头。"
+    assert out[-1] == "第二句。"
+    assert out == ["开头。", "答复 第一句。", "第二句。"]
 
 
 # ── delivery ──
