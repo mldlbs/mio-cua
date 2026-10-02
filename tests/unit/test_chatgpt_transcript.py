@@ -120,11 +120,18 @@ def _uia_nodes():
 def _strip_empty_state(nodes):
     """Drop the greeting block ChatGPT removes as soon as a message exists.
 
-    It is three nodes -- a group, the greeting text and the `Meng` avatar
-    button -- spread over y 776..807, so matching only the greeting's own
-    text leaves the avatar behind to be counted as part of the answer.
+    It is a greeting row plus the `Meng` avatar button on that same row, so
+    matching only the greeting's own text leaves the avatar behind to be
+    counted as part of the answer -- delete the whole row instead. The band
+    must be found by content: it sat at y 776..807 in the first capture and
+    at y=687 in the next (the composer moved), which silently broke the
+    hardcoded range.
     """
-    return [n for n in nodes if not (760 <= n["bbox"][1] <= 820 and n["bbox"][0] >= 1000)]
+    rows = {n["bbox"][1] for n in nodes
+            if n["bbox"] and any(k in (n["text"] or "")
+                                  for k in ("能帮什么忙", "有什么可以", "有什么忙"))}
+    return [n for n in nodes
+            if n["bbox"] and n["bbox"][1] not in rows and n["bbox"][0] >= 1000]
 
 
 def test_real_uia_capture_keeps_the_sidebar_out_of_the_reply():
