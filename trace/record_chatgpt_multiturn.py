@@ -499,7 +499,16 @@ def _is_noise(text):
     return base._is_ui_noise(text) or bool(_EXTRA_NOISE.search(text or ""))
 
 
-def extract_last_reply(obs, own_tokens, stop_token=None):
+def _squash(text):
+    """Whitespace-free form, for 'is this slice of what we sent?' checks.
+
+    Whitespace differs between the prompt we typed and the node text (wrap
+    points, OCR spacing), so a verbatim comparison must normalize first.
+    """
+    return re.sub(r"\s+", "", text or "")
+
+
+def extract_last_reply(obs, own_tokens, stop_token=None, prompt=None):
     """Reply to the LAST message we sent, plus layout metadata for drift checks.
 
     Returns (text, why, meta). Anchoring on ``own_tokens`` (only the current
@@ -513,6 +522,10 @@ def extract_last_reply(obs, own_tokens, stop_token=None):
     stream ends -- so when the bubble anchor misses, open the band on the
     previous turn's badge/bubble (``stop_token``) or the viewport top; this
     turn's reply is the only content after that boundary.
+
+    ``prompt`` is the message we just sent: any node that is a verbatim
+    (whitespace-free) slice of it is a wrapped continuation row of our own
+    prompt, not answer text, and is skipped.
     """
     nodes = base._node_tuples(obs)
     meta = {"nodes": len(nodes)}
@@ -575,6 +588,7 @@ def extract_last_reply(obs, own_tokens, stop_token=None):
         anchor_note = f", fallback band (top={top})"
     meta["user_y"] = user_y
 
+    norm_prompt = _squash(prompt)
     pieces = []
     for ntype, text, bbox in nodes:
         if ntype == "group":
@@ -582,6 +596,7 @@ def extract_last_reply(obs, own_tokens, stop_token=None):
         text = (text or "").strip()
         if not text or not bbox or len(bbox) < 4:
             continue
+        squashed = _squash(text)
         x, y = bbox[0], bbox[1]
         if not (left <= x <= right):
             continue
@@ -595,6 +610,13 @@ def extract_last_reply(obs, own_tokens, stop_token=None):
         # fire before nodes that are visually above it. Control labels and
         # the footer are dropped in place instead.
         if _is_noise(text):
+            continue
+        # A wrapped continuation row of our own multi-line prompt can leak
+        # into the band: the 100-turn run's turn 265 "reply" was the prompt's
+        # own second line ("我消息开头的编"). A verbatim (whitespace-free)
+        # slice of what we just sent is our prompt, not the answer, so skip
+        # it and let settle keep waiting.
+        if norm_prompt and len(squashed) >= 6 and squashed in norm_prompt:
             continue
         pieces.append((y, x, text, y + bbox[3]))
 
@@ -633,7 +655,8 @@ def extract_last_reply(obs, own_tokens, stop_token=None):
     )
 
 
-def settle(perception, token, pin=None, timeout_s=180.0, quiet_s=5.0, interval_s=2.0):
+def settle(perception, token, pin=None, prompt=None,
+           timeout_s=180.0, quiet_s=5.0, interval_s=2.0):
     """Poll until this turn's reply stops changing (mirrors base._settle).
 
     quiet_s=5 (was 3), timeout 180s (was 60): an untethered deep-discussion
@@ -656,7 +679,7 @@ def settle(perception, token, pin=None, timeout_s=180.0, quiet_s=5.0, interval_s
             why = f"focus: {how}"
             time.sleep(interval_s)
             continue
-        text, w, m = extract_last_reply(obs, [token], stop_token=pin)
+        text, w, m = extract_last_reply(obs, [token], stop_token=pin, prompt=prompt)
         if text and text == last:
             if stable_since and time.time() - stable_since >= quiet_s:
                 return text, w, obs, True, m
@@ -683,17 +706,20 @@ def _sent_seen(obs, token):
     ``_tree_has`` alone was fooled by DeepSeek: an Enter that did not send
     leaves the full draft in the input box, and the token still reads True
     there 2s later -- a false success that only surfaced as 'current prompt
-    not in transcript' a full settle later. Drafts live at y >= floor; real
-    messages are either a bubble inside the transcript band or, when the
-    bottom-anchored scroll has pushed the bubble out, an outline entry at
-    x > right (the outline only mirrors messages that actually landed).
+    not in transcript' a full settle later. Delivery proof must therefore be
+    structural: an ``input`` node is ALWAYS the composer (or the address bar
+    or a markdown quote), never a delivered message, so it is skipped; a real
+    message is a bubble inside the transcript band or, when the
+    bottom-anchored scroll has pushed it out, an outline entry at x > right.
+    With no composer found (left is None) nothing can be proven, so we fail
+    rather than claim success.
     """
     nodes = base._node_tuples(obs)
     left, right, floor = _layout(nodes)
     if left is None:
-        return _tree_has(obs, token)
+        return False
     for ntype, text, bbox in nodes:
-        if ntype == "group" or not bbox or len(bbox) < 4:
+        if ntype in ("group", "input") or not bbox or len(bbox) < 4:
             continue
         x, y = bbox[0], bbox[1]
         if left <= x <= right and (floor is None or y < floor):
@@ -803,7 +829,7 @@ def run(turns, limit, out_path, resume_from=1):
                 continue
 
             time.sleep(2.0)
-            text, why, obs2, stable, meta = settle(perception, tok, pin)
+            text, why, obs2, stable, meta = settle(perception, tok, pin, prompt=prompt)
             chars = base._char_count(text)
             tagged = tok in text
             under = bool(text) and chars <= limit
