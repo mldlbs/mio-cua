@@ -180,6 +180,30 @@ def test_badge_below_the_composer_top_is_still_collected():
     assert text.rstrip().endswith("R400")
 
 
+def test_button_and_text_duplicate_of_one_line_counts_once():
+    """DeepSeek renders a line as a button row plus its text child a few px
+    apart; the tall-span rule misses both (they are short) and the answer read
+    doubled in the scale run ("80分钟 x 250 = 20,000分钟" twice)."""
+    bubble = node("R400 回顾", [1143, 631, 621, 44])
+    btn = node("答复正文第一句。", [1039, 785, 753, 28], type_="button")
+    txt = node("答复正文第一句。", [1039, 789, 753, 20])
+    badge = node("R400", [1439, 1053, 45, 20])
+    text, _why, _meta = mt.extract_last_reply(
+        obs(page(bubble, btn, txt, badge)), ["R400"]
+    )
+    assert text.count("答复正文第一句。") == 1
+    assert text.rstrip().endswith("R400")
+
+
+def test_repeated_line_far_below_is_still_kept():
+    """The same sentence twice apart is deliberate, not a duplicate render."""
+    bubble = node("R400 回顾", [1143, 631, 621, 44])
+    first = node("重复的一句话。", [1039, 785, 753, 20])
+    second = node("重复的一句话。", [1039, 900, 753, 20])
+    text, _why, _meta = mt.extract_last_reply(obs(page(bubble, first, second)), ["R400"])
+    assert text.count("重复的一句话。") == 2
+
+
 # ── prompt echo ──
 
 def test_wrapped_prompt_row_is_not_mistaken_for_the_reply():

@@ -642,10 +642,19 @@ def _reply_pieces(nodes, own_tokens, stop_token=None, prompt=None):
     # a rendering of that node, not new text. The exact token badge is the
     # exception: it often sits inside a line's bbox and dropping it broke
     # every `tagged` check even when the body was extracted correctly.
+    #
+    # A plain line is often also doubled as a button(row) + its text(child) a
+    # few px apart -- e.g. the scale run read "80分钟 x 250 = 20,000分钟" twice
+    # -- which the tall-span rule misses because both rows are short. The same
+    # normalized text within a kept row's span is that duplicate, not a
+    # deliberate repetition (a repeated line far below stays).
     kept = []
     for y, x, text, bottom in pieces:
         if text not in own_tokens and any(
-            k[3] >= y and (k[3] - k[0]) >= 60 for k in kept
+            k[3] >= y and (
+                (k[3] - k[0]) >= 60 or _squash(k[2]) == _squash(text)
+            )
+            for k in kept
         ):
             continue
         kept.append((y, x, text, bottom))
