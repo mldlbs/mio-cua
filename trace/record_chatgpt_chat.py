@@ -191,21 +191,75 @@ def _wininet_proxy() -> str:
     return ""
 
 
-def _ensure_foreground() -> None:
-    """Put a ChatGPT tab in front so the acceptance read is of the right page.
+def _chrome_windows():
+    """Visible Chrome top-level windows, in enumeration order."""
+    import win32gui
+    out = []
 
-    The agent's last action is whatever it did last; nothing guarantees Chrome
-    still owns the foreground when we start measuring.
+    def cb(hwnd, _):
+        if (win32gui.IsWindowVisible(hwnd)
+                and win32gui.GetClassName() == "Chrome_WidgetWin_1"
+                and win32gui.GetWindowText(hwnd)):
+            out.append(hwnd)
+
+    win32gui.EnumWindows(cb, None)
+    return out
+
+
+def _activate_exact(hwnd) -> bool:
+    """Raise ``hwnd`` and confirm IT -- not a sibling of its process -- is in
+    front. With two Chrome windows ``_focus_latest`` reports success while the
+    other window keeps the foreground, and the wrong transcript then passes the
+    process guard in ``main``."""
+    import ctypes
+    import win32gui
+    from mio_cua.automation.windows import _focus_latest
+    if not _focus_latest([hwnd]):
+        return False
+    for _ in range(3):
+        if win32gui.GetForegroundWindow() == hwnd:
+            return True
+        ctypes.windll.user32.SwitchToThisWindow(hwnd, True)
+        time.sleep(0.15)
+    return win32gui.GetForegroundWindow() == hwnd
+
+
+def _looks_like_chatgpt(obs) -> bool:
+    """Identify the page by CONTENT, never by title.
+
+    ChatGPT rewrites <title> from the conversation as soon as the first
+    message lands ('自我介绍...'), so title matching ("ChatGPT") misses it
+    while every other Chrome window still matches "Chrome" -- and with two
+    Chrome windows the fallback can raise the wrong tab. The address bar URL
+    leads; the composer + disclaimer/sidebar markers are the fallback.
     """
-    from mio_cua.automation.windows import focus_window, get_active_window
-    try:
-        current = get_active_window()
-    except Exception:
-        current = ""
-    if "chatgpt" in current.lower():
-        return
-    if not focus_window("ChatGPT"):
-        focus_window("Chrome")
+    texts = [(t or "") for _, t, _ in _node_tuples(obs)]
+    if any("chatgpt.com" in t for t in texts):
+        return True
+    return (
+        any("随便问" in t or "有问题" in t for t in texts)
+        and any(("也可能会犯错" in t) or ("新聊天" in t) for t in texts)
+    )
+
+
+def _ensure_foreground(perception=None):
+    """Bring the ChatGPT tab to the front and return its observation.
+
+    Candidates are activated until one's content is a ChatGPT page, instead of
+    trusting the window title (see ``_looks_like_chatgpt``). Falls back to a
+    plain observation of whatever is in front, so the caller's own guard still
+    decides whether that is readable.
+    """
+    if perception is None:
+        from mio_cua.perception.perception import Perception
+        perception = Perception()
+    for hwnd in _chrome_windows():
+        if not _activate_exact(hwnd):
+            continue
+        obs = perception.observe()
+        if _looks_like_chatgpt(obs):
+            return obs
+    return perception.observe()
 
 
 # ── Task ──
@@ -448,10 +502,10 @@ def main():
     from mio_cua.perception.perception import Perception
 
     # Perception reads whatever window is in front; the agent may have left
-    # another one there after its last focus check.
-    _ensure_foreground()
+    # another one there after its last focus check, so pick the ChatGPT window
+    # by content and reuse its observation.
     _p = Perception(screenshot_dir=str(SCREENSHOTS_DIR))
-    _probe = _p.observe()
+    _probe = _ensure_foreground(_p)
     if "chrome" not in (_probe.active_process or "").lower():
         print(f"  ! foreground is {_probe.active_process or '?'} -- refusing to "
               f"read a transcript from the wrong window")

@@ -297,3 +297,29 @@ def test_ui_noise_labels():
         assert scenario._is_ui_noise(s) is True, s
     for s in (ANSWER, "我是一个AI模型，乐于助人。", "当然可以，我来介绍一下："):
         assert scenario._is_ui_noise(s) is False, s
+
+
+# ── window identification (content, not title) ──
+
+def test_looks_like_chatgpt_by_url():
+    nodes = base_page()
+    nodes.append(node("chatgpt.com", [600, 150, 120, 20]))
+    assert scenario._looks_like_chatgpt(obs(nodes)) is True
+
+
+def test_looks_like_chatgpt_by_composer_and_disclaimer():
+    nodes = base_page(scenario.PROMPT)
+    nodes.append(node("也可能会犯错", [600, 900, 160, 20]))
+    assert scenario._looks_like_chatgpt(obs(nodes)) is True
+
+
+def test_composer_alone_is_not_proof_of_chatgpt():
+    """A page that merely contains '有问题' must not be trusted -- two Chrome
+    windows are open and only one of them is the conversation."""
+    assert scenario._looks_like_chatgpt(obs(base_page())) is False
+
+
+def test_unrelated_chrome_page_is_not_chatgpt():
+    nodes = [node("DeepSeek", [600, 200, 100, 20]),
+             node("深度思考", [600, 300, 100, 20])]
+    assert scenario._looks_like_chatgpt(obs(nodes)) is False
