@@ -62,6 +62,7 @@ pip install -e ".[gpu]"     # 可选：onnxruntime-directml，GPU 加速感知�
 | `mio_click` | 屏幕坐标点击 |
 | `mio_type` | 向聚焦控件输入文本 |
 | `mio_key` | 发送按键/组合键（enter、ctrl+s 等） |
+| `mio_ask_web_chat` | 在已打开的 ChatGPT/DeepSeek 标签页提问并读回回复（自动等待流式结束、超视口长回复滚动拼接；不注入任何标记） |
 | `mio_observe_scene` | 感知活动窗口：元素列表（文本/类型/坐标/src/conf） |
 | `mio_analyze_page` | 纯视觉解析网页为交互元素（OmniParser，无需 DOM/扩展） |
 | `mio_vdesk` | 管理虚拟桌面隔离（ensure/close/left/right/num） |
@@ -86,7 +87,7 @@ pip install -e ".[gpu]"     # 可选：onnxruntime-directml，GPU 加速感知�
 | `mio_validate` | 通用校验：visual_compare/completeness_check，校验上次抽取 |
 | `mio_report` | 通用报告：dataset → 证据 Markdown |
 
-> 注：上表共 **36** 个工具。`mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 为 `workflow/` 下的 MVP 封装，依赖运行时上下文；其余为稳定能力。
+> 注：上表共 **37** 个工具。`mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 为 `workflow/` 下的 MVP 封装，依赖运行时上下文；其余为稳定能力。`mio_ask_web_chat` 需要目标站点（chatgpt.com / deepseek.com）已在 Chrome 中打开，能力同 `trace/record_chatgpt_multiturn.py`（已过 5/20/50/100 轮验证）。
 
 ## 安全提示
 

@@ -286,6 +286,12 @@ def test_mcp_health_tool_registered():
     assert "mio_health" in names
 
 
+def test_mcp_ask_web_chat_registered():
+    from mio_cua.mcp_server import mcp
+    names = {t.name for t in _run(mcp.list_tools())}
+    assert "mio_ask_web_chat" in names
+
+
 def test_mcp_health_reports_layers_and_log():
     """mio_health is the one call that answers 'why did perception degrade?' —
     it must surface the log path and every perception layer's readiness."""

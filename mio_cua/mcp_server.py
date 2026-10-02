@@ -9,6 +9,7 @@ Exposes the agent's proven capabilities as MCP tools:
 Local stdio transport (the tools operate on the user's own desktop).
 """
 
+import json
 import logging
 import logging.handlers
 import os
@@ -429,6 +430,35 @@ async def mio_key(keys: str = Field(..., description="Key or combo, e.g. 'enter'
     ctrl = InputController()
     r = ctrl.execute(Action(id="mcp", type="key", params={"keys": keys}))
     return "sent" if r.sent else f"Error: {r.error}"
+
+
+# ---------------------------------------------------------------------------
+# Web chat (drive an already-open ChatGPT/DeepSeek tab and read its reply)
+# ---------------------------------------------------------------------------
+
+@mcp.tool(name="mio_ask_web_chat", annotations={
+    "title": "Ask an open ChatGPT/DeepSeek tab and read the reply", "readOnlyHint": False,
+    "destructiveHint": False, "idempotentHint": False, "openWorldHint": True,
+})
+async def mio_ask_web_chat(
+    prompt: str = Field(..., description="Message to send to the chat page"),
+    site: str = Field(default="deepseek", description="Which page to drive: 'deepseek' or 'chatgpt' (must already be open in Chrome)"),
+    timeout_s: int = Field(default=180, description="Max seconds to wait for the reply to settle", ge=10, le=900),
+    new_chat: bool = Field(default=False, description="Start a fresh conversation before sending"),
+) -> str:
+    """Type into the open ChatGPT/DeepSeek tab and return its reply as JSON.
+
+    The reply is read from the page's accessibility tree (and scrolled/stitched
+    when it is taller than the viewport), so the client does not have to poll or
+    OCR. The prompt is sent verbatim -- no marker is injected into it.
+    """
+    from mio_cua.web_chat import ask
+    try:
+        result = ask(site=site, prompt=prompt, timeout_s=float(timeout_s),
+                     new_chat=new_chat)
+    except Exception as e:  # noqa: BLE001 - surface it, never crash the server
+        return f"Error: {type(e).__name__}: {e}"
+    return json.dumps(result, ensure_ascii=False)
 
 
 # ---------------------------------------------------------------------------
