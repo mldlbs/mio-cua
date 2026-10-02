@@ -1,4 +1,4 @@
-"""Extraction regressions for the multi-turn recorder (DeepSeek).
+"""Extraction regressions for the multi-turn recorder (DeepSeek + ChatGPT).
 
 The 2026-10-02 DeepSeek run took three live attempts; every miss below is a
 failure mode that actually happened and cost a turn, so these fixtures are the
@@ -40,6 +40,18 @@ def deepseek(monkeypatch):
     monkeypatch.setattr(mt, "SITE", "deepseek")
 
 
+# ChatGPT shares extract_last_reply, but its layout is textual (base._layout on
+# the "有问题，随便问" placeholder) and its replies end with the token inline
+# rather than via a separate badge -- a path the DeepSeek work never exercised,
+# and which cannot be re-tested live while the account is out of quota.
+CG_COMPOSER = [1033, 711, 153, 26]     # -> band 633..1586, floor 711
+
+
+@pytest.fixture
+def chatgpt(monkeypatch):
+    monkeypatch.setattr(mt, "SITE", "chatgpt")
+
+
 def node(text, bbox, type_="text"):
     return {"type": type_, "text": text, "bbox": bbox}
 
@@ -50,6 +62,10 @@ def obs(nodes):
 
 def page(*extra):
     return [node("·", COMPOSER, "input"), *extra]
+
+
+def cg_page(*extra):
+    return [node("有问题，随便问", CG_COMPOSER, "input"), *extra]
 
 
 # ── anchor ──
@@ -191,3 +207,54 @@ def test_no_composer_means_no_proof():
     """Without a layout we cannot separate transcript from composer."""
     bubble = node("R400 我们来聊聊", [1143, 631, 621, 44])
     assert mt._sent_seen(obs([bubble]), "R400") is False
+
+
+# ── ChatGPT (shared code path, different layout) ──
+
+def test_chatgpt_reply_below_our_message_is_extracted(chatgpt):
+    msg = node("R500 我们来聊聊旅行", [1100, 400, 320, 26])
+    first = node("这是答复第一句。", [1100, 430, 320, 26])
+    last = node("最后一句，末尾带上 R500", [1100, 456, 320, 26])
+    text, _why, meta = mt.extract_last_reply(obs(cg_page(msg, first, last)), ["R500"])
+    assert meta["user_y"] == 400
+    assert "答复第一句" in text
+    assert "R500" in text      # inline trailing token, no separate badge node
+
+
+def test_chatgpt_chrome_never_reaches_the_reply(chatgpt):
+    msg = node("R500 我们来聊聊旅行", [1100, 400, 320, 26])
+    reply = node("真正的答复。R500", [1100, 430, 320, 26])
+    ad = node("广告", [1100, 500, 60, 20])
+    disclaimer = node("也可能会犯错", [1100, 530, 200, 20])
+    copy_btn = node("复制", [1100, 560, 40, 20])
+    text, _why, _meta = mt.extract_last_reply(
+        obs(cg_page(msg, reply, ad, disclaimer, copy_btn)), ["R500"]
+    )
+    assert text == "真正的答复。R500"
+
+
+def test_chatgpt_earlier_turn_stays_out(chatgpt):
+    """The anchor is the current token's message; older turns sit above it."""
+    earlier_msg = node("R499 上一轮的问题", [1100, 300, 320, 26])
+    earlier_reply = node("上一轮的答复内容。R499", [1100, 326, 320, 26])
+    msg = node("R500 本轮的问题", [1100, 400, 320, 26])
+    reply = node("本轮的答复。R500", [1100, 430, 320, 26])
+    text, _why, meta = mt.extract_last_reply(
+        obs(cg_page(earlier_msg, earlier_reply, msg, reply)), ["R500"]
+    )
+    assert meta["user_y"] == 400
+    assert "上一轮" not in text
+    assert "本轮的答复" in text
+
+
+def test_chatgpt_prompt_echo_row_is_skipped(chatgpt):
+    prompt = "R500 回顾这五轮讨论（回答最后请原样带上我消息开头的编号）"
+    msg = node(prompt, [1100, 400, 320, 26])
+    echo = node("回答最后请原样带上我消息开头的编号", [1100, 430, 320, 26])
+    real = node("我的最终看法是……", [1100, 456, 320, 26])
+    text, _why, _meta = mt.extract_last_reply(
+        obs(cg_page(msg, echo, real)), ["R500"], prompt=prompt
+    )
+    assert "原样带上" not in text
+    assert "最终看法" in text
+
