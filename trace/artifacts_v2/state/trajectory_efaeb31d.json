@@ -1,0 +1,20 @@
+[
+  {
+    "step": 0,
+    "action": "click",
+    "params": {
+      "x": 188,
+      "y": 55
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2105875064272",
+    "active_window": "微信",
+    "result_success": true,
+    "result_msg": "clicked",
+    "context_violated": true,
+    "post_active": "ChatGPT - Google Chrome",
+    "recovery_active": "微信"
+  }
+]

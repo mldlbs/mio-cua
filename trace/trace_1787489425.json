@@ -1,0 +1,17 @@
+{
+  "trace_id": "trace_1787489425",
+  "created_at": 1787489425.4975598,
+  "task": {
+    "instruction": "找到名为「兴蓉」的群并打开",
+    "target_context": {
+      "app": "WeChat"
+    },
+    "metadata": {}
+  },
+  "metadata": {
+    "steps": 0,
+    "final_status": "FAIL",
+    "final_summary": "loop error: 429 Client Error: Too Many Requests for url: http://127.0.0.1:8000/v1/chat/completions"
+  },
+  "entries": []
+}

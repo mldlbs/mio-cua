@@ -1,0 +1,16 @@
+id: routing
+title: "工具路由验证：文件整理走 fs 工具"
+instruction: >-
+  整理目录 D:\Users\gf1913\Temp\opencode\routing_test 下的文件，按类型归档：
+  1. 用 list_dir(path="D:\Users\gf1913\Temp\opencode\routing_test") 查看文件
+  2. 用 make_dir 创建分类文件夹：文档、图片、安装包、项目配置
+  3. 用 move_files 批量移动（每个分类一次调用）：
+     - 文档：report.txt、notes.md
+     - 图片：photo.jpg
+     - 安装包：setup.exe
+     - 项目配置：app.py、data.json、index.html
+  4. 全部移动完调用 success，报告移动了几个文件
+  注意：必须用 list_dir/make_dir/move_files 文件系统工具，不要打开资源管理器窗口点击，不要逐文件 move_file。
+timeout_s: 300
+max_steps: 60
+checks: []

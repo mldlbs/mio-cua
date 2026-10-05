@@ -1,0 +1,1891 @@
+{
+  "active_window": "ChatGPT - Google Chrome",
+  "active_process": "chrome",
+  "node_count": 157,
+  "all_nodes": [
+    {
+      "id": 0,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        197,
+        1918,
+        1200
+      ]
+    },
+    {
+      "id": 1,
+      "type": "group",
+      "text": "ChatGPT - Google Chrome - Meng",
+      "semantic": "ChatGPT - Google Chrome - Meng",
+      "bbox": [
+        691,
+        197,
+        1918,
+        1200
+      ]
+    },
+    {
+      "id": 2,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        197,
+        1918,
+        1200
+      ]
+    },
+    {
+      "id": 3,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        197,
+        1918,
+        1200
+      ]
+    },
+    {
+      "id": 4,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        197,
+        1918,
+        1200
+      ]
+    },
+    {
+      "id": 5,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        197,
+        1781,
+        41
+      ]
+    },
+    {
+      "id": 6,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        697,
+        197,
+        28,
+        41
+      ]
+    },
+    {
+      "id": 7,
+      "type": "group",
+      "text": "ChatGPT",
+      "semantic": "ChatGPT",
+      "bbox": [
+        719,
+        197,
+        256,
+        41
+      ]
+    },
+    {
+      "id": 8,
+      "type": "text",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        719,
+        197,
+        256,
+        41
+      ]
+    },
+    {
+      "id": 9,
+      "type": "button",
+      "text": "ChatGPT - 内存用量 - 358 MB",
+      "semantic": "ChatGPT - 内存用量 - 358 MB",
+      "bbox": [
+        719,
+        197,
+        256,
+        41
+      ]
+    },
+    {
+      "id": 10,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        719,
+        197,
+        256,
+        41
+      ]
+    },
+    {
+      "id": 11,
+      "type": "button",
+      "text": "新标签页",
+      "semantic": "新标签页",
+      "bbox": [
+        969,
+        197,
+        28,
+        41
+      ]
+    },
+    {
+      "id": 12,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        1009,
+        197,
+        1463,
+        41
+      ]
+    },
+    {
+      "id": 13,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        2472,
+        198,
+        137,
+        39
+      ]
+    },
+    {
+      "id": 14,
+      "type": "button",
+      "text": "最小化",
+      "semantic": "最小化",
+      "bbox": [
+        2472,
+        198,
+        45,
+        39
+      ]
+    },
+    {
+      "id": 15,
+      "type": "button",
+      "text": "最大化",
+      "semantic": "最大化",
+      "bbox": [
+        2517,
+        198,
+        46,
+        39
+      ]
+    },
+    {
+      "id": 16,
+      "type": "button",
+      "text": "关闭",
+      "semantic": "关闭",
+      "bbox": [
+        2563,
+        198,
+        46,
+        39
+      ]
+    },
+    {
+      "id": 17,
+      "type": "button",
+      "text": "标签页搜索",
+      "semantic": "标签页搜索",
+      "bbox": [
+        697,
+        203,
+        28,
+        28
+      ]
+    },
+    {
+      "id": 18,
+      "type": "button",
+      "text": "关闭",
+      "semantic": "关闭",
+      "bbox": [
+        933,
+        203,
+        28,
+        28
+      ]
+    },
+    {
+      "id": 21,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        237,
+        1918,
+        46
+      ]
+    },
+    {
+      "id": 22,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        237,
+        1918,
+        46
+      ]
+    },
+    {
+      "id": 23,
+      "type": "button",
+      "text": "返回",
+      "semantic": "返回",
+      "bbox": [
+        697,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 24,
+      "type": "button",
+      "text": "前进",
+      "semantic": "前进",
+      "bbox": [
+        733,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 25,
+      "type": "button",
+      "text": "重新加载",
+      "semantic": "重新加载",
+      "bbox": [
+        769,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 26,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        812,
+        243,
+        1586,
+        34
+      ]
+    },
+    {
+      "id": 27,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        2407,
+        243,
+        106,
+        34
+      ]
+    },
+    {
+      "id": 28,
+      "type": "button",
+      "text": "mio — 浏览器助手\n可以访问此网站",
+      "semantic": "mio — 浏览器助手\n可以访问此网站",
+      "bbox": [
+        2407,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 29,
+      "type": "button",
+      "text": "CSDN同步助手\n可以访问此网站",
+      "semantic": "CSDN同步助手\n可以访问此网站",
+      "bbox": [
+        2443,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 30,
+      "type": "button",
+      "text": "扩展程序",
+      "semantic": "扩展程序",
+      "bbox": [
+        2479,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 31,
+      "type": "button",
+      "text": "Meng",
+      "semantic": "Meng",
+      "bbox": [
+        2533,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 32,
+      "type": "button",
+      "text": "Chrome",
+      "semantic": "Chrome",
+      "bbox": [
+        2569,
+        243,
+        34,
+        34
+      ]
+    },
+    {
+      "id": 33,
+      "type": "button",
+      "text": "查看网站信息",
+      "semantic": "查看网站信息",
+      "bbox": [
+        817,
+        248,
+        24,
+        24
+      ]
+    },
+    {
+      "id": 34,
+      "type": "input",
+      "text": "chatgpt.com",
+      "semantic": "chatgpt.com",
+      "bbox": [
+        849,
+        248,
+        1505,
+        24
+      ]
+    },
+    {
+      "id": 35,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        2362,
+        248,
+        24,
+        24
+      ]
+    },
+    {
+      "id": 36,
+      "type": "button",
+      "text": "为此标签页添加书签",
+      "semantic": "为此标签页添加书签",
+      "bbox": [
+        2362,
+        248,
+        24,
+        24
+      ]
+    },
+    {
+      "id": 38,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        2522,
+        252,
+        2,
+        16
+      ]
+    },
+    {
+      "id": 41,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        283,
+        1918,
+        1114
+      ]
+    },
+    {
+      "id": 42,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        283,
+        1918,
+        1
+      ]
+    },
+    {
+      "id": 43,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        284,
+        1918,
+        1113
+      ]
+    },
+    {
+      "id": 44,
+      "type": "input",
+      "text": "ChatGPT",
+      "semantic": "ChatGPT",
+      "bbox": [
+        691,
+        284,
+        1918,
+        1113
+      ]
+    },
+    {
+      "id": 45,
+      "type": "group",
+      "text": "历史聊天记录",
+      "semantic": "历史聊天记录",
+      "bbox": [
+        691,
+        284,
+        260,
+        999
+      ]
+    },
+    {
+      "id": 46,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        699,
+        284,
+        229,
+        52
+      ]
+    },
+    {
+      "id": 47,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        966,
+        284,
+        1628,
+        52
+      ]
+    },
+    {
+      "id": 48,
+      "type": "button",
+      "text": "主页",
+      "semantic": "主页",
+      "bbox": [
+        699,
+        292,
+        96,
+        36
+      ]
+    },
+    {
+      "id": 49,
+      "type": "button",
+      "text": "搜索",
+      "semantic": "搜索",
+      "bbox": [
+        856,
+        292,
+        36,
+        36
+      ]
+    },
+    {
+      "id": 50,
+      "type": "button",
+      "text": "关闭侧边栏",
+      "semantic": "关闭侧边栏",
+      "bbox": [
+        892,
+        292,
+        36,
+        36
+      ]
+    },
+    {
+      "id": 51,
+      "type": "group",
+      "text": "选择聊天界面",
+      "semantic": "选择聊天界面",
+      "bbox": [
+        1656,
+        292,
+        248,
+        36
+      ]
+    },
+    {
+      "id": 52,
+      "type": "text",
+      "text": "聊天",
+      "semantic": "聊天",
+      "bbox": [
+        1656,
+        292,
+        124,
+        36
+      ]
+    },
+    {
+      "id": 53,
+      "type": "text",
+      "text": "工作",
+      "semantic": "工作",
+      "bbox": [
+        1780,
+        292,
+        124,
+        36
+      ]
+    },
+    {
+      "id": 54,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        2550,
+        292,
+        36,
+        36
+      ]
+    },
+    {
+      "id": 55,
+      "type": "button",
+      "text": "临时聊天",
+      "semantic": "临时聊天",
+      "bbox": [
+        2550,
+        292,
+        36,
+        36
+      ]
+    },
+    {
+      "id": 56,
+      "type": "button",
+      "text": "免费试用",
+      "semantic": "免费试用",
+      "bbox": [
+        2445,
+        293,
+        105,
+        34
+      ]
+    },
+    {
+      "id": 61,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        966,
+        336,
+        1628,
+        1061
+      ]
+    },
+    {
+      "id": 62,
+      "type": "group",
+      "text": "新聊天",
+      "semantic": "新聊天",
+      "bbox": [
+        691,
+        344,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 63,
+      "type": "button",
+      "text": "新聊天",
+      "semantic": "新聊天",
+      "bbox": [
+        691,
+        344,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 64,
+      "type": "button",
+      "text": "新聊天",
+      "semantic": "新聊天",
+      "bbox": [
+        697,
+        344,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 66,
+      "type": "button",
+      "text": "图片",
+      "semantic": "图片",
+      "bbox": [
+        697,
+        380,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 68,
+      "type": "button",
+      "text": "资料库",
+      "semantic": "资料库",
+      "bbox": [
+        697,
+        416,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 69,
+      "type": "button",
+      "text": "定时任务",
+      "semantic": "定时任务",
+      "bbox": [
+        697,
+        452,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 71,
+      "type": "button",
+      "text": "插件",
+      "semantic": "插件",
+      "bbox": [
+        697,
+        488,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 73,
+      "type": "button",
+      "text": "健康",
+      "semantic": "健康",
+      "bbox": [
+        697,
+        524,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 75,
+      "type": "button",
+      "text": "xapo",
+      "semantic": "xapo",
+      "bbox": [
+        697,
+        560,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 77,
+      "type": "group",
+      "text": "…·更多",
+      "semantic": "…·更多",
+      "bbox": [
+        697,
+        596,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 79,
+      "type": "text",
+      "text": "更多",
+      "semantic": "更多",
+      "bbox": [
+        733,
+        604,
+        28,
+        19
+      ]
+    },
+    {
+      "id": 80,
+      "type": "button",
+      "text": "新项目",
+      "semantic": "新项目",
+      "bbox": [
+        868,
+        642,
+        34,
+        36
+      ]
+    },
+    {
+      "id": 81,
+      "type": "button",
+      "text": "整理聊天",
+      "semantic": "整理聊天",
+      "bbox": [
+        896,
+        642,
+        34,
+        36
+      ]
+    },
+    {
+      "id": 82,
+      "type": "button",
+      "text": "项目",
+      "semantic": "项目",
+      "bbox": [
+        691,
+        644,
+        181,
+        32
+      ]
+    },
+    {
+      "id": 84,
+      "type": "text",
+      "text": "项目",
+      "semantic": "项目",
+      "bbox": [
+        707,
+        650,
+        28,
+        20
+      ]
+    },
+    {
+      "id": 85,
+      "type": "button",
+      "text": "打开项目首页",
+      "semantic": "打开项目首页",
+      "bbox": [
+        868,
+        668,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 86,
+      "type": "button",
+      "text": "打开 任务管理 的项目选项",
+      "semantic": "打开 任务管理 的项目选项",
+      "bbox": [
+        896,
+        668,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 87,
+      "type": "group",
+      "text": "mio-browser-agent",
+      "semantic": "mio-browser-agent",
+      "bbox": [
+        691,
+        676,
+        245,
+        216
+      ]
+    },
+    {
+      "id": 88,
+      "type": "button",
+      "text": "任务管理",
+      "semantic": "任务管理",
+      "bbox": [
+        691,
+        676,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 89,
+      "type": "button",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        697,
+        676,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 90,
+      "type": "text",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        707,
+        683,
+        20,
+        21
+      ]
+    },
+    {
+      "id": 92,
+      "type": "group",
+      "text": "我能帮什么忙吗，Meng?",
+      "semantic": "我能帮什么忙吗，Meng?",
+      "bbox": [
+        1830,
+        686,
+        68,
+        31
+      ]
+    },
+    {
+      "id": 93,
+      "type": "text",
+      "text": "我能帮什么忙吗，Meng？",
+      "semantic": "我能帮什么忙吗，Meng？",
+      "bbox": [
+        1634,
+        687,
+        292,
+        43
+      ]
+    },
+    {
+      "id": 95,
+      "type": "button",
+      "text": "Meng",
+      "semantic": "Meng",
+      "bbox": [
+        1830,
+        687,
+        68,
+        29
+      ]
+    },
+    {
+      "id": 96,
+      "type": "button",
+      "text": "打开项目首页",
+      "semantic": "打开项目首页",
+      "bbox": [
+        868,
+        704,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 97,
+      "type": "button",
+      "text": "打开 记忆图谱 的项目选项",
+      "semantic": "打开 记忆图谱 的项目选项",
+      "bbox": [
+        896,
+        704,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 98,
+      "type": "button",
+      "text": "记忆图谱",
+      "semantic": "记忆图谱",
+      "bbox": [
+        691,
+        712,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 99,
+      "type": "button",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        697,
+        712,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 101,
+      "type": "text",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        707,
+        719,
+        20,
+        21
+      ]
+    },
+    {
+      "id": 102,
+      "type": "button",
+      "text": "打开项目首页",
+      "semantic": "打开项目首页",
+      "bbox": [
+        868,
+        740,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 103,
+      "type": "button",
+      "text": "打开 视觉控制 的项目选项",
+      "semantic": "打开 视觉控制 的项目选项",
+      "bbox": [
+        896,
+        740,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 104,
+      "type": "button",
+      "text": "视觉控制",
+      "semantic": "视觉控制",
+      "bbox": [
+        691,
+        748,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 105,
+      "type": "button",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        697,
+        748,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 106,
+      "type": "group",
+      "text": "十有问题，随便问",
+      "semantic": "十有问题，随便问",
+      "bbox": [
+        1396,
+        751,
+        768,
+        53
+      ]
+    },
+    {
+      "id": 108,
+      "type": "text",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        707,
+        755,
+        20,
+        21
+      ]
+    },
+    {
+      "id": 109,
+      "type": "button",
+      "text": "添加文件等",
+      "semantic": "添加文件等",
+      "bbox": [
+        1404,
+        759,
+        36,
+        37
+      ]
+    },
+    {
+      "id": 110,
+      "type": "button",
+      "text": "思考",
+      "semantic": "思考",
+      "bbox": [
+        1988,
+        759,
+        84,
+        37
+      ]
+    },
+    {
+      "id": 111,
+      "type": "button",
+      "text": "开始听写",
+      "semantic": "开始听写",
+      "bbox": [
+        2076,
+        759,
+        36,
+        37
+      ]
+    },
+    {
+      "id": 112,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        2120,
+        759,
+        36,
+        37
+      ]
+    },
+    {
+      "id": 113,
+      "type": "button",
+      "text": "启动语音功能",
+      "semantic": "启动语音功能",
+      "bbox": [
+        2120,
+        759,
+        36,
+        37
+      ]
+    },
+    {
+      "id": 114,
+      "type": "input",
+      "text": "有问题，随便问",
+      "semantic": "有问题，随便问",
+      "bbox": [
+        1447,
+        763,
+        531,
+        43
+      ]
+    },
+    {
+      "id": 116,
+      "type": "text",
+      "text": "有问题，随便问",
+      "semantic": "有问题，随便问",
+      "bbox": [
+        1448,
+        766,
+        112,
+        21
+      ]
+    },
+    {
+      "id": 118,
+      "type": "button",
+      "text": "打开项目首页",
+      "semantic": "打开项目首页",
+      "bbox": [
+        868,
+        776,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 119,
+      "type": "button",
+      "text": "打开 mio-browser-agent 的项目选项",
+      "semantic": "打开 mio-browser-agent 的项目选项",
+      "bbox": [
+        896,
+        776,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 120,
+      "type": "button",
+      "text": "mio-browser-agent",
+      "semantic": "mio-browser-agent",
+      "bbox": [
+        691,
+        784,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 121,
+      "type": "button",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        697,
+        784,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 122,
+      "type": "text",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        707,
+        791,
+        20,
+        21
+      ]
+    },
+    {
+      "id": 124,
+      "type": "button",
+      "text": "打开项目首页",
+      "semantic": "打开项目首页",
+      "bbox": [
+        868,
+        812,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 125,
+      "type": "button",
+      "text": "打开 看看小猫 的项目选项",
+      "semantic": "打开 看看小猫 的项目选项",
+      "bbox": [
+        896,
+        812,
+        34,
+        52
+      ]
+    },
+    {
+      "id": 126,
+      "type": "button",
+      "text": "看看小猫",
+      "semantic": "看看小猫",
+      "bbox": [
+        691,
+        820,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 127,
+      "type": "button",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        697,
+        820,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 129,
+      "type": "text",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        707,
+        827,
+        20,
+        21
+      ]
+    },
+    {
+      "id": 130,
+      "type": "button",
+      "text": "查看更多",
+      "semantic": "查看更多",
+      "bbox": [
+        691,
+        856,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 131,
+      "type": "button",
+      "text": "查看更多",
+      "semantic": "查看更多",
+      "bbox": [
+        697,
+        856,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 133,
+      "type": "button",
+      "text": "新聊天",
+      "semantic": "新聊天",
+      "bbox": [
+        868,
+        910,
+        34,
+        36
+      ]
+    },
+    {
+      "id": 134,
+      "type": "button",
+      "text": "整理聊天",
+      "semantic": "整理聊天",
+      "bbox": [
+        896,
+        910,
+        34,
+        36
+      ]
+    },
+    {
+      "id": 135,
+      "type": "button",
+      "text": "聊天",
+      "semantic": "聊天",
+      "bbox": [
+        691,
+        912,
+        181,
+        32
+      ]
+    },
+    {
+      "id": 137,
+      "type": "text",
+      "text": "聊天",
+      "semantic": "聊天",
+      "bbox": [
+        707,
+        918,
+        28,
+        20
+      ]
+    },
+    {
+      "id": 138,
+      "type": "button",
+      "text": "置顶 自我介绍 краткая?",
+      "semantic": "置顶 自我介绍 краткая?",
+      "bbox": [
+        686,
+        931,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 139,
+      "type": "button",
+      "text": "打开“自我介绍 краткая?”的对话选项",
+      "semantic": "打开“自我介绍 краткая?”的对话选项",
+      "bbox": [
+        714,
+        931,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 140,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        691,
+        944,
+        245,
+        1008
+      ]
+    },
+    {
+      "id": 141,
+      "type": "button",
+      "text": "自我介绍 краткая?",
+      "semantic": "自我介绍 краткая?",
+      "bbox": [
+        691,
+        944,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 142,
+      "type": "button",
+      "text": "自我介绍 краткая?",
+      "semantic": "自我介绍 краткая?",
+      "bbox": [
+        697,
+        944,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 144,
+      "type": "button",
+      "text": "置顶 设计 Windows 模拟系统",
+      "semantic": "置顶 设计 Windows 模拟系统",
+      "bbox": [
+        686,
+        967,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 145,
+      "type": "button",
+      "text": "打开“设计 Windows 模拟系统”的对话选项",
+      "semantic": "打开“设计 Windows 模拟系统”的对话选项",
+      "bbox": [
+        714,
+        967,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 146,
+      "type": "button",
+      "text": "设计 Windows 模拟系统",
+      "semantic": "设计 Windows 模拟系统",
+      "bbox": [
+        691,
+        980,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 147,
+      "type": "button",
+      "text": "设计 Windows 模拟系统",
+      "semantic": "设计 Windows 模拟系统",
+      "bbox": [
+        697,
+        980,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 149,
+      "type": "button",
+      "text": "置顶 前端术语表",
+      "semantic": "置顶 前端术语表",
+      "bbox": [
+        686,
+        1003,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 150,
+      "type": "button",
+      "text": "打开“前端术语表”的对话选项",
+      "semantic": "打开“前端术语表”的对话选项",
+      "bbox": [
+        714,
+        1003,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 151,
+      "type": "button",
+      "text": "前端术语表",
+      "semantic": "前端术语表",
+      "bbox": [
+        691,
+        1016,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 152,
+      "type": "button",
+      "text": "前端术语表",
+      "semantic": "前端术语表",
+      "bbox": [
+        697,
+        1016,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 154,
+      "type": "button",
+      "text": "置顶 小说对话场景要素",
+      "semantic": "置顶 小说对话场景要素",
+      "bbox": [
+        686,
+        1039,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 155,
+      "type": "button",
+      "text": "打开“小说对话场景要素”的对话选项",
+      "semantic": "打开“小说对话场景要素”的对话选项",
+      "bbox": [
+        714,
+        1039,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 156,
+      "type": "button",
+      "text": "小说对话场景要素",
+      "semantic": "小说对话场景要素",
+      "bbox": [
+        691,
+        1052,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 157,
+      "type": "button",
+      "text": "小说对话场景要素",
+      "semantic": "小说对话场景要素",
+      "bbox": [
+        697,
+        1052,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 159,
+      "type": "button",
+      "text": "置顶 查看Linux内存",
+      "semantic": "置顶 查看Linux内存",
+      "bbox": [
+        686,
+        1075,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 160,
+      "type": "button",
+      "text": "打开“查看Linux内存”的对话选项",
+      "semantic": "打开“查看Linux内存”的对话选项",
+      "bbox": [
+        714,
+        1075,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 161,
+      "type": "button",
+      "text": "查看Linux内存",
+      "semantic": "查看Linux内存",
+      "bbox": [
+        691,
+        1088,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 162,
+      "type": "button",
+      "text": "查看Linux内存",
+      "semantic": "查看Linux内存",
+      "bbox": [
+        697,
+        1088,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 164,
+      "type": "button",
+      "text": "置顶 读取手机文件",
+      "semantic": "置顶 读取手机文件",
+      "bbox": [
+        686,
+        1111,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 165,
+      "type": "button",
+      "text": "打开“读取手机文件”的对话选项",
+      "semantic": "打开“读取手机文件”的对话选项",
+      "bbox": [
+        714,
+        1111,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 166,
+      "type": "button",
+      "text": "读取手机文件",
+      "semantic": "读取手机文件",
+      "bbox": [
+        691,
+        1124,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 167,
+      "type": "button",
+      "text": "读取手机文件",
+      "semantic": "读取手机文件",
+      "bbox": [
+        697,
+        1124,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 169,
+      "type": "button",
+      "text": "置顶 项目开发文档整理",
+      "semantic": "置顶 项目开发文档整理",
+      "bbox": [
+        686,
+        1147,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 170,
+      "type": "button",
+      "text": "打开“项目开发文档整理”的对话选项",
+      "semantic": "打开“项目开发文档整理”的对话选项",
+      "bbox": [
+        714,
+        1147,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 171,
+      "type": "button",
+      "text": "项目开发文档整理",
+      "semantic": "项目开发文档整理",
+      "bbox": [
+        691,
+        1160,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 172,
+      "type": "button",
+      "text": "项目开发文档整理",
+      "semantic": "项目开发文档整理",
+      "bbox": [
+        697,
+        1160,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 174,
+      "type": "button",
+      "text": "置顶 豆包PPT优化提示词",
+      "semantic": "置顶 豆包PPT优化提示词",
+      "bbox": [
+        686,
+        1183,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 175,
+      "type": "button",
+      "text": "打开“豆包PPT优化提示词”的对话选项",
+      "semantic": "打开“豆包PPT优化提示词”的对话选项",
+      "bbox": [
+        714,
+        1183,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 176,
+      "type": "button",
+      "text": "豆包PPT优化提示词",
+      "semantic": "豆包PPT优化提示词",
+      "bbox": [
+        691,
+        1196,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 177,
+      "type": "button",
+      "text": "豆包PPT优化提示词",
+      "semantic": "豆包PPT优化提示词",
+      "bbox": [
+        697,
+        1196,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 179,
+      "type": "button",
+      "text": "置顶 管段健康度翻译",
+      "semantic": "置顶 管段健康度翻译",
+      "bbox": [
+        686,
+        1219,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 180,
+      "type": "button",
+      "text": "打开“管段健康度翻译”的对话选项",
+      "semantic": "打开“管段健康度翻译”的对话选项",
+      "bbox": [
+        714,
+        1219,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 181,
+      "type": "button",
+      "text": "管段健康度翻译",
+      "semantic": "管段健康度翻译",
+      "bbox": [
+        691,
+        1232,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 182,
+      "type": "button",
+      "text": "管段健康度翻译",
+      "semantic": "管段健康度翻译",
+      "bbox": [
+        697,
+        1232,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 184,
+      "type": "button",
+      "text": "置顶 创建 SSH Key",
+      "semantic": "置顶 创建 SSH Key",
+      "bbox": [
+        686,
+        1255,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 185,
+      "type": "button",
+      "text": "打开“创建 SSH Key”的对话选项",
+      "semantic": "打开“创建 SSH Key”的对话选项",
+      "bbox": [
+        714,
+        1255,
+        34,
+        37
+      ]
+    },
+    {
+      "id": 186,
+      "type": "button",
+      "text": "Meng huai",
+      "semantic": "Meng huai",
+      "bbox": [
+        691,
+        1268,
+        245,
+        36
+      ]
+    },
+    {
+      "id": 187,
+      "type": "button",
+      "text": "创建 SSH Key",
+      "semantic": "创建 SSH Key",
+      "bbox": [
+        697,
+        1268,
+        233,
+        36
+      ]
+    },
+    {
+      "id": 188,
+      "type": "button",
+      "text": "Meng huai 免费版，打开“个人资料”菜单",
+      "semantic": "Meng huai 免费版，打开“个人资料”菜单",
+      "bbox": [
+        697,
+        1290,
+        248,
+        53
+      ]
+    },
+    {
+      "id": 191,
+      "type": "text",
+      "text": "Meng huai",
+      "semantic": "Meng huai",
+      "bbox": [
+        737,
+        1297,
+        73,
+        19
+      ]
+    },
+    {
+      "id": 195,
+      "type": "text",
+      "text": "个人资料图片",
+      "semantic": "个人资料图片",
+      "bbox": [
+        705,
+        1304,
+        24,
+        25
+      ]
+    },
+    {
+      "id": 197,
+      "type": "text",
+      "text": "免费版",
+      "semantic": "免费版",
+      "bbox": [
+        737,
+        1317,
+        36,
+        16
+      ]
+    },
+    {
+      "id": 202,
+      "type": "button",
+      "text": "领取优惠",
+      "semantic": "领取优惠",
+      "bbox": [
+        705,
+        1347,
+        232,
+        36
+      ]
+    }
+  ]
+}

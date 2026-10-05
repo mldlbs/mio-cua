@@ -1,0 +1,106 @@
+{
+  "name": "wechat_10",
+  "description": "10 real WeChat desktop tasks used as the Agent Runtime v2 benchmark. The agent must navigate the live WeChat UI (sidebar search/scroll, chat list, message list) without WeChat-specific prompts. These tasks are a measuring stick, not a feature target.",
+  "tasks": [
+    {
+      "id": "wx-01",
+      "instruction": "在微信中，找到左侧列表里群名包含'兴蓉'的群聊。点击进入后，收集该群近一周的消息文本。当看到早于 2026-08-16 的时间戳时停止滚动。完成后调用 success 返回收集到的消息。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "兴蓉"},
+      "expected": {"type": "messages_collected", "keyword": "兴蓉", "since": "2026-08-16"},
+      "tags": ["discovery", "group", "extraction"],
+      "difficulty": "hard",
+      "app": "微信"
+    },
+    {
+      "id": "wx-02",
+      "instruction": "在微信左侧聊天列表中，找到名为 'sherry' 的联系人或群聊，点击进入，读取最新的 5 条消息文本，调用 success 返回。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "sherry"},
+      "expected": {"type": "messages_read", "keyword": "sherry", "count": 5},
+      "tags": ["discovery", "read"],
+      "difficulty": "easy",
+      "app": "微信"
+    },
+    {
+      "id": "wx-03",
+      "instruction": "使用微信左上角的搜索框，输入 '张三' 并回车，打开搜索到的聊天，读取最新一条消息，调用 success 返回。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "张三"},
+      "expected": {"type": "search_and_read", "keyword": "张三"},
+      "tags": ["search", "read"],
+      "difficulty": "medium",
+      "app": "微信"
+    },
+    {
+      "id": "wx-04",
+      "instruction": "在微信左侧列表中，找出所有群名包含 '项目' 的群聊，列出它们的名称，调用 success 返回名称列表。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "项目"},
+      "expected": {"type": "list_groups", "keyword": "项目"},
+      "tags": ["discovery", "list"],
+      "difficulty": "medium",
+      "app": "微信"
+    },
+    {
+      "id": "wx-05",
+      "instruction": "打开微信中与 'sherry' 的聊天，将右侧消息列表向上滚动到最早的位置，捕获最早的一条消息文本，调用 success 返回。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "sherry"},
+      "expected": {"type": "earliest_message", "keyword": "sherry"},
+      "tags": ["scroll", "read"],
+      "difficulty": "medium",
+      "app": "微信"
+    },
+    {
+      "id": "wx-06",
+      "instruction": "在微信左侧列表中向下滚动，找到群名包含 '家庭' 的群聊，进入后读取最新 3 条消息，调用 success 返回。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "家庭"},
+      "expected": {"type": "messages_read", "keyword": "家庭", "count": 3},
+      "tags": ["discovery", "scroll", "read"],
+      "difficulty": "medium",
+      "app": "微信"
+    },
+    {
+      "id": "wx-07",
+      "instruction": "在微信中定位搜索输入框，输入 '会议纪要' 并回车，若搜索结果中出现相关聊天则打开它并读取最新消息，调用 success 返回。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "会议纪要"},
+      "expected": {"type": "search_and_read", "keyword": "会议纪要"},
+      "tags": ["search", "read"],
+      "difficulty": "medium",
+      "app": "微信"
+    },
+    {
+      "id": "wx-08",
+      "instruction": "在微信左侧列表中找到群名包含 '培训' 的群聊，进入后收集最近 10 条消息文本，调用 success 返回。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "培训"},
+      "expected": {"type": "messages_collected", "keyword": "培训", "count": 10},
+      "tags": ["discovery", "extraction"],
+      "difficulty": "medium",
+      "app": "微信"
+    },
+    {
+      "id": "wx-09",
+      "instruction": "在微信左侧列表中，找到所有名称包含 'Agent' 的聊天/群聊，列出它们的名称与未读状态（若可见），调用 success 返回列表。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "Agent"},
+      "expected": {"type": "list_chats", "keyword": "Agent"},
+      "tags": ["discovery", "list"],
+      "difficulty": "easy",
+      "app": "微信"
+    },
+    {
+      "id": "wx-10",
+      "instruction": "打开与 'sherry' 的聊天，在右侧消息列表中找到包含 '确认' 二字的消息，复制其文本，调用 success 返回该文本。",
+      "target_context": {"app": "微信"},
+      "metadata": {"app": "微信", "keyword": "sherry"},
+      "expected": {"type": "find_message", "keyword": "sherry", "contains": "确认"},
+      "tags": ["search", "read", "extraction"],
+      "difficulty": "hard",
+      "app": "微信"
+    }
+  ]
+}

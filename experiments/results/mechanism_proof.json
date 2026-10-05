@@ -1,0 +1,15 @@
+{
+  "grounding": {
+    "n": 20,
+    "raw_target_hit": 0,
+    "grounded_target_hit": 20,
+    "grounded_error": 0,
+    "raw_error_click_rate": 1.0,
+    "target_localization_success": 1.0
+  },
+  "recovery": {
+    "n": 20,
+    "recovery_success": 20,
+    "recovery_success_rate": 1.0
+  }
+}

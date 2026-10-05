@@ -1,0 +1,30 @@
+id: crossapp
+title: "跨应用：文件读数 → 计算器求和 → 保存结果"
+instruction: >-
+  目标：读取桌面文件 smoke_numbers.txt 中的数字（每行一个整数，共三个：12、34、56），用计算器求出它们的和（102），
+  把结果保存到新文件 smoke_sum_result.txt。
+
+  必须按顺序完成以下三步，每一步完成后立即进入下一步，不要重复已完成的操作：
+
+  第1步（读文件）：执行 launch 命令 'notepad D:\Users\gf1913\Desktop\smoke_numbers.txt' 打开该文件。
+  观察到记事本窗口出现后，从观察到的元素里读出三个数字。一旦你看到了这三个数字，这一步就算完成，立即进入第2步。
+  不要再重复 launch 或重新打开这个文件。
+
+  第2步（求和）：执行 launch 命令 'calc' 打开计算器。计算器窗口出现后，用键盘逐个按键输入求和表达式：
+  依次 key(keys="1")、key(keys="2")、key(keys="+")、key(keys="3")、key(keys="4")、
+  key(keys="+")、key(keys="5")、key(keys="6")、key(keys="=")。
+  每按一键后确认计算器显示区更新，按完等号后显示区应显示总和 102。
+  确认显示区显示 102 后进入第3步。（不要点击计算器按钮，键盘输入更可靠。）
+
+  第3步（保存）：执行 launch 命令 'notepad' 新建一个记事本。在新建的记事本里输入 102，
+  然后按 Ctrl+S 打开保存对话框，在文件名字段输入 smoke_sum_result.txt，按回车确认保存。
+
+  完成后调用 success 工具报告总和 102。
+timeout_s: 300
+max_steps: 50
+checks:
+  - type: file_exists
+    path: ~/Desktop/smoke_sum_result.txt
+  - type: file_contains
+    path: ~/Desktop/smoke_sum_result.txt
+    contains: "102"

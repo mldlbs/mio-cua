@@ -1,0 +1,8885 @@
+{
+  "trace_id": "trace_1790747913",
+  "created_at": 1790747913.658363,
+  "task": {
+    "instruction": "打开浏览器，在搜索引擎中搜索「今日新闻」",
+    "target_context": {
+      "app": "Edge"
+    },
+    "metadata": {}
+  },
+  "metadata": {
+    "steps": 5,
+    "final_status": "FAIL",
+    "final_summary": "loop error: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /v1/chat/completions (Caused by NewConnectionError(\"HTTPConnection(host='127.0.0.1', port=8000): Failed to e"
+  },
+  "entries": [
+    {
+      "obs_before": {
+        "id": 1,
+        "timestamp": 1790747913.6553633,
+        "active_window": "OpenCode",
+        "scene_nodes": [
+          {
+            "id": 0,
+            "type": "group",
+            "bbox": [
+              -31992,
+              -32000,
+              1400,
+              1559
+            ],
+            "text": ""
+          },
+          {
+            "id": 1,
+            "type": "group",
+            "bbox": [
+              -32129,
+              -31999,
+              137,
+              39
+            ],
+            "text": ""
+          },
+          {
+            "id": 2,
+            "type": "button",
+            "bbox": [
+              -32129,
+              -31999,
+              45,
+              39
+            ],
+            "text": "最小化",
+            "semantic": "最小化"
+          },
+          {
+            "id": 3,
+            "type": "button",
+            "bbox": [
+              -32084,
+              -31999,
+              46,
+              39
+            ],
+            "text": "最大化",
+            "semantic": "最大化"
+          },
+          {
+            "id": 4,
+            "type": "button",
+            "bbox": [
+              -32038,
+              -31999,
+              46,
+              39
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 5,
+            "type": "text",
+            "bbox": [
+              726,
+              15,
+              62,
+              20
+            ],
+            "text": "Taskhub",
+            "semantic": "Taskhub"
+          },
+          {
+            "id": 6,
+            "type": "text",
+            "bbox": [
+              1372,
+              15,
+              55,
+              22
+            ],
+            "text": "Miocua",
+            "semantic": "Miocua"
+          },
+          {
+            "id": 7,
+            "type": "text",
+            "bbox": [
+              1568,
+              15,
+              79,
+              21
+            ],
+            "text": "报报销发票",
+            "semantic": "报报销发票"
+          },
+          {
+            "id": 8,
+            "type": "text",
+            "bbox": [
+              1928,
+              15,
+              17,
+              17
+            ],
+            "text": "□",
+            "semantic": "□"
+          },
+          {
+            "id": 9,
+            "type": "text",
+            "bbox": [
+              926,
+              17,
+              164,
+              17
+            ],
+            "text": "ATaskHub写CSDN文章",
+            "semantic": "ATaskHub写CSDN文章"
+          },
+          {
+            "id": 10,
+            "type": "text",
+            "bbox": [
+              1153,
+              17,
+              58,
+              18
+            ],
+            "text": "Mneme",
+            "semantic": "Mneme"
+          },
+          {
+            "id": 11,
+            "type": "text",
+            "bbox": [
+              711,
+              18,
+              18,
+              16
+            ],
+            "text": "A",
+            "semantic": "A"
+          },
+          {
+            "id": 12,
+            "type": "text",
+            "bbox": [
+              1141,
+              19,
+              17,
+              13
+            ],
+            "text": "A",
+            "semantic": "A"
+          },
+          {
+            "id": 13,
+            "type": "text",
+            "bbox": [
+              626,
+              62,
+              54,
+              20
+            ],
+            "text": "Miocua",
+            "semantic": "Miocua"
+          },
+          {
+            "id": 14,
+            "type": "text",
+            "bbox": [
+              921,
+              92,
+              586,
+              25
+            ],
+            "text": "在 exact title 之后插入按进程名匹配，复用文件里已有的_PRoc_ALIAsES ／ _proc_names /",
+            "semantic": "在 exact title 之后插入按进程名匹配，复用文件里已有的_PRoc_ALIAsES ／ _proc_names /"
+          },
+          {
+            "id": 15,
+            "type": "text",
+            "bbox": [
+              927,
+              118,
+              526,
+              20
+            ],
+            "text": "_windows_matching_process (这本来就是 bring_to_front 的路径）。匹配链:",
+            "semantic": "_windows_matching_process (这本来就是 bring_to_front 的路径）。匹配链:"
+          },
+          {
+            "id": 16,
+            "type": "text",
+            "bbox": [
+              934,
+              164,
+              505,
+              19
+            ],
+            "text": "1.exacttitle→2.进程名（仅认识的应用）→3.本地化标题（微信/Chrome)",
+            "semantic": "1.exacttitle→2.进程名（仅认识的应用）→3.本地化标题（微信/Chrome)"
+          },
+          {
+            "id": 17,
+            "type": "text",
+            "bbox": [
+              1045,
+              186,
+              102,
+              22
+            ],
+            "text": "→5.UIA 兜底",
+            "semantic": "→5.UIA 兜底"
+          },
+          {
+            "id": 18,
+            "type": "text",
+            "bbox": [
+              935,
+              190,
+              91,
+              17
+            ],
+            "text": "4. substring",
+            "semantic": "4. substring"
+          },
+          {
+            "id": 19,
+            "type": "text",
+            "bbox": [
+              1301,
+              245,
+              381,
+              22
+            ],
+            "text": "星——否则字面量标题MIO·HUB－任务总线会去全桌面找一",
+            "semantic": "星——否则字面量标题MIO·HUB－任务总线会去全桌面找一"
+          },
+          {
+            "id": 20,
+            "type": "text",
+            "bbox": [
+              922,
+              247,
+              390,
+              20
+            ],
+            "text": "关键约束：只有_PROC_ALIASES里认识的应用名才枚举进程-",
+            "semantic": "关键约束：只有_PROC_ALIASES里认识的应用名才枚举进程-"
+          },
+          {
+            "id": 21,
+            "type": "text",
+            "bbox": [
+              922,
+              271,
+              149,
+              20
+            ],
+            "text": "个叫mio·hub 的进程。",
+            "semantic": "个叫mio·hub 的进程。"
+          },
+          {
+            "id": 22,
+            "type": "text",
+            "bbox": [
+              921,
+              316,
+              66,
+              21
+            ],
+            "text": "真机验证",
+            "semantic": "真机验证"
+          },
+          {
+            "id": 23,
+            "type": "text",
+            "bbox": [
+              936,
+              366,
+              488,
+              20
+            ],
+            "text": "focus_window('Edge'）-> Truefg = MIO-HUB －任务总线 ／ msedge.exe",
+            "semantic": "focus_window('Edge'）-> Truefg = MIO-HUB －任务总线 ／ msedge.exe"
+          },
+          {
+            "id": 24,
+            "type": "text",
+            "bbox": [
+              937,
+              390,
+              213,
+              17
+            ],
+            "text": "focus_window('chrome')-> True",
+            "semantic": "focus_window('chrome')-> True"
+          },
+          {
+            "id": 25,
+            "type": "text",
+            "bbox": [
+              1146,
+              390,
+              158,
+              17
+            ],
+            "text": "fg = .../chrome.exe",
+            "semantic": "fg = .../chrome.exe"
+          },
+          {
+            "id": 26,
+            "type": "text",
+            "bbox": [
+              935,
+              411,
+              120,
+              20
+            ],
+            "text": "focus_window(\"')",
+            "semantic": "focus_window(\"')"
+          },
+          {
+            "id": 27,
+            "type": "text",
+            "bbox": [
+              1094,
+              412,
+              60,
+              17
+            ],
+            "text": "-> False",
+            "semantic": "-> False"
+          },
+          {
+            "id": 28,
+            "type": "text",
+            "bbox": [
+              923,
+              472,
+              180,
+              17
+            ],
+            "text": "聚焦已还原到你的VSCode。",
+            "semantic": "聚焦已还原到你的VSCode。"
+          },
+          {
+            "id": 29,
+            "type": "text",
+            "bbox": [
+              921,
+              515,
+              37,
+              22
+            ],
+            "text": "回归",
+            "semantic": "回归"
+          },
+          {
+            "id": 30,
+            "type": "text",
+            "bbox": [
+              923,
+              550,
+              743,
+              20
+            ],
+            "text": "全量 tests：484 passed /2 skipped/0 failed（test_windows +2新测：已知应用走进程匹配且 exact title 优先;",
+            "semantic": "全量 tests：484 passed /2 skipped/0 failed（test_windows +2新测：已知应用走进程匹配且 exact title 优先;"
+          },
+          {
+            "id": 31,
+            "type": "text",
+            "bbox": [
+              921,
+              572,
+              222,
+              21
+            ],
+            "text": "未知字面量标题不触发进程扫描）。",
+            "semantic": "未知字面量标题不触发进程扫描）。"
+          },
+          {
+            "id": 32,
+            "type": "text",
+            "bbox": [
+              923,
+              660,
+              628,
+              20
+            ],
+            "text": "浏览器搜索场景的阻塞点已解除。 下一步可以重跑 trace/record_browser_search.py 端到端验证",
+            "semantic": "浏览器搜索场景的阻塞点已解除。 下一步可以重跑 trace/record_browser_search.py 端到端验证"
+          },
+          {
+            "id": 33,
+            "type": "text",
+            "bbox": [
+              922,
+              682,
+              611,
+              22
+            ],
+            "text": "perception→planning一action全链路（会占用桌面约1分钟，期间会接管鼠标键盘）。要跑吗？",
+            "semantic": "perception→planning一action全链路（会占用桌面约1分钟，期间会接管鼠标键盘）。要跑吗？"
+          },
+          {
+            "id": 34,
+            "type": "text",
+            "bbox": [
+              1640,
+              763,
+              36,
+              22
+            ],
+            "text": "好的",
+            "semantic": "好的"
+          },
+          {
+            "id": 35,
+            "type": "text",
+            "bbox": [
+              921,
+              824,
+              111,
+              23
+            ],
+            "text": "已探索1次读取",
+            "semantic": "已探索1次读取"
+          },
+          {
+            "id": 36,
+            "type": "text",
+            "bbox": [
+              922,
+              889,
+              525,
+              20
+            ],
+            "text": "Running the browser search scenario (takes over mouse/keyboard, ~1-4 min):",
+            "semantic": "Running the browser search scenario (takes over mouse/keyboard, ~1-4 min):"
+          },
+          {
+            "id": 37,
+            "type": "text",
+            "bbox": [
+              922,
+              927,
+              741,
+              21
+            ],
+            "text": "Shell cd\"E:\\work\\code\\agent-dev\\desktop-agent\";&“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe” trace/record_",
+            "semantic": "Shell cd\"E:\\work\\code\\agent-dev\\desktop-agent\";&“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe” trace/record_"
+          },
+          {
+            "id": 38,
+            "type": "text",
+            "bbox": [
+              921,
+              989,
+              723,
+              24
+            ],
+            "text": "Perception is alive (nodes=267, was 0). But only 1 step and environment_error . Let me inspect the report:",
+            "semantic": "Perception is alive (nodes=267, was 0). But only 1 step and environment_error . Let me inspect the report:"
+          },
+          {
+            "id": 39,
+            "type": "text",
+            "bbox": [
+              921,
+              1029,
+              742,
+              24
+            ],
+            "text": "Shell cd“E:\\work\\code\\agent-dev\\desktop-agent\";&“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe”-c“import jso",
+            "semantic": "Shell cd“E:\\work\\code\\agent-dev\\desktop-agent\";&“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe”-c“import jso"
+          },
+          {
+            "id": 40,
+            "type": "text",
+            "bbox": [
+              922,
+              1074,
+              740,
+              21
+            ],
+            "text": "Shell cd\"E:\\work\\code\\agent-dev\\desktop-agent\"; &“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe”-c“import jso",
+            "semantic": "Shell cd\"E:\\work\\code\\agent-dev\\desktop-agent\"; &“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe”-c“import jso"
+          },
+          {
+            "id": 41,
+            "type": "text",
+            "bbox": [
+              923,
+              1119,
+              740,
+              20
+            ],
+            "text": "Shell cd “E:\\work\\code\\agent-dev\\desktop-agent°; Get-Childltem trace -File | Select-Object Name, Length, Las",
+            "semantic": "Shell cd “E:\\work\\code\\agent-dev\\desktop-agent°; Get-Childltem trace -File | Select-Object Name, Length, Las"
+          },
+          {
+            "id": 42,
+            "type": "text",
+            "bbox": [
+              921,
+              1180,
+              398,
+              24
+            ],
+            "text": "Trace saved as trace_1790746688. json . Let me inspect it:",
+            "semantic": "Trace saved as trace_1790746688. json . Let me inspect it:"
+          },
+          {
+            "id": 43,
+            "type": "text",
+            "bbox": [
+              922,
+              1221,
+              740,
+              22
+            ],
+            "text": "Shell cd\"E:\\work\\code\\agent-dev\\desktop-agent°; &“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe”-c“import jso",
+            "semantic": "Shell cd\"E:\\work\\code\\agent-dev\\desktop-agent°; &“C:\\d\\venvs\\mio-gpu\\Scripts\\python.exe”-c“import jso"
+          },
+          {
+            "id": 44,
+            "type": "text",
+            "bbox": [
+              921,
+              1283,
+              624,
+              24
+            ],
+            "text": "Action succeeded but the run stopped. Let me check TraceRecorder.run termination logic:",
+            "semantic": "Action succeeded but the run stopped. Let me check TraceRecorder.run termination logic:"
+          },
+          {
+            "id": 45,
+            "type": "text",
+            "bbox": [
+              922,
+              1323,
+              111,
+              22
+            ],
+            "text": "已探索1次搜索",
+            "semantic": "已探索1次搜索"
+          },
+          {
+            "id": 46,
+            "type": "text",
+            "bbox": [
+              923,
+              1413,
+              171,
+              20
+            ],
+            "text": "已探索1次读取，1次搜索",
+            "semantic": "已探索1次读取，1次搜索"
+          },
+          {
+            "id": 47,
+            "type": "text",
+            "bbox": [
+              931,
+              1457,
+              292,
+              17
+            ],
+            "text": "随便问点什么，/可查看命令，@可添加上下文..",
+            "semantic": "随便问点什么，/可查看命令，@可添加上下文.."
+          },
+          {
+            "id": 48,
+            "type": "text",
+            "bbox": [
+              966,
+              1510,
+              183,
+              20
+            ],
+            "text": "MiMo-V2.6-Flash Free",
+            "semantic": "MiMo-V2.6-Flash Free"
+          },
+          {
+            "id": 49,
+            "type": "text",
+            "bbox": [
+              888,
+              1539,
+              37,
+              21
+            ],
+            "text": "微信",
+            "semantic": "微信"
+          }
+        ],
+        "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1790747403322.png",
+        "metadata": {
+          "step": 0
+        }
+      },
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1790747403.560092,
+        "result": {
+          "sent": true,
+          "success": true
+        }
+      },
+      "obs_after": {
+        "id": 2,
+        "timestamp": 1790747913.6573677,
+        "active_window": "MIO·HUB — 任务总线",
+        "scene_nodes": [
+          {
+            "id": 0,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 1,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": "MIO·HUB — 任务总线",
+            "semantic": "MIO·HUB — 任务总线"
+          },
+          {
+            "id": 2,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 3,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 4,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 5,
+            "type": "group",
+            "bbox": [
+              2264,
+              301,
+              138,
+              31
+            ],
+            "text": "x",
+            "semantic": "x"
+          },
+          {
+            "id": 6,
+            "type": "button",
+            "bbox": [
+              2264,
+              301,
+              46,
+              31
+            ],
+            "text": "最小化",
+            "semantic": "最小化"
+          },
+          {
+            "id": 7,
+            "type": "button",
+            "bbox": [
+              2310,
+              301,
+              46,
+              31
+            ],
+            "text": "最大化",
+            "semantic": "最大化"
+          },
+          {
+            "id": 8,
+            "type": "button",
+            "bbox": [
+              2356,
+              301,
+              46,
+              31
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 10,
+            "type": "text",
+            "bbox": [
+              523,
+              307,
+              1741,
+              16
+            ],
+            "text": "MIO·HUB — 任务总线",
+            "semantic": "MIO·HUB — 任务总线"
+          },
+          {
+            "id": 13,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 14,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 15,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 16,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 17,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 18,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 11,
+            "type": "text",
+            "bbox": [
+              505,
+              309,
+              14,
+              13
+            ],
+            "text": "8",
+            "semantic": "8"
+          },
+          {
+            "id": 19,
+            "type": "text",
+            "bbox": [
+              588,
+              348,
+              107,
+              20
+            ],
+            "text": "MIO·HUB",
+            "semantic": "MIO·HUB"
+          },
+          {
+            "id": 20,
+            "type": "text",
+            "bbox": [
+              2114,
+              358,
+              81,
+              19
+            ],
+            "text": "SYNC 13:50",
+            "semantic": "SYNC 13:50"
+          },
+          {
+            "id": 21,
+            "type": "text",
+            "bbox": [
+              804,
+              359,
+              65,
+              19
+            ],
+            "text": "项目：全部",
+            "semantic": "项目：全部"
+          },
+          {
+            "id": 22,
+            "type": "text",
+            "bbox": [
+              1003,
+              359,
+              74,
+              19
+            ],
+            "text": "工作区：全部",
+            "semantic": "工作区：全部"
+          },
+          {
+            "id": 23,
+            "type": "text",
+            "bbox": [
+              1209,
+              359,
+              81,
+              19
+            ],
+            "text": "已取消（142)",
+            "semantic": "已取消（142)"
+          },
+          {
+            "id": 24,
+            "type": "text",
+            "bbox": [
+              1966,
+              359,
+              121,
+              19
+            ],
+            "text": "队列43·运行0",
+            "semantic": "队列43·运行0"
+          },
+          {
+            "id": 25,
+            "type": "text",
+            "bbox": [
+              2265,
+              359,
+              78,
+              20
+            ],
+            "text": "十新建任务",
+            "semantic": "十新建任务"
+          },
+          {
+            "id": 26,
+            "type": "text",
+            "bbox": [
+              1773,
+              360,
+              168,
+              16
+            ],
+            "text": "LIVE13:50:04x136",
+            "semantic": "LIVE13:50:04x136"
+          },
+          {
+            "id": 27,
+            "type": "text",
+            "bbox": [
+              517,
+              365,
+              30,
+              17
+            ],
+            "text": "Mio",
+            "semantic": "Mio"
+          },
+          {
+            "id": 28,
+            "type": "text",
+            "bbox": [
+              2349,
+              365,
+              9,
+              8
+            ],
+            "text": "N",
+            "semantic": "N"
+          },
+          {
+            "id": 29,
+            "type": "text",
+            "bbox": [
+              588,
+              372,
+              182,
+              17
+            ],
+            "text": "CROSS-AGENT TASK BUS",
+            "semantic": "CROSS-AGENT TASK BUS"
+          },
+          {
+            "id": 30,
+            "type": "text",
+            "bbox": [
+              604,
+              439,
+              47,
+              21
+            ],
+            "text": "按状态",
+            "semantic": "按状态"
+          },
+          {
+            "id": 31,
+            "type": "text",
+            "bbox": [
+              674,
+              439,
+              47,
+              21
+            ],
+            "text": "按阶段",
+            "semantic": "按阶段"
+          },
+          {
+            "id": 32,
+            "type": "text",
+            "bbox": [
+              747,
+              441,
+              44,
+              18
+            ],
+            "text": "依赖图",
+            "semantic": "依赖图"
+          },
+          {
+            "id": 33,
+            "type": "text",
+            "bbox": [
+              600,
+              490,
+              220,
+              20
+            ],
+            "text": "136任务·183h完成57/136(42%)",
+            "semantic": "136任务·183h完成57/136(42%)"
+          },
+          {
+            "id": 34,
+            "type": "text",
+            "bbox": [
+              1498,
+              539,
+              64,
+              20
+            ],
+            "text": ": 59h30m",
+            "semantic": ": 59h30m"
+          },
+          {
+            "id": 35,
+            "type": "text",
+            "bbox": [
+              746,
+              540,
+              67,
+              20
+            ],
+            "text": "17·24h",
+            "semantic": "17·24h"
+          },
+          {
+            "id": 36,
+            "type": "text",
+            "bbox": [
+              849,
+              540,
+              77,
+              20
+            ],
+            "text": "● DESIGN",
+            "semantic": "● DESIGN"
+          },
+          {
+            "id": 37,
+            "type": "text",
+            "bbox": [
+              1100,
+              540,
+              94,
+              20
+            ],
+            "text": "● PLANNING",
+            "semantic": "● PLANNING"
+          },
+          {
+            "id": 38,
+            "type": "text",
+            "bbox": [
+              1349,
+              540,
+              68,
+              20
+            ],
+            "text": "●READY",
+            "semantic": "●READY"
+          },
+          {
+            "id": 39,
+            "type": "text",
+            "bbox": [
+              1849,
+              540,
+              77,
+              20
+            ],
+            "text": "● REVIEW",
+            "semantic": "● REVIEW"
+          },
+          {
+            "id": 40,
+            "type": "text",
+            "bbox": [
+              2099,
+              540,
+              61,
+              20
+            ],
+            "text": "●DONE",
+            "semantic": "●DONE"
+          },
+          {
+            "id": 41,
+            "type": "text",
+            "bbox": [
+              2222,
+              540,
+              91,
+              20
+            ],
+            "text": "57 · 74h15m",
+            "semantic": "57 · 74h15m"
+          },
+          {
+            "id": 42,
+            "type": "text",
+            "bbox": [
+              1238,
+              541,
+              74,
+              17
+            ],
+            "text": "4·6h30m",
+            "semantic": "4·6h30m"
+          },
+          {
+            "id": 43,
+            "type": "text",
+            "bbox": [
+              1599,
+              541,
+              213,
+              17
+            ],
+            "text": "· IMPLEMENTING 8 · 14h45m",
+            "semantic": "· IMPLEMENTING 8 · 14h45m"
+          },
+          {
+            "id": 44,
+            "type": "text",
+            "bbox": [
+              2009,
+              541,
+              54,
+              18
+            ],
+            "text": "6.4h",
+            "semantic": "6.4h"
+          },
+          {
+            "id": 45,
+            "type": "text",
+            "bbox": [
+              615,
+              542,
+              96,
+              17
+            ],
+            "text": "BRAINSTORM",
+            "semantic": "BRAINSTORM"
+          },
+          {
+            "id": 46,
+            "type": "text",
+            "bbox": [
+              1472,
+              542,
+              26,
+              15
+            ],
+            "text": "44",
+            "semantic": "44"
+          },
+          {
+            "id": 47,
+            "type": "text",
+            "bbox": [
+              1048,
+              545,
+              11,
+              9
+            ],
+            "text": "0",
+            "semantic": "0"
+          },
+          {
+            "id": 48,
+            "type": "text",
+            "bbox": [
+              1610,
+              592,
+              160,
+              23
+            ],
+            "text": "算法平台统一任务状态查",
+            "semantic": "算法平台统一任务状态查"
+          },
+          {
+            "id": 49,
+            "type": "text",
+            "bbox": [
+              2109,
+              592,
+              113,
+              25
+            ],
+            "text": "生命周期E2E-v2",
+            "semantic": "生命周期E2E-v2"
+          },
+          {
+            "id": 50,
+            "type": "text",
+            "bbox": [
+              610,
+              593,
+              120,
+              23
+            ],
+            "text": "数据口径确认：探",
+            "semantic": "数据口径确认：探"
+          },
+          {
+            "id": 51,
+            "type": "text",
+            "bbox": [
+              1111,
+              594,
+              131,
+              20
+            ],
+            "text": "物联感知设备数据接",
+            "semantic": "物联感知设备数据接"
+          },
+          {
+            "id": 52,
+            "type": "text",
+            "bbox": [
+              1361,
+              595,
+              133,
+              20
+            ],
+            "text": "mio-taskhub:修复",
+            "semantic": "mio-taskhub:修复"
+          },
+          {
+            "id": 53,
+            "type": "text",
+            "bbox": [
+              1862,
+              595,
+              127,
+              20
+            ],
+            "text": "CSDN博文:mio-",
+            "semantic": "CSDN博文:mio-"
+          },
+          {
+            "id": 54,
+            "type": "text",
+            "bbox": [
+              1609,
+              612,
+              78,
+              24
+            ],
+            "text": "询第十阶段",
+            "semantic": "询第十阶段"
+          },
+          {
+            "id": 55,
+            "type": "text",
+            "bbox": [
+              610,
+              615,
+              130,
+              20
+            ],
+            "text": "objld+dump字...",
+            "semantic": "objld+dump字..."
+          },
+          {
+            "id": 56,
+            "type": "text",
+            "bbox": [
+              1360,
+              615,
+              164,
+              20
+            ],
+            "text": "run_at处理与未来任务..",
+            "semantic": "run_at处理与未来任务.."
+          },
+          {
+            "id": 57,
+            "type": "text",
+            "bbox": [
+              1861,
+              616,
+              152,
+              20
+            ],
+            "text": "taskhub跨agent任...",
+            "semantic": "taskhub跨agent任..."
+          },
+          {
+            "id": 58,
+            "type": "text",
+            "bbox": [
+              2122,
+              629,
+              69,
+              16
+            ],
+            "text": "1eb934d6",
+            "semantic": "1eb934d6"
+          },
+          {
+            "id": 59,
+            "type": "text",
+            "bbox": [
+              2216,
+              629,
+              45,
+              20
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 60,
+            "type": "text",
+            "bbox": [
+              621,
+              648,
+              71,
+              20
+            ],
+            "text": "b3c2aa11",
+            "semantic": "b3c2aa11"
+          },
+          {
+            "id": 61,
+            "type": "text",
+            "bbox": [
+              1121,
+              648,
+              71,
+              20
+            ],
+            "text": "55003158",
+            "semantic": "55003158"
+          },
+          {
+            "id": 62,
+            "type": "text",
+            "bbox": [
+              1371,
+              648,
+              72,
+              20
+            ],
+            "text": "5719172e",
+            "semantic": "5719172e"
+          },
+          {
+            "id": 63,
+            "type": "text",
+            "bbox": [
+              1620,
+              648,
+              72,
+              20
+            ],
+            "text": "bef334de",
+            "semantic": "bef334de"
+          },
+          {
+            "id": 64,
+            "type": "text",
+            "bbox": [
+              1872,
+              648,
+              71,
+              20
+            ],
+            "text": "θdf294e8",
+            "semantic": "θdf294e8"
+          },
+          {
+            "id": 65,
+            "type": "text",
+            "bbox": [
+              2168,
+              660,
+              80,
+              21
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 66,
+            "type": "text",
+            "bbox": [
+              2124,
+              663,
+              17,
+              13
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 67,
+            "type": "text",
+            "bbox": [
+              1870,
+              677,
+              121,
+              25
+            ],
+            "text": "评审通过·待归并",
+            "semantic": "评审通过·待归并"
+          },
+          {
+            "id": 68,
+            "type": "text",
+            "bbox": [
+              620,
+              679,
+              123,
+              23
+            ],
+            "text": "待认领·需求理解",
+            "semantic": "待认领·需求理解"
+          },
+          {
+            "id": 69,
+            "type": "text",
+            "bbox": [
+              1121,
+              680,
+              95,
+              21
+            ],
+            "text": "待认领·计划",
+            "semantic": "待认领·计划"
+          },
+          {
+            "id": 70,
+            "type": "text",
+            "bbox": [
+              1621,
+              680,
+              82,
+              21
+            ],
+            "text": "失败·实现",
+            "semantic": "失败·实现"
+          },
+          {
+            "id": 71,
+            "type": "text",
+            "bbox": [
+              1373,
+              682,
+              122,
+              17
+            ],
+            "text": "completed-ready",
+            "semantic": "completed-ready"
+          },
+          {
+            "id": 72,
+            "type": "text",
+            "bbox": [
+              1730,
+              684,
+              18,
+              12
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 73,
+            "type": "text",
+            "bbox": [
+              1615,
+              712,
+              74,
+              20
+            ],
+            "text": "coding",
+            "semantic": "coding"
+          },
+          {
+            "id": 74,
+            "type": "text",
+            "bbox": [
+              667,
+              713,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 75,
+            "type": "text",
+            "bbox": [
+              1122,
+              713,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 76,
+            "type": "text",
+            "bbox": [
+              1918,
+              713,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 77,
+            "type": "text",
+            "bbox": [
+              1432,
+              716,
+              77,
+              14
+            ],
+            "text": "mio-taskhub",
+            "semantic": "mio-taskhub"
+          },
+          {
+            "id": 78,
+            "type": "text",
+            "bbox": [
+              626,
+              718,
+              14,
+              8
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 79,
+            "type": "text",
+            "bbox": [
+              1376,
+              718,
+              14,
+              8
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 80,
+            "type": "text",
+            "bbox": [
+              2112,
+              725,
+              34,
+              15
+            ],
+            "text": "30m",
+            "semantic": "30m"
+          },
+          {
+            "id": 81,
+            "type": "text",
+            "bbox": [
+              2268,
+              726,
+              25,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 82,
+            "type": "text",
+            "bbox": [
+              634,
+              745,
+              74,
+              20
+            ],
+            "text": "1715f0b8",
+            "semantic": "1715f0b8"
+          },
+          {
+            "id": 83,
+            "type": "text",
+            "bbox": [
+              1122,
+              746,
+              147,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 84,
+            "type": "text",
+            "bbox": [
+              1622,
+              748,
+              133,
+              17
+            ],
+            "text": "csps-app-service",
+            "semantic": "csps-app-service"
+          },
+          {
+            "id": 85,
+            "type": "text",
+            "bbox": [
+              1124,
+              768,
+              15,
+              13
+            ],
+            "text": "心",
+            "semantic": "心"
+          },
+          {
+            "id": 86,
+            "type": "text",
+            "bbox": [
+              2112,
+              773,
+              158,
+              20
+            ],
+            "text": "算法平台核心任务链治理",
+            "semantic": "算法平台核心任务链治理"
+          },
+          {
+            "id": 87,
+            "type": "text",
+            "bbox": [
+              767,
+              775,
+              27,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 88,
+            "type": "text",
+            "bbox": [
+              611,
+              776,
+              44,
+              17
+            ],
+            "text": "30m·",
+            "semantic": "30m·"
+          },
+          {
+            "id": 89,
+            "type": "text",
+            "bbox": [
+              1518,
+              776,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 90,
+            "type": "text",
+            "bbox": [
+              1870,
+              776,
+              80,
+              23
+            ],
+            "text": "agent-dev",
+            "semantic": "agent-dev"
+          },
+          {
+            "id": 91,
+            "type": "text",
+            "bbox": [
+              1611,
+              777,
+              69,
+              17
+            ],
+            "text": "1h15m · -",
+            "semantic": "1h15m · -"
+          },
+          {
+            "id": 92,
+            "type": "text",
+            "bbox": [
+              1267,
+              794,
+              26,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 93,
+            "type": "text",
+            "bbox": [
+              2111,
+              794,
+              62,
+              21
+            ],
+            "text": "第九阶段",
+            "semantic": "第九阶段"
+          },
+          {
+            "id": 94,
+            "type": "text",
+            "bbox": [
+              1112,
+              796,
+              34,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 95,
+            "type": "text",
+            "bbox": [
+              522,
+              803,
+              20,
+              18
+            ],
+            "text": "E",
+            "semantic": "E"
+          },
+          {
+            "id": 96,
+            "type": "text",
+            "bbox": [
+              2017,
+              808,
+              26,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 97,
+            "type": "text",
+            "bbox": [
+              1861,
+              809,
+              57,
+              17
+            ],
+            "text": "1h30m ·",
+            "semantic": "1h30m ·"
+          },
+          {
+            "id": 98,
+            "type": "text",
+            "bbox": [
+              611,
+              823,
+              133,
+              23
+            ],
+            "text": "管网运营状况大屏按",
+            "semantic": "管网运营状况大屏按"
+          },
+          {
+            "id": 99,
+            "type": "text",
+            "bbox": [
+              1611,
+              826,
+              161,
+              20
+            ],
+            "text": "desktop-agent:扩展办",
+            "semantic": "desktop-agent:扩展办"
+          },
+          {
+            "id": 100,
+            "type": "text",
+            "bbox": [
+              2121,
+              826,
+              71,
+              20
+            ],
+            "text": "1b5ae71d",
+            "semantic": "1b5ae71d"
+          },
+          {
+            "id": 101,
+            "type": "text",
+            "bbox": [
+              1362,
+              827,
+              95,
+              17
+            ],
+            "text": "chrome-ext-",
+            "semantic": "chrome-ext-"
+          },
+          {
+            "id": 102,
+            "type": "text",
+            "bbox": [
+              2217,
+              829,
+              43,
+              18
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 103,
+            "type": "text",
+            "bbox": [
+              609,
+              842,
+              136,
+              25
+            ],
+            "text": "原型重构一需求与..",
+            "semantic": "原型重构一需求与.."
+          },
+          {
+            "id": 104,
+            "type": "text",
+            "bbox": [
+              1110,
+              842,
+              119,
+              23
+            ],
+            "text": "运营状况专题展示",
+            "semantic": "运营状况专题展示"
+          },
+          {
+            "id": 105,
+            "type": "text",
+            "bbox": [
+              1359,
+              844,
+              133,
+              23
+            ],
+            "text": "agent:CWS商店...",
+            "semantic": "agent:CWS商店..."
+          },
+          {
+            "id": 106,
+            "type": "text",
+            "bbox": [
+              1612,
+              846,
+              144,
+              20
+            ],
+            "text": "公与真实网站场景覆盖",
+            "semantic": "公与真实网站场景覆盖"
+          },
+          {
+            "id": 107,
+            "type": "text",
+            "bbox": [
+              1861,
+              857,
+              154,
+              20
+            ],
+            "text": "MCPclaimtask_id探",
+            "semantic": "MCPclaimtask_id探"
+          },
+          {
+            "id": 108,
+            "type": "text",
+            "bbox": [
+              2158,
+              858,
+              71,
+              22
+            ],
+            "text": "coding",
+            "semantic": "coding"
+          },
+          {
+            "id": 109,
+            "type": "text",
+            "bbox": [
+              2123,
+              861,
+              21,
+              16
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 110,
+            "type": "text",
+            "bbox": [
+              1120,
+              865,
+              113,
+              20
+            ],
+            "text": "（检查井运营状态）",
+            "semantic": "（检查井运营状态）"
+          },
+          {
+            "id": 111,
+            "type": "text",
+            "bbox": [
+              1859,
+              877,
+              98,
+              23
+            ],
+            "text": "针 (用后即弃）",
+            "semantic": "针 (用后即弃）"
+          },
+          {
+            "id": 112,
+            "type": "text",
+            "bbox": [
+              1465,
+              879,
+              46,
+              21
+            ],
+            "text": "待认领",
+            "semantic": "待认领"
+          },
+          {
+            "id": 113,
+            "type": "text",
+            "bbox": [
+              622,
+              880,
+              70,
+              17
+            ],
+            "text": "1715f0b8",
+            "semantic": "1715f0b8"
+          },
+          {
+            "id": 114,
+            "type": "text",
+            "bbox": [
+              1373,
+              880,
+              69,
+              17
+            ],
+            "text": "d23a6d38",
+            "semantic": "d23a6d38"
+          },
+          {
+            "id": 115,
+            "type": "text",
+            "bbox": [
+              1622,
+              881,
+              69,
+              17
+            ],
+            "text": "8dd28a39",
+            "semantic": "8dd28a39"
+          },
+          {
+            "id": 116,
+            "type": "text",
+            "bbox": [
+              2122,
+              895,
+              133,
+              16
+            ],
+            "text": "csps-app-service",
+            "semantic": "csps-app-service"
+          },
+          {
+            "id": 117,
+            "type": "text",
+            "bbox": [
+              1121,
+              898,
+              71,
+              19
+            ],
+            "text": "087d8645",
+            "semantic": "087d8645"
+          },
+          {
+            "id": 118,
+            "type": "text",
+            "bbox": [
+              621,
+              910,
+              120,
+              20
+            ],
+            "text": "待认领·需求理解",
+            "semantic": "待认领·需求理解"
+          },
+          {
+            "id": 119,
+            "type": "text",
+            "bbox": [
+              1621,
+              911,
+              82,
+              20
+            ],
+            "text": "失败·实现",
+            "semantic": "失败·实现"
+          },
+          {
+            "id": 120,
+            "type": "text",
+            "bbox": [
+              1872,
+              911,
+              71,
+              20
+            ],
+            "text": "d2d07452",
+            "semantic": "d2d07452"
+          },
+          {
+            "id": 121,
+            "type": "text",
+            "bbox": [
+              2111,
+              924,
+              56,
+              17
+            ],
+            "text": "1h30m ·",
+            "semantic": "1h30m ·"
+          },
+          {
+            "id": 122,
+            "type": "text",
+            "bbox": [
+              2268,
+              924,
+              25,
+              16
+            ],
+            "text": ".",
+            "semantic": "."
+          },
+          {
+            "id": 123,
+            "type": "text",
+            "bbox": [
+              1121,
+              929,
+              95,
+              20
+            ],
+            "text": "待认领·计划",
+            "semantic": "待认领·计划"
+          },
+          {
+            "id": 124,
+            "type": "text",
+            "bbox": [
+              1245,
+              934,
+              12,
+              9
+            ],
+            "text": "2",
+            "semantic": "2"
+          },
+          {
+            "id": 125,
+            "type": "text",
+            "bbox": [
+              668,
+              943,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 126,
+            "type": "text",
+            "bbox": [
+              1634,
+              943,
+              93,
+              20
+            ],
+            "text": "desktop-agent",
+            "semantic": "desktop-agent"
+          },
+          {
+            "id": 127,
+            "type": "text",
+            "bbox": [
+              1872,
+              944,
+              118,
+              20
+            ],
+            "text": "评审通过·待归并",
+            "semantic": "评审通过·待归并"
+          },
+          {
+            "id": 128,
+            "type": "text",
+            "bbox": [
+              1386,
+              945,
+              109,
+              16
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 129,
+            "type": "text",
+            "bbox": [
+              624,
+              946,
+              18,
+              12
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 130,
+            "type": "text",
+            "bbox": [
+              1121,
+              962,
+              81,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 131,
+            "type": "text",
+            "bbox": [
+              2110,
+              972,
+              162,
+              21
+            ],
+            "text": "chrome-ext-agent:任",
+            "semantic": "chrome-ext-agent:任"
+          },
+          {
+            "id": 132,
+            "type": "text",
+            "bbox": [
+              1918,
+              976,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 133,
+            "type": "text",
+            "bbox": [
+              1873,
+              977,
+              20,
+              16
+            ],
+            "text": "PO",
+            "semantic": "PO"
+          },
+          {
+            "id": 134,
+            "type": "text",
+            "bbox": [
+              1373,
+              978,
+              131,
+              17
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 135,
+            "type": "text",
+            "bbox": [
+              1613,
+              978,
+              17,
+              13
+            ],
+            "text": "3h",
+            "semantic": "3h"
+          },
+          {
+            "id": 136,
+            "type": "text",
+            "bbox": [
+              2111,
+              994,
+              153,
+              20
+            ],
+            "text": "务记忆（同域名高频任",
+            "semantic": "务记忆（同域名高频任"
+          },
+          {
+            "id": 137,
+            "type": "text",
+            "bbox": [
+              1122,
+              995,
+              147,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 138,
+            "type": "text",
+            "bbox": [
+              622,
+              1008,
+              147,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 139,
+            "type": "text",
+            "bbox": [
+              1362,
+              1009,
+              35,
+              15
+            ],
+            "text": "1h·",
+            "semantic": "1h·"
+          },
+          {
+            "id": 140,
+            "type": "text",
+            "bbox": [
+              1518,
+              1009,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 141,
+            "type": "text",
+            "bbox": [
+              1124,
+              1017,
+              15,
+              13
+            ],
+            "text": "心",
+            "semantic": "心"
+          },
+          {
+            "id": 142,
+            "type": "text",
+            "bbox": [
+              1610,
+              1024,
+              155,
+              21
+            ],
+            "text": "desktop-agent:MCP",
+            "semantic": "desktop-agent:MCP"
+          },
+          {
+            "id": 143,
+            "type": "text",
+            "bbox": [
+              2216,
+              1027,
+              45,
+              20
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 144,
+            "type": "text",
+            "bbox": [
+              2122,
+              1028,
+              69,
+              16
+            ],
+            "text": "2f364208",
+            "semantic": "2f364208"
+          },
+          {
+            "id": 145,
+            "type": "text",
+            "bbox": [
+              624,
+              1030,
+              15,
+              13
+            ],
+            "text": "心",
+            "semantic": "心"
+          },
+          {
+            "id": 146,
+            "type": "text",
+            "bbox": [
+              1862,
+              1041,
+              26,
+              14
+            ],
+            "text": "30m",
+            "semantic": "30m"
+          },
+          {
+            "id": 147,
+            "type": "text",
+            "bbox": [
+              1112,
+              1045,
+              33,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 148,
+            "type": "text",
+            "bbox": [
+              1268,
+              1045,
+              25,
+              16
+            ],
+            "text": ".",
+            "semantic": "."
+          },
+          {
+            "id": 149,
+            "type": "text",
+            "bbox": [
+              1611,
+              1045,
+              161,
+              20
+            ],
+            "text": "工具安全机制（确认/沙..",
+            "semantic": "工具安全机制（确认/沙.."
+          },
+          {
+            "id": 150,
+            "type": "text",
+            "bbox": [
+              1361,
+              1056,
+              131,
+              20
+            ],
+            "text": "建设算法平台功能中",
+            "semantic": "建设算法平台功能中"
+          },
+          {
+            "id": 151,
+            "type": "text",
+            "bbox": [
+              767,
+              1057,
+              27,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 152,
+            "type": "text",
+            "bbox": [
+              612,
+              1058,
+              32,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 153,
+            "type": "text",
+            "bbox": [
+              2122,
+              1059,
+              21,
+              16
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 154,
+            "type": "text",
+            "bbox": [
+              1360,
+              1076,
+              137,
+              23
+            ],
+            "text": "心并完成Vue前端..",
+            "semantic": "心并完成Vue前端.."
+          },
+          {
+            "id": 155,
+            "type": "text",
+            "bbox": [
+              1620,
+              1077,
+              72,
+              22
+            ],
+            "text": "24bee3b5",
+            "semantic": "24bee3b5"
+          },
+          {
+            "id": 156,
+            "type": "text",
+            "bbox": [
+              1860,
+              1089,
+              126,
+              20
+            ],
+            "text": "wire-probeMCP",
+            "semantic": "wire-probeMCP"
+          },
+          {
+            "id": 157,
+            "type": "text",
+            "bbox": [
+              1110,
+              1092,
+              133,
+              23
+            ],
+            "text": "排水管网下游再生水",
+            "semantic": "排水管网下游再生水"
+          },
+          {
+            "id": 158,
+            "type": "text",
+            "bbox": [
+              2115,
+              1093,
+              16,
+              13
+            ],
+            "text": "CE",
+            "semantic": "CE"
+          },
+          {
+            "id": 159,
+            "type": "text",
+            "bbox": [
+              2135,
+              1093,
+              112,
+              16
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 160,
+            "type": "text",
+            "bbox": [
+              609,
+              1103,
+              134,
+              25
+            ],
+            "text": "历史信息建库（垮塌",
+            "semantic": "历史信息建库（垮塌"
+          },
+          {
+            "id": 161,
+            "type": "text",
+            "bbox": [
+              910,
+              1105,
+              92,
+              20
+            ],
+            "text": "拖拽任务到此处",
+            "semantic": "拖拽任务到此处"
+          },
+          {
+            "id": 162,
+            "type": "text",
+            "bbox": [
+              1465,
+              1110,
+              47,
+              22
+            ],
+            "text": "待认领",
+            "semantic": "待认领"
+          },
+          {
+            "id": 163,
+            "type": "text",
+            "bbox": [
+              1621,
+              1110,
+              83,
+              21
+            ],
+            "text": "失败·实现",
+            "semantic": "失败·实现"
+          },
+          {
+            "id": 164,
+            "type": "text",
+            "bbox": [
+              1861,
+              1110,
+              154,
+              20
+            ],
+            "text": "task_id探针（用后即..",
+            "semantic": "task_id探针（用后即.."
+          },
+          {
+            "id": 165,
+            "type": "text",
+            "bbox": [
+              1373,
+              1112,
+              68,
+              17
+            ],
+            "text": "6a630afa",
+            "semantic": "6a630afa"
+          },
+          {
+            "id": 166,
+            "type": "text",
+            "bbox": [
+              1110,
+              1115,
+              78,
+              20
+            ],
+            "text": "厂数据联动",
+            "semantic": "厂数据联动"
+          },
+          {
+            "id": 167,
+            "type": "text",
+            "bbox": [
+              611,
+              1126,
+              39,
+              23
+            ],
+            "text": "点位)",
+            "semantic": "点位)"
+          },
+          {
+            "id": 168,
+            "type": "text",
+            "bbox": [
+              2122,
+              1126,
+              133,
+              17
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 169,
+            "type": "text",
+            "bbox": [
+              1409,
+              1144,
+              82,
+              17
+            ],
+            "text": "frontend",
+            "semantic": "frontend"
+          },
+          {
+            "id": 170,
+            "type": "text",
+            "bbox": [
+              1634,
+              1144,
+              93,
+              17
+            ],
+            "text": "desktop-agent",
+            "semantic": "desktop-agent"
+          },
+          {
+            "id": 171,
+            "type": "text",
+            "bbox": [
+              1873,
+              1144,
+              69,
+              17
+            ],
+            "text": "45499c80",
+            "semantic": "45499c80"
+          },
+          {
+            "id": 172,
+            "type": "text",
+            "bbox": [
+              1374,
+              1145,
+              21,
+              15
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 173,
+            "type": "text",
+            "bbox": [
+              1121,
+              1146,
+              70,
+              22
+            ],
+            "text": "29b483eb",
+            "semantic": "29b483eb"
+          },
+          {
+            "id": 174,
+            "type": "text",
+            "bbox": [
+              2112,
+              1157,
+              34,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 175,
+            "type": "text",
+            "bbox": [
+              2268,
+              1157,
+              25,
+              16
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 176,
+            "type": "text",
+            "bbox": [
+              622,
+              1161,
+              70,
+              19
+            ],
+            "text": "ddbd66e1",
+            "semantic": "ddbd66e1"
+          },
+          {
+            "id": 177,
+            "type": "text",
+            "bbox": [
+              1872,
+              1175,
+              118,
+              19
+            ],
+            "text": "评审通过·待归并",
+            "semantic": "评审通过·待归并"
+          },
+          {
+            "id": 178,
+            "type": "text",
+            "bbox": [
+              1372,
+              1176,
+              132,
+              19
+            ],
+            "text": "csps-app-service",
+            "semantic": "csps-app-service"
+          },
+          {
+            "id": 179,
+            "type": "text",
+            "bbox": [
+              1613,
+              1177,
+              17,
+              12
+            ],
+            "text": "2h",
+            "semantic": "2h"
+          },
+          {
+            "id": 180,
+            "type": "text",
+            "bbox": [
+              1121,
+              1179,
+              94,
+              20
+            ],
+            "text": "待认领·计划",
+            "semantic": "待认领·计划"
+          },
+          {
+            "id": 181,
+            "type": "text",
+            "bbox": [
+              1243,
+              1183,
+              15,
+              11
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 182,
+            "type": "text",
+            "bbox": [
+              620,
+              1191,
+              123,
+              23
+            ],
+            "text": "待认领·需求理解",
+            "semantic": "待认领·需求理解"
+          },
+          {
+            "id": 183,
+            "type": "text",
+            "bbox": [
+              2111,
+              1205,
+              160,
+              20
+            ],
+            "text": "chrome-ext-agent:定",
+            "semantic": "chrome-ext-agent:定"
+          },
+          {
+            "id": 184,
+            "type": "text",
+            "bbox": [
+              1918,
+              1206,
+              80,
+              21
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 185,
+            "type": "text",
+            "bbox": [
+              1518,
+              1207,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 186,
+            "type": "text",
+            "bbox": [
+              1363,
+              1208,
+              31,
+              15
+            ],
+            "text": "4h·",
+            "semantic": "4h·"
+          },
+          {
+            "id": 187,
+            "type": "text",
+            "bbox": [
+              1873,
+              1208,
+              20,
+              15
+            ],
+            "text": "PO",
+            "semantic": "PO"
+          },
+          {
+            "id": 188,
+            "type": "text",
+            "bbox": [
+              1121,
+              1212,
+              81,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 189,
+            "type": "text",
+            "bbox": [
+              1610,
+              1222,
+              164,
+              20
+            ],
+            "text": "robot:跑通测试套件并补",
+            "semantic": "robot:跑通测试套件并补"
+          },
+          {
+            "id": 190,
+            "type": "text",
+            "bbox": [
+              668,
+              1225,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 191,
+            "type": "text",
+            "bbox": [
+              2112,
+              1227,
+              159,
+              17
+            ],
+            "text": "时/周期任务（签到监控..",
+            "semantic": "时/周期任务（签到监控.."
+          },
+          {
+            "id": 192,
+            "type": "text",
+            "bbox": [
+              624,
+              1228,
+              17,
+              11
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 193,
+            "type": "text",
+            "bbox": [
+              1122,
+              1245,
+              148,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 194,
+            "type": "text",
+            "bbox": [
+              1613,
+              1245,
+              19,
+              16
+            ],
+            "text": "CI",
+            "semantic": "CI"
+          },
+          {
+            "id": 195,
+            "type": "text",
+            "bbox": [
+              1361,
+              1254,
+              131,
+              23
+            ],
+            "text": "污水管网雨水入流分",
+            "semantic": "污水管网雨水入流分"
+          },
+          {
+            "id": 196,
+            "type": "text",
+            "bbox": [
+              2216,
+              1259,
+              45,
+              21
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 197,
+            "type": "text",
+            "bbox": [
+              2122,
+              1260,
+              69,
+              17
+            ],
+            "text": "b5f05312",
+            "semantic": "b5f05312"
+          },
+          {
+            "id": 198,
+            "type": "text",
+            "bbox": [
+              2018,
+              1271,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 199,
+            "type": "text",
+            "bbox": [
+              1862,
+              1272,
+              26,
+              14
+            ],
+            "text": "30m",
+            "semantic": "30m"
+          },
+          {
+            "id": 200,
+            "type": "text",
+            "bbox": [
+              1621,
+              1275,
+              71,
+              22
+            ],
+            "text": "d8f9f78c",
+            "semantic": "d8f9f78c"
+          },
+          {
+            "id": 201,
+            "type": "text",
+            "bbox": [
+              1361,
+              1277,
+              75,
+              21
+            ],
+            "text": "析算法应用",
+            "semantic": "析算法应用"
+          },
+          {
+            "id": 202,
+            "type": "text",
+            "bbox": [
+              624,
+              1290,
+              78,
+              14
+            ],
+            "text": "历中片自建庆",
+            "semantic": "历中片自建庆"
+          },
+          {
+            "id": 203,
+            "type": "text",
+            "bbox": [
+              520,
+              1313,
+              23,
+              15
+            ],
+            "text": "Ac",
+            "semantic": "Ac"
+          }
+        ],
+        "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1790747528252.png",
+        "metadata": {
+          "step": 1
+        }
+      },
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": {
+        "id": 3,
+        "timestamp": 1790747913.6573677,
+        "active_window": "MIO·HUB — 任务总线",
+        "scene_nodes": [
+          {
+            "id": 0,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 1,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": "MIO·HUB — 任务总线",
+            "semantic": "MIO·HUB — 任务总线"
+          },
+          {
+            "id": 2,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 3,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 4,
+            "type": "group",
+            "bbox": [
+              498,
+              300,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 5,
+            "type": "group",
+            "bbox": [
+              2264,
+              301,
+              138,
+              31
+            ],
+            "text": "x",
+            "semantic": "x"
+          },
+          {
+            "id": 6,
+            "type": "button",
+            "bbox": [
+              2264,
+              301,
+              46,
+              31
+            ],
+            "text": "最小化",
+            "semantic": "最小化"
+          },
+          {
+            "id": 7,
+            "type": "button",
+            "bbox": [
+              2310,
+              301,
+              46,
+              31
+            ],
+            "text": "最大化",
+            "semantic": "最大化"
+          },
+          {
+            "id": 8,
+            "type": "button",
+            "bbox": [
+              2356,
+              301,
+              46,
+              31
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 10,
+            "type": "text",
+            "bbox": [
+              523,
+              307,
+              1741,
+              16
+            ],
+            "text": "MIO·HUB — 任务总线",
+            "semantic": "MIO·HUB — 任务总线"
+          },
+          {
+            "id": 13,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 14,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 15,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 16,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 17,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 18,
+            "type": "group",
+            "bbox": [
+              498,
+              331,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 11,
+            "type": "text",
+            "bbox": [
+              505,
+              309,
+              14,
+              13
+            ],
+            "text": "8",
+            "semantic": "8"
+          },
+          {
+            "id": 19,
+            "type": "text",
+            "bbox": [
+              588,
+              348,
+              107,
+              20
+            ],
+            "text": "MIO·HUB",
+            "semantic": "MIO·HUB"
+          },
+          {
+            "id": 20,
+            "type": "text",
+            "bbox": [
+              2114,
+              358,
+              81,
+              19
+            ],
+            "text": "SYNC 13:50",
+            "semantic": "SYNC 13:50"
+          },
+          {
+            "id": 21,
+            "type": "text",
+            "bbox": [
+              804,
+              359,
+              65,
+              19
+            ],
+            "text": "项目：全部",
+            "semantic": "项目：全部"
+          },
+          {
+            "id": 22,
+            "type": "text",
+            "bbox": [
+              1003,
+              359,
+              74,
+              19
+            ],
+            "text": "工作区：全部",
+            "semantic": "工作区：全部"
+          },
+          {
+            "id": 23,
+            "type": "text",
+            "bbox": [
+              1209,
+              359,
+              81,
+              19
+            ],
+            "text": "已取消（142)",
+            "semantic": "已取消（142)"
+          },
+          {
+            "id": 24,
+            "type": "text",
+            "bbox": [
+              1966,
+              359,
+              121,
+              19
+            ],
+            "text": "队列43·运行0",
+            "semantic": "队列43·运行0"
+          },
+          {
+            "id": 25,
+            "type": "text",
+            "bbox": [
+              2265,
+              359,
+              78,
+              20
+            ],
+            "text": "十新建任务",
+            "semantic": "十新建任务"
+          },
+          {
+            "id": 26,
+            "type": "text",
+            "bbox": [
+              1773,
+              360,
+              168,
+              16
+            ],
+            "text": "LIVE13:50:04x136",
+            "semantic": "LIVE13:50:04x136"
+          },
+          {
+            "id": 27,
+            "type": "text",
+            "bbox": [
+              517,
+              365,
+              30,
+              17
+            ],
+            "text": "Mio",
+            "semantic": "Mio"
+          },
+          {
+            "id": 28,
+            "type": "text",
+            "bbox": [
+              2349,
+              365,
+              9,
+              8
+            ],
+            "text": "N",
+            "semantic": "N"
+          },
+          {
+            "id": 29,
+            "type": "text",
+            "bbox": [
+              588,
+              372,
+              182,
+              17
+            ],
+            "text": "CROSS-AGENT TASK BUS",
+            "semantic": "CROSS-AGENT TASK BUS"
+          },
+          {
+            "id": 30,
+            "type": "text",
+            "bbox": [
+              604,
+              439,
+              47,
+              21
+            ],
+            "text": "按状态",
+            "semantic": "按状态"
+          },
+          {
+            "id": 31,
+            "type": "text",
+            "bbox": [
+              674,
+              439,
+              47,
+              21
+            ],
+            "text": "按阶段",
+            "semantic": "按阶段"
+          },
+          {
+            "id": 32,
+            "type": "text",
+            "bbox": [
+              747,
+              441,
+              44,
+              18
+            ],
+            "text": "依赖图",
+            "semantic": "依赖图"
+          },
+          {
+            "id": 33,
+            "type": "text",
+            "bbox": [
+              600,
+              490,
+              220,
+              20
+            ],
+            "text": "136任务·183h完成57/136(42%)",
+            "semantic": "136任务·183h完成57/136(42%)"
+          },
+          {
+            "id": 34,
+            "type": "text",
+            "bbox": [
+              1498,
+              539,
+              64,
+              20
+            ],
+            "text": ": 59h30m",
+            "semantic": ": 59h30m"
+          },
+          {
+            "id": 35,
+            "type": "text",
+            "bbox": [
+              746,
+              540,
+              67,
+              20
+            ],
+            "text": "17·24h",
+            "semantic": "17·24h"
+          },
+          {
+            "id": 36,
+            "type": "text",
+            "bbox": [
+              849,
+              540,
+              77,
+              20
+            ],
+            "text": "● DESIGN",
+            "semantic": "● DESIGN"
+          },
+          {
+            "id": 37,
+            "type": "text",
+            "bbox": [
+              1100,
+              540,
+              94,
+              20
+            ],
+            "text": "● PLANNING",
+            "semantic": "● PLANNING"
+          },
+          {
+            "id": 38,
+            "type": "text",
+            "bbox": [
+              1349,
+              540,
+              68,
+              20
+            ],
+            "text": "●READY",
+            "semantic": "●READY"
+          },
+          {
+            "id": 39,
+            "type": "text",
+            "bbox": [
+              1849,
+              540,
+              77,
+              20
+            ],
+            "text": "● REVIEW",
+            "semantic": "● REVIEW"
+          },
+          {
+            "id": 40,
+            "type": "text",
+            "bbox": [
+              2099,
+              540,
+              61,
+              20
+            ],
+            "text": "●DONE",
+            "semantic": "●DONE"
+          },
+          {
+            "id": 41,
+            "type": "text",
+            "bbox": [
+              2222,
+              540,
+              91,
+              20
+            ],
+            "text": "57 · 74h15m",
+            "semantic": "57 · 74h15m"
+          },
+          {
+            "id": 42,
+            "type": "text",
+            "bbox": [
+              1238,
+              541,
+              74,
+              17
+            ],
+            "text": "4·6h30m",
+            "semantic": "4·6h30m"
+          },
+          {
+            "id": 43,
+            "type": "text",
+            "bbox": [
+              1599,
+              541,
+              213,
+              17
+            ],
+            "text": "· IMPLEMENTING 8 · 14h45m",
+            "semantic": "· IMPLEMENTING 8 · 14h45m"
+          },
+          {
+            "id": 44,
+            "type": "text",
+            "bbox": [
+              2009,
+              541,
+              54,
+              18
+            ],
+            "text": "6.4h",
+            "semantic": "6.4h"
+          },
+          {
+            "id": 45,
+            "type": "text",
+            "bbox": [
+              615,
+              542,
+              96,
+              17
+            ],
+            "text": "BRAINSTORM",
+            "semantic": "BRAINSTORM"
+          },
+          {
+            "id": 46,
+            "type": "text",
+            "bbox": [
+              1472,
+              542,
+              26,
+              15
+            ],
+            "text": "44",
+            "semantic": "44"
+          },
+          {
+            "id": 47,
+            "type": "text",
+            "bbox": [
+              1048,
+              545,
+              11,
+              9
+            ],
+            "text": "0",
+            "semantic": "0"
+          },
+          {
+            "id": 48,
+            "type": "text",
+            "bbox": [
+              1610,
+              592,
+              160,
+              23
+            ],
+            "text": "算法平台统一任务状态查",
+            "semantic": "算法平台统一任务状态查"
+          },
+          {
+            "id": 49,
+            "type": "text",
+            "bbox": [
+              2109,
+              592,
+              113,
+              25
+            ],
+            "text": "生命周期E2E-v2",
+            "semantic": "生命周期E2E-v2"
+          },
+          {
+            "id": 50,
+            "type": "text",
+            "bbox": [
+              610,
+              593,
+              120,
+              23
+            ],
+            "text": "数据口径确认：探",
+            "semantic": "数据口径确认：探"
+          },
+          {
+            "id": 51,
+            "type": "text",
+            "bbox": [
+              1111,
+              594,
+              131,
+              20
+            ],
+            "text": "物联感知设备数据接",
+            "semantic": "物联感知设备数据接"
+          },
+          {
+            "id": 52,
+            "type": "text",
+            "bbox": [
+              1361,
+              595,
+              133,
+              20
+            ],
+            "text": "mio-taskhub:修复",
+            "semantic": "mio-taskhub:修复"
+          },
+          {
+            "id": 53,
+            "type": "text",
+            "bbox": [
+              1862,
+              595,
+              127,
+              20
+            ],
+            "text": "CSDN博文:mio-",
+            "semantic": "CSDN博文:mio-"
+          },
+          {
+            "id": 54,
+            "type": "text",
+            "bbox": [
+              1609,
+              612,
+              78,
+              24
+            ],
+            "text": "询第十阶段",
+            "semantic": "询第十阶段"
+          },
+          {
+            "id": 55,
+            "type": "text",
+            "bbox": [
+              610,
+              615,
+              130,
+              20
+            ],
+            "text": "objld+dump字...",
+            "semantic": "objld+dump字..."
+          },
+          {
+            "id": 56,
+            "type": "text",
+            "bbox": [
+              1360,
+              615,
+              164,
+              20
+            ],
+            "text": "run_at处理与未来任务..",
+            "semantic": "run_at处理与未来任务.."
+          },
+          {
+            "id": 57,
+            "type": "text",
+            "bbox": [
+              1861,
+              616,
+              152,
+              20
+            ],
+            "text": "taskhub跨agent任...",
+            "semantic": "taskhub跨agent任..."
+          },
+          {
+            "id": 58,
+            "type": "text",
+            "bbox": [
+              2122,
+              629,
+              69,
+              16
+            ],
+            "text": "1eb934d6",
+            "semantic": "1eb934d6"
+          },
+          {
+            "id": 59,
+            "type": "text",
+            "bbox": [
+              2216,
+              629,
+              45,
+              20
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 60,
+            "type": "text",
+            "bbox": [
+              621,
+              648,
+              71,
+              20
+            ],
+            "text": "b3c2aa11",
+            "semantic": "b3c2aa11"
+          },
+          {
+            "id": 61,
+            "type": "text",
+            "bbox": [
+              1121,
+              648,
+              71,
+              20
+            ],
+            "text": "55003158",
+            "semantic": "55003158"
+          },
+          {
+            "id": 62,
+            "type": "text",
+            "bbox": [
+              1371,
+              648,
+              72,
+              20
+            ],
+            "text": "5719172e",
+            "semantic": "5719172e"
+          },
+          {
+            "id": 63,
+            "type": "text",
+            "bbox": [
+              1620,
+              648,
+              72,
+              20
+            ],
+            "text": "bef334de",
+            "semantic": "bef334de"
+          },
+          {
+            "id": 64,
+            "type": "text",
+            "bbox": [
+              1872,
+              648,
+              71,
+              20
+            ],
+            "text": "θdf294e8",
+            "semantic": "θdf294e8"
+          },
+          {
+            "id": 65,
+            "type": "text",
+            "bbox": [
+              2168,
+              660,
+              80,
+              21
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 66,
+            "type": "text",
+            "bbox": [
+              2124,
+              663,
+              17,
+              13
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 67,
+            "type": "text",
+            "bbox": [
+              1870,
+              677,
+              121,
+              25
+            ],
+            "text": "评审通过·待归并",
+            "semantic": "评审通过·待归并"
+          },
+          {
+            "id": 68,
+            "type": "text",
+            "bbox": [
+              620,
+              679,
+              123,
+              23
+            ],
+            "text": "待认领·需求理解",
+            "semantic": "待认领·需求理解"
+          },
+          {
+            "id": 69,
+            "type": "text",
+            "bbox": [
+              1121,
+              680,
+              95,
+              21
+            ],
+            "text": "待认领·计划",
+            "semantic": "待认领·计划"
+          },
+          {
+            "id": 70,
+            "type": "text",
+            "bbox": [
+              1621,
+              680,
+              82,
+              21
+            ],
+            "text": "失败·实现",
+            "semantic": "失败·实现"
+          },
+          {
+            "id": 71,
+            "type": "text",
+            "bbox": [
+              1373,
+              682,
+              122,
+              17
+            ],
+            "text": "completed-ready",
+            "semantic": "completed-ready"
+          },
+          {
+            "id": 72,
+            "type": "text",
+            "bbox": [
+              1730,
+              684,
+              18,
+              12
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 73,
+            "type": "text",
+            "bbox": [
+              1615,
+              712,
+              74,
+              20
+            ],
+            "text": "coding",
+            "semantic": "coding"
+          },
+          {
+            "id": 74,
+            "type": "text",
+            "bbox": [
+              667,
+              713,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 75,
+            "type": "text",
+            "bbox": [
+              1122,
+              713,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 76,
+            "type": "text",
+            "bbox": [
+              1918,
+              713,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 77,
+            "type": "text",
+            "bbox": [
+              1432,
+              716,
+              77,
+              14
+            ],
+            "text": "mio-taskhub",
+            "semantic": "mio-taskhub"
+          },
+          {
+            "id": 78,
+            "type": "text",
+            "bbox": [
+              626,
+              718,
+              14,
+              8
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 79,
+            "type": "text",
+            "bbox": [
+              1376,
+              718,
+              14,
+              8
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 80,
+            "type": "text",
+            "bbox": [
+              2112,
+              725,
+              34,
+              15
+            ],
+            "text": "30m",
+            "semantic": "30m"
+          },
+          {
+            "id": 81,
+            "type": "text",
+            "bbox": [
+              2268,
+              726,
+              25,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 82,
+            "type": "text",
+            "bbox": [
+              634,
+              745,
+              74,
+              20
+            ],
+            "text": "1715f0b8",
+            "semantic": "1715f0b8"
+          },
+          {
+            "id": 83,
+            "type": "text",
+            "bbox": [
+              1122,
+              746,
+              147,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 84,
+            "type": "text",
+            "bbox": [
+              1622,
+              748,
+              133,
+              17
+            ],
+            "text": "csps-app-service",
+            "semantic": "csps-app-service"
+          },
+          {
+            "id": 85,
+            "type": "text",
+            "bbox": [
+              1124,
+              768,
+              15,
+              13
+            ],
+            "text": "心",
+            "semantic": "心"
+          },
+          {
+            "id": 86,
+            "type": "text",
+            "bbox": [
+              2112,
+              773,
+              158,
+              20
+            ],
+            "text": "算法平台核心任务链治理",
+            "semantic": "算法平台核心任务链治理"
+          },
+          {
+            "id": 87,
+            "type": "text",
+            "bbox": [
+              767,
+              775,
+              27,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 88,
+            "type": "text",
+            "bbox": [
+              611,
+              776,
+              44,
+              17
+            ],
+            "text": "30m·",
+            "semantic": "30m·"
+          },
+          {
+            "id": 89,
+            "type": "text",
+            "bbox": [
+              1518,
+              776,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 90,
+            "type": "text",
+            "bbox": [
+              1870,
+              776,
+              80,
+              23
+            ],
+            "text": "agent-dev",
+            "semantic": "agent-dev"
+          },
+          {
+            "id": 91,
+            "type": "text",
+            "bbox": [
+              1611,
+              777,
+              69,
+              17
+            ],
+            "text": "1h15m · -",
+            "semantic": "1h15m · -"
+          },
+          {
+            "id": 92,
+            "type": "text",
+            "bbox": [
+              1267,
+              794,
+              26,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 93,
+            "type": "text",
+            "bbox": [
+              2111,
+              794,
+              62,
+              21
+            ],
+            "text": "第九阶段",
+            "semantic": "第九阶段"
+          },
+          {
+            "id": 94,
+            "type": "text",
+            "bbox": [
+              1112,
+              796,
+              34,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 95,
+            "type": "text",
+            "bbox": [
+              522,
+              803,
+              20,
+              18
+            ],
+            "text": "E",
+            "semantic": "E"
+          },
+          {
+            "id": 96,
+            "type": "text",
+            "bbox": [
+              2017,
+              808,
+              26,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 97,
+            "type": "text",
+            "bbox": [
+              1861,
+              809,
+              57,
+              17
+            ],
+            "text": "1h30m ·",
+            "semantic": "1h30m ·"
+          },
+          {
+            "id": 98,
+            "type": "text",
+            "bbox": [
+              611,
+              823,
+              133,
+              23
+            ],
+            "text": "管网运营状况大屏按",
+            "semantic": "管网运营状况大屏按"
+          },
+          {
+            "id": 99,
+            "type": "text",
+            "bbox": [
+              1611,
+              826,
+              161,
+              20
+            ],
+            "text": "desktop-agent:扩展办",
+            "semantic": "desktop-agent:扩展办"
+          },
+          {
+            "id": 100,
+            "type": "text",
+            "bbox": [
+              2121,
+              826,
+              71,
+              20
+            ],
+            "text": "1b5ae71d",
+            "semantic": "1b5ae71d"
+          },
+          {
+            "id": 101,
+            "type": "text",
+            "bbox": [
+              1362,
+              827,
+              95,
+              17
+            ],
+            "text": "chrome-ext-",
+            "semantic": "chrome-ext-"
+          },
+          {
+            "id": 102,
+            "type": "text",
+            "bbox": [
+              2217,
+              829,
+              43,
+              18
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 103,
+            "type": "text",
+            "bbox": [
+              609,
+              842,
+              136,
+              25
+            ],
+            "text": "原型重构一需求与..",
+            "semantic": "原型重构一需求与.."
+          },
+          {
+            "id": 104,
+            "type": "text",
+            "bbox": [
+              1110,
+              842,
+              119,
+              23
+            ],
+            "text": "运营状况专题展示",
+            "semantic": "运营状况专题展示"
+          },
+          {
+            "id": 105,
+            "type": "text",
+            "bbox": [
+              1359,
+              844,
+              133,
+              23
+            ],
+            "text": "agent:CWS商店...",
+            "semantic": "agent:CWS商店..."
+          },
+          {
+            "id": 106,
+            "type": "text",
+            "bbox": [
+              1612,
+              846,
+              144,
+              20
+            ],
+            "text": "公与真实网站场景覆盖",
+            "semantic": "公与真实网站场景覆盖"
+          },
+          {
+            "id": 107,
+            "type": "text",
+            "bbox": [
+              1861,
+              857,
+              154,
+              20
+            ],
+            "text": "MCPclaimtask_id探",
+            "semantic": "MCPclaimtask_id探"
+          },
+          {
+            "id": 108,
+            "type": "text",
+            "bbox": [
+              2158,
+              858,
+              71,
+              22
+            ],
+            "text": "coding",
+            "semantic": "coding"
+          },
+          {
+            "id": 109,
+            "type": "text",
+            "bbox": [
+              2123,
+              861,
+              21,
+              16
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 110,
+            "type": "text",
+            "bbox": [
+              1120,
+              865,
+              113,
+              20
+            ],
+            "text": "（检查井运营状态）",
+            "semantic": "（检查井运营状态）"
+          },
+          {
+            "id": 111,
+            "type": "text",
+            "bbox": [
+              1859,
+              877,
+              98,
+              23
+            ],
+            "text": "针 (用后即弃）",
+            "semantic": "针 (用后即弃）"
+          },
+          {
+            "id": 112,
+            "type": "text",
+            "bbox": [
+              1465,
+              879,
+              46,
+              21
+            ],
+            "text": "待认领",
+            "semantic": "待认领"
+          },
+          {
+            "id": 113,
+            "type": "text",
+            "bbox": [
+              622,
+              880,
+              70,
+              17
+            ],
+            "text": "1715f0b8",
+            "semantic": "1715f0b8"
+          },
+          {
+            "id": 114,
+            "type": "text",
+            "bbox": [
+              1373,
+              880,
+              69,
+              17
+            ],
+            "text": "d23a6d38",
+            "semantic": "d23a6d38"
+          },
+          {
+            "id": 115,
+            "type": "text",
+            "bbox": [
+              1622,
+              881,
+              69,
+              17
+            ],
+            "text": "8dd28a39",
+            "semantic": "8dd28a39"
+          },
+          {
+            "id": 116,
+            "type": "text",
+            "bbox": [
+              2122,
+              895,
+              133,
+              16
+            ],
+            "text": "csps-app-service",
+            "semantic": "csps-app-service"
+          },
+          {
+            "id": 117,
+            "type": "text",
+            "bbox": [
+              1121,
+              898,
+              71,
+              19
+            ],
+            "text": "087d8645",
+            "semantic": "087d8645"
+          },
+          {
+            "id": 118,
+            "type": "text",
+            "bbox": [
+              621,
+              910,
+              120,
+              20
+            ],
+            "text": "待认领·需求理解",
+            "semantic": "待认领·需求理解"
+          },
+          {
+            "id": 119,
+            "type": "text",
+            "bbox": [
+              1621,
+              911,
+              82,
+              20
+            ],
+            "text": "失败·实现",
+            "semantic": "失败·实现"
+          },
+          {
+            "id": 120,
+            "type": "text",
+            "bbox": [
+              1872,
+              911,
+              71,
+              20
+            ],
+            "text": "d2d07452",
+            "semantic": "d2d07452"
+          },
+          {
+            "id": 121,
+            "type": "text",
+            "bbox": [
+              2111,
+              924,
+              56,
+              17
+            ],
+            "text": "1h30m ·",
+            "semantic": "1h30m ·"
+          },
+          {
+            "id": 122,
+            "type": "text",
+            "bbox": [
+              2268,
+              924,
+              25,
+              16
+            ],
+            "text": ".",
+            "semantic": "."
+          },
+          {
+            "id": 123,
+            "type": "text",
+            "bbox": [
+              1121,
+              929,
+              95,
+              20
+            ],
+            "text": "待认领·计划",
+            "semantic": "待认领·计划"
+          },
+          {
+            "id": 124,
+            "type": "text",
+            "bbox": [
+              1245,
+              934,
+              12,
+              9
+            ],
+            "text": "2",
+            "semantic": "2"
+          },
+          {
+            "id": 125,
+            "type": "text",
+            "bbox": [
+              668,
+              943,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 126,
+            "type": "text",
+            "bbox": [
+              1634,
+              943,
+              93,
+              20
+            ],
+            "text": "desktop-agent",
+            "semantic": "desktop-agent"
+          },
+          {
+            "id": 127,
+            "type": "text",
+            "bbox": [
+              1872,
+              944,
+              118,
+              20
+            ],
+            "text": "评审通过·待归并",
+            "semantic": "评审通过·待归并"
+          },
+          {
+            "id": 128,
+            "type": "text",
+            "bbox": [
+              1386,
+              945,
+              109,
+              16
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 129,
+            "type": "text",
+            "bbox": [
+              624,
+              946,
+              18,
+              12
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 130,
+            "type": "text",
+            "bbox": [
+              1121,
+              962,
+              81,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 131,
+            "type": "text",
+            "bbox": [
+              2110,
+              972,
+              162,
+              21
+            ],
+            "text": "chrome-ext-agent:任",
+            "semantic": "chrome-ext-agent:任"
+          },
+          {
+            "id": 132,
+            "type": "text",
+            "bbox": [
+              1918,
+              976,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 133,
+            "type": "text",
+            "bbox": [
+              1873,
+              977,
+              20,
+              16
+            ],
+            "text": "PO",
+            "semantic": "PO"
+          },
+          {
+            "id": 134,
+            "type": "text",
+            "bbox": [
+              1373,
+              978,
+              131,
+              17
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 135,
+            "type": "text",
+            "bbox": [
+              1613,
+              978,
+              17,
+              13
+            ],
+            "text": "3h",
+            "semantic": "3h"
+          },
+          {
+            "id": 136,
+            "type": "text",
+            "bbox": [
+              2111,
+              994,
+              153,
+              20
+            ],
+            "text": "务记忆（同域名高频任",
+            "semantic": "务记忆（同域名高频任"
+          },
+          {
+            "id": 137,
+            "type": "text",
+            "bbox": [
+              1122,
+              995,
+              147,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 138,
+            "type": "text",
+            "bbox": [
+              622,
+              1008,
+              147,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 139,
+            "type": "text",
+            "bbox": [
+              1362,
+              1009,
+              35,
+              15
+            ],
+            "text": "1h·",
+            "semantic": "1h·"
+          },
+          {
+            "id": 140,
+            "type": "text",
+            "bbox": [
+              1518,
+              1009,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 141,
+            "type": "text",
+            "bbox": [
+              1124,
+              1017,
+              15,
+              13
+            ],
+            "text": "心",
+            "semantic": "心"
+          },
+          {
+            "id": 142,
+            "type": "text",
+            "bbox": [
+              1610,
+              1024,
+              155,
+              21
+            ],
+            "text": "desktop-agent:MCP",
+            "semantic": "desktop-agent:MCP"
+          },
+          {
+            "id": 143,
+            "type": "text",
+            "bbox": [
+              2216,
+              1027,
+              45,
+              20
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 144,
+            "type": "text",
+            "bbox": [
+              2122,
+              1028,
+              69,
+              16
+            ],
+            "text": "2f364208",
+            "semantic": "2f364208"
+          },
+          {
+            "id": 145,
+            "type": "text",
+            "bbox": [
+              624,
+              1030,
+              15,
+              13
+            ],
+            "text": "心",
+            "semantic": "心"
+          },
+          {
+            "id": 146,
+            "type": "text",
+            "bbox": [
+              1862,
+              1041,
+              26,
+              14
+            ],
+            "text": "30m",
+            "semantic": "30m"
+          },
+          {
+            "id": 147,
+            "type": "text",
+            "bbox": [
+              1112,
+              1045,
+              33,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 148,
+            "type": "text",
+            "bbox": [
+              1268,
+              1045,
+              25,
+              16
+            ],
+            "text": ".",
+            "semantic": "."
+          },
+          {
+            "id": 149,
+            "type": "text",
+            "bbox": [
+              1611,
+              1045,
+              161,
+              20
+            ],
+            "text": "工具安全机制（确认/沙..",
+            "semantic": "工具安全机制（确认/沙.."
+          },
+          {
+            "id": 150,
+            "type": "text",
+            "bbox": [
+              1361,
+              1056,
+              131,
+              20
+            ],
+            "text": "建设算法平台功能中",
+            "semantic": "建设算法平台功能中"
+          },
+          {
+            "id": 151,
+            "type": "text",
+            "bbox": [
+              767,
+              1057,
+              27,
+              19
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 152,
+            "type": "text",
+            "bbox": [
+              612,
+              1058,
+              32,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 153,
+            "type": "text",
+            "bbox": [
+              2122,
+              1059,
+              21,
+              16
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 154,
+            "type": "text",
+            "bbox": [
+              1360,
+              1076,
+              137,
+              23
+            ],
+            "text": "心并完成Vue前端..",
+            "semantic": "心并完成Vue前端.."
+          },
+          {
+            "id": 155,
+            "type": "text",
+            "bbox": [
+              1620,
+              1077,
+              72,
+              22
+            ],
+            "text": "24bee3b5",
+            "semantic": "24bee3b5"
+          },
+          {
+            "id": 156,
+            "type": "text",
+            "bbox": [
+              1860,
+              1089,
+              126,
+              20
+            ],
+            "text": "wire-probeMCP",
+            "semantic": "wire-probeMCP"
+          },
+          {
+            "id": 157,
+            "type": "text",
+            "bbox": [
+              1110,
+              1092,
+              133,
+              23
+            ],
+            "text": "排水管网下游再生水",
+            "semantic": "排水管网下游再生水"
+          },
+          {
+            "id": 158,
+            "type": "text",
+            "bbox": [
+              2115,
+              1093,
+              16,
+              13
+            ],
+            "text": "CE",
+            "semantic": "CE"
+          },
+          {
+            "id": 159,
+            "type": "text",
+            "bbox": [
+              2135,
+              1093,
+              112,
+              16
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 160,
+            "type": "text",
+            "bbox": [
+              609,
+              1103,
+              134,
+              25
+            ],
+            "text": "历史信息建库（垮塌",
+            "semantic": "历史信息建库（垮塌"
+          },
+          {
+            "id": 161,
+            "type": "text",
+            "bbox": [
+              910,
+              1105,
+              92,
+              20
+            ],
+            "text": "拖拽任务到此处",
+            "semantic": "拖拽任务到此处"
+          },
+          {
+            "id": 162,
+            "type": "text",
+            "bbox": [
+              1465,
+              1110,
+              47,
+              22
+            ],
+            "text": "待认领",
+            "semantic": "待认领"
+          },
+          {
+            "id": 163,
+            "type": "text",
+            "bbox": [
+              1621,
+              1110,
+              83,
+              21
+            ],
+            "text": "失败·实现",
+            "semantic": "失败·实现"
+          },
+          {
+            "id": 164,
+            "type": "text",
+            "bbox": [
+              1861,
+              1110,
+              154,
+              20
+            ],
+            "text": "task_id探针（用后即..",
+            "semantic": "task_id探针（用后即.."
+          },
+          {
+            "id": 165,
+            "type": "text",
+            "bbox": [
+              1373,
+              1112,
+              68,
+              17
+            ],
+            "text": "6a630afa",
+            "semantic": "6a630afa"
+          },
+          {
+            "id": 166,
+            "type": "text",
+            "bbox": [
+              1110,
+              1115,
+              78,
+              20
+            ],
+            "text": "厂数据联动",
+            "semantic": "厂数据联动"
+          },
+          {
+            "id": 167,
+            "type": "text",
+            "bbox": [
+              611,
+              1126,
+              39,
+              23
+            ],
+            "text": "点位)",
+            "semantic": "点位)"
+          },
+          {
+            "id": 168,
+            "type": "text",
+            "bbox": [
+              2122,
+              1126,
+              133,
+              17
+            ],
+            "text": "chrome-ext-agent",
+            "semantic": "chrome-ext-agent"
+          },
+          {
+            "id": 169,
+            "type": "text",
+            "bbox": [
+              1409,
+              1144,
+              82,
+              17
+            ],
+            "text": "frontend",
+            "semantic": "frontend"
+          },
+          {
+            "id": 170,
+            "type": "text",
+            "bbox": [
+              1634,
+              1144,
+              93,
+              17
+            ],
+            "text": "desktop-agent",
+            "semantic": "desktop-agent"
+          },
+          {
+            "id": 171,
+            "type": "text",
+            "bbox": [
+              1873,
+              1144,
+              69,
+              17
+            ],
+            "text": "45499c80",
+            "semantic": "45499c80"
+          },
+          {
+            "id": 172,
+            "type": "text",
+            "bbox": [
+              1374,
+              1145,
+              21,
+              15
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 173,
+            "type": "text",
+            "bbox": [
+              1121,
+              1146,
+              70,
+              22
+            ],
+            "text": "29b483eb",
+            "semantic": "29b483eb"
+          },
+          {
+            "id": 174,
+            "type": "text",
+            "bbox": [
+              2112,
+              1157,
+              34,
+              15
+            ],
+            "text": "2h·",
+            "semantic": "2h·"
+          },
+          {
+            "id": 175,
+            "type": "text",
+            "bbox": [
+              2268,
+              1157,
+              25,
+              16
+            ],
+            "text": ".·.",
+            "semantic": ".·."
+          },
+          {
+            "id": 176,
+            "type": "text",
+            "bbox": [
+              622,
+              1161,
+              70,
+              19
+            ],
+            "text": "ddbd66e1",
+            "semantic": "ddbd66e1"
+          },
+          {
+            "id": 177,
+            "type": "text",
+            "bbox": [
+              1872,
+              1175,
+              118,
+              19
+            ],
+            "text": "评审通过·待归并",
+            "semantic": "评审通过·待归并"
+          },
+          {
+            "id": 178,
+            "type": "text",
+            "bbox": [
+              1372,
+              1176,
+              132,
+              19
+            ],
+            "text": "csps-app-service",
+            "semantic": "csps-app-service"
+          },
+          {
+            "id": 179,
+            "type": "text",
+            "bbox": [
+              1613,
+              1177,
+              17,
+              12
+            ],
+            "text": "2h",
+            "semantic": "2h"
+          },
+          {
+            "id": 180,
+            "type": "text",
+            "bbox": [
+              1121,
+              1179,
+              94,
+              20
+            ],
+            "text": "待认领·计划",
+            "semantic": "待认领·计划"
+          },
+          {
+            "id": 181,
+            "type": "text",
+            "bbox": [
+              1243,
+              1183,
+              15,
+              11
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 182,
+            "type": "text",
+            "bbox": [
+              620,
+              1191,
+              123,
+              23
+            ],
+            "text": "待认领·需求理解",
+            "semantic": "待认领·需求理解"
+          },
+          {
+            "id": 183,
+            "type": "text",
+            "bbox": [
+              2111,
+              1205,
+              160,
+              20
+            ],
+            "text": "chrome-ext-agent:定",
+            "semantic": "chrome-ext-agent:定"
+          },
+          {
+            "id": 184,
+            "type": "text",
+            "bbox": [
+              1918,
+              1206,
+              80,
+              21
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 185,
+            "type": "text",
+            "bbox": [
+              1518,
+              1207,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 186,
+            "type": "text",
+            "bbox": [
+              1363,
+              1208,
+              31,
+              15
+            ],
+            "text": "4h·",
+            "semantic": "4h·"
+          },
+          {
+            "id": 187,
+            "type": "text",
+            "bbox": [
+              1873,
+              1208,
+              20,
+              15
+            ],
+            "text": "PO",
+            "semantic": "PO"
+          },
+          {
+            "id": 188,
+            "type": "text",
+            "bbox": [
+              1121,
+              1212,
+              81,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 189,
+            "type": "text",
+            "bbox": [
+              1610,
+              1222,
+              164,
+              20
+            ],
+            "text": "robot:跑通测试套件并补",
+            "semantic": "robot:跑通测试套件并补"
+          },
+          {
+            "id": 190,
+            "type": "text",
+            "bbox": [
+              668,
+              1225,
+              80,
+              20
+            ],
+            "text": "任意agent",
+            "semantic": "任意agent"
+          },
+          {
+            "id": 191,
+            "type": "text",
+            "bbox": [
+              2112,
+              1227,
+              159,
+              17
+            ],
+            "text": "时/周期任务（签到监控..",
+            "semantic": "时/周期任务（签到监控.."
+          },
+          {
+            "id": 192,
+            "type": "text",
+            "bbox": [
+              624,
+              1228,
+              17,
+              11
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 193,
+            "type": "text",
+            "bbox": [
+              1122,
+              1245,
+              148,
+              20
+            ],
+            "text": "多源感知及AI智能决策中",
+            "semantic": "多源感知及AI智能决策中"
+          },
+          {
+            "id": 194,
+            "type": "text",
+            "bbox": [
+              1613,
+              1245,
+              19,
+              16
+            ],
+            "text": "CI",
+            "semantic": "CI"
+          },
+          {
+            "id": 195,
+            "type": "text",
+            "bbox": [
+              1361,
+              1254,
+              131,
+              23
+            ],
+            "text": "污水管网雨水入流分",
+            "semantic": "污水管网雨水入流分"
+          },
+          {
+            "id": 196,
+            "type": "text",
+            "bbox": [
+              2216,
+              1259,
+              45,
+              21
+            ],
+            "text": "已完成",
+            "semantic": "已完成"
+          },
+          {
+            "id": 197,
+            "type": "text",
+            "bbox": [
+              2122,
+              1260,
+              69,
+              17
+            ],
+            "text": "b5f05312",
+            "semantic": "b5f05312"
+          },
+          {
+            "id": 198,
+            "type": "text",
+            "bbox": [
+              2018,
+              1271,
+              24,
+              16
+            ],
+            "text": "...",
+            "semantic": "..."
+          },
+          {
+            "id": 199,
+            "type": "text",
+            "bbox": [
+              1862,
+              1272,
+              26,
+              14
+            ],
+            "text": "30m",
+            "semantic": "30m"
+          },
+          {
+            "id": 200,
+            "type": "text",
+            "bbox": [
+              1621,
+              1275,
+              71,
+              22
+            ],
+            "text": "d8f9f78c",
+            "semantic": "d8f9f78c"
+          },
+          {
+            "id": 201,
+            "type": "text",
+            "bbox": [
+              1361,
+              1277,
+              75,
+              21
+            ],
+            "text": "析算法应用",
+            "semantic": "析算法应用"
+          },
+          {
+            "id": 202,
+            "type": "text",
+            "bbox": [
+              624,
+              1290,
+              78,
+              14
+            ],
+            "text": "历中片自建庆",
+            "semantic": "历中片自建庆"
+          },
+          {
+            "id": 203,
+            "type": "text",
+            "bbox": [
+              520,
+              1313,
+              23,
+              15
+            ],
+            "text": "Ac",
+            "semantic": "Ac"
+          }
+        ],
+        "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1790747528252.png",
+        "metadata": {
+          "step": 1
+        }
+      },
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1790747528.9197867,
+        "result": {
+          "sent": true,
+          "success": true
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": null,
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1790747531.1236873,
+        "result": {
+          "sent": true,
+          "success": true
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": null,
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1790747775.8734705,
+        "result": {
+          "sent": true,
+          "success": false
+        }
+      },
+      "obs_after": null,
+      "planner": null,
+      "metadata": null
+    },
+    {
+      "obs_before": null,
+      "action": {
+        "id": "",
+        "type": "focus_window",
+        "params": {
+          "title": "Edge"
+        },
+        "timestamp": 1790747779.0125625,
+        "result": {
+          "sent": true,
+          "success": true
+        }
+      },
+      "obs_after": {
+        "id": 4,
+        "timestamp": 1790747913.6573677,
+        "active_window": "MIO·HUB — 任务总线",
+        "scene_nodes": [
+          {
+            "id": 0,
+            "type": "group",
+            "bbox": [
+              291,
+              301,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 1,
+            "type": "group",
+            "bbox": [
+              291,
+              301,
+              1904,
+              1072
+            ],
+            "text": "MIO·HUB — 任务总线",
+            "semantic": "MIO·HUB — 任务总线"
+          },
+          {
+            "id": 2,
+            "type": "group",
+            "bbox": [
+              291,
+              301,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 3,
+            "type": "group",
+            "bbox": [
+              291,
+              301,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 4,
+            "type": "group",
+            "bbox": [
+              291,
+              301,
+              1904,
+              1072
+            ],
+            "text": ""
+          },
+          {
+            "id": 5,
+            "type": "group",
+            "bbox": [
+              2057,
+              302,
+              138,
+              31
+            ],
+            "text": "x",
+            "semantic": "x"
+          },
+          {
+            "id": 6,
+            "type": "button",
+            "bbox": [
+              2057,
+              302,
+              46,
+              31
+            ],
+            "text": "最小化",
+            "semantic": "最小化"
+          },
+          {
+            "id": 7,
+            "type": "button",
+            "bbox": [
+              2103,
+              302,
+              46,
+              31
+            ],
+            "text": "最大化",
+            "semantic": "最大化"
+          },
+          {
+            "id": 8,
+            "type": "button",
+            "bbox": [
+              2149,
+              302,
+              46,
+              31
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 10,
+            "type": "text",
+            "bbox": [
+              316,
+              308,
+              1741,
+              16
+            ],
+            "text": "MIO·HUB — 任务总线",
+            "semantic": "MIO·HUB — 任务总线"
+          },
+          {
+            "id": 12,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 13,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 14,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 15,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 16,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 17,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 18,
+            "type": "input",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": "MIO·HUB — 任务总线",
+            "semantic": "MIO·HUB — 任务总线"
+          },
+          {
+            "id": 19,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 20,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              66,
+              1041
+            ],
+            "text": "主导航",
+            "semantic": "主导航"
+          },
+          {
+            "id": 21,
+            "type": "group",
+            "bbox": [
+              291,
+              332,
+              1904,
+              1041
+            ],
+            "text": ""
+          },
+          {
+            "id": 22,
+            "type": "group",
+            "bbox": [
+              357,
+              332,
+              1838,
+              76
+            ],
+            "text": ""
+          },
+          {
+            "id": 23,
+            "type": "text",
+            "bbox": [
+              383,
+              346,
+              181,
+              24
+            ],
+            "text": "MIO·HUB",
+            "semantic": "MIO·HUB"
+          },
+          {
+            "id": 24,
+            "type": "button",
+            "bbox": [
+              2038,
+              350,
+              131,
+              39
+            ],
+            "text": "＋ 新建任务 N",
+            "semantic": "＋ 新建任务 N"
+          },
+          {
+            "id": 25,
+            "type": "group",
+            "bbox": [
+              585,
+              354,
+              513,
+              31
+            ],
+            "text": "按项目/工作区筛选",
+            "semantic": "按项目/工作区筛选"
+          },
+          {
+            "id": 26,
+            "type": "button",
+            "bbox": [
+              585,
+              354,
+              191,
+              31
+            ],
+            "text": "按项目筛选",
+            "semantic": "按项目筛选"
+          },
+          {
+            "id": 27,
+            "type": "button",
+            "bbox": [
+              783,
+              354,
+              191,
+              31
+            ],
+            "text": "按工作区筛选",
+            "semantic": "按工作区筛选"
+          },
+          {
+            "id": 28,
+            "type": "button",
+            "bbox": [
+              981,
+              354,
+              117,
+              31
+            ],
+            "text": "▸ 已取消（142）",
+            "semantic": "▸ 已取消（142）"
+          },
+          {
+            "id": 29,
+            "type": "button",
+            "bbox": [
+              1992,
+              354,
+              31,
+              31
+            ],
+            "text": "手动刷新",
+            "semantic": "手动刷新"
+          },
+          {
+            "id": 30,
+            "type": "button",
+            "bbox": [
+              1748,
+              355,
+              146,
+              29
+            ],
+            "text": "调度队列",
+            "semantic": "调度队列"
+          },
+          {
+            "id": 31,
+            "type": "text",
+            "bbox": [
+              1575,
+              360,
+              36,
+              18
+            ],
+            "text": "LIVE",
+            "semantic": "LIVE"
+          },
+          {
+            "id": 32,
+            "type": "text",
+            "bbox": [
+              1618,
+              360,
+              72,
+              18
+            ],
+            "text": "13:58:23",
+            "semantic": "13:58:23"
+          },
+          {
+            "id": 33,
+            "type": "text",
+            "bbox": [
+              1697,
+              360,
+              10,
+              18
+            ],
+            "text": "×",
+            "semantic": "×"
+          },
+          {
+            "id": 34,
+            "type": "text",
+            "bbox": [
+              1706,
+              360,
+              27,
+              18
+            ],
+            "text": "136",
+            "semantic": "136"
+          },
+          {
+            "id": 35,
+            "type": "group",
+            "bbox": [
+              993,
+              362,
+              500,
+              981
+            ],
+            "text": "创建新任务",
+            "semantic": "创建新任务"
+          },
+          {
+            "id": 36,
+            "type": "text",
+            "bbox": [
+              1909,
+              362,
+              76,
+              14
+            ],
+            "text": "SYNC 13:58",
+            "semantic": "SYNC 13:58"
+          },
+          {
+            "id": 37,
+            "type": "text",
+            "bbox": [
+              2000,
+              362,
+              15,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 38,
+            "type": "text",
+            "bbox": [
+              383,
+              375,
+              181,
+              14
+            ],
+            "text": "CROSS-AGENT TASK BUS",
+            "semantic": "CROSS-AGENT TASK BUS"
+          },
+          {
+            "id": 39,
+            "type": "button",
+            "bbox": [
+              1430,
+              387,
+              28,
+              28
+            ],
+            "text": "关闭",
+            "semantic": "关闭"
+          },
+          {
+            "id": 41,
+            "type": "text",
+            "bbox": [
+              1018,
+              389,
+              67,
+              24
+            ],
+            "text": "创建任务",
+            "semantic": "创建任务"
+          },
+          {
+            "id": 42,
+            "type": "button",
+            "bbox": [
+              301,
+              406,
+              45,
+              44
+            ],
+            "text": "工作流",
+            "semantic": "工作流"
+          },
+          {
+            "id": 43,
+            "type": "group",
+            "bbox": [
+              357,
+              407,
+              1838,
+              966
+            ],
+            "text": ""
+          },
+          {
+            "id": 44,
+            "type": "text",
+            "bbox": [
+              314,
+              419,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 45,
+            "type": "text",
+            "bbox": [
+              362,
+              420,
+              40,
+              16
+            ],
+            "text": "工作流",
+            "semantic": "工作流"
+          },
+          {
+            "id": 46,
+            "type": "text",
+            "bbox": [
+              381,
+              429,
+              219,
+              42
+            ],
+            "text": "工作流维度",
+            "semantic": "工作流维度"
+          },
+          {
+            "id": 47,
+            "type": "button",
+            "bbox": [
+              386,
+              434,
+              67,
+              32
+            ],
+            "text": "按状态",
+            "semantic": "按状态"
+          },
+          {
+            "id": 48,
+            "type": "button",
+            "bbox": [
+              457,
+              434,
+              67,
+              32
+            ],
+            "text": "按阶段",
+            "semantic": "按阶段"
+          },
+          {
+            "id": 49,
+            "type": "button",
+            "bbox": [
+              528,
+              434,
+              67,
+              32
+            ],
+            "text": "依赖图",
+            "semantic": "依赖图"
+          },
+          {
+            "id": 50,
+            "type": "button",
+            "bbox": [
+              1018,
+              435,
+              99,
+              27
+            ],
+            "text": "📋 从模板创建",
+            "semantic": "📋 从模板创建"
+          },
+          {
+            "id": 52,
+            "type": "button",
+            "bbox": [
+              301,
+              454,
+              45,
+              44
+            ],
+            "text": "列表",
+            "semantic": "列表"
+          },
+          {
+            "id": 53,
+            "type": "text",
+            "bbox": [
+              314,
+              467,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 54,
+            "type": "text",
+            "bbox": [
+              362,
+              468,
+              27,
+              16
+            ],
+            "text": "列表",
+            "semantic": "列表"
+          },
+          {
+            "id": 55,
+            "type": "text",
+            "bbox": [
+              381,
+              483,
+              1790,
+              37
+            ],
+            "text": "看板统计",
+            "semantic": "看板统计"
+          },
+          {
+            "id": 57,
+            "type": "text",
+            "bbox": [
+              1018,
+              486,
+              60,
+              15
+            ],
+            "text": "任务标题",
+            "semantic": "任务标题"
+          },
+          {
+            "id": 58,
+            "type": "text",
+            "bbox": [
+              1077,
+              486,
+              10,
+              15
+            ],
+            "text": "*",
+            "semantic": "*"
+          },
+          {
+            "id": 59,
+            "type": "text",
+            "bbox": [
+              396,
+              493,
+              22,
+              16
+            ],
+            "text": "136",
+            "semantic": "136"
+          },
+          {
+            "id": 60,
+            "type": "text",
+            "bbox": [
+              417,
+              493,
+              29,
+              16
+            ],
+            "text": "任务",
+            "semantic": "任务"
+          },
+          {
+            "id": 61,
+            "type": "text",
+            "bbox": [
+              455,
+              493,
+              7,
+              16
+            ],
+            "text": "·",
+            "semantic": "·"
+          },
+          {
+            "id": 62,
+            "type": "text",
+            "bbox": [
+              461,
+              493,
+              30,
+              16
+            ],
+            "text": "183h",
+            "semantic": "183h"
+          },
+          {
+            "id": 63,
+            "type": "text",
+            "bbox": [
+              500,
+              493,
+              29,
+              16
+            ],
+            "text": "完成",
+            "semantic": "完成"
+          },
+          {
+            "id": 64,
+            "type": "text",
+            "bbox": [
+              528,
+              493,
+              16,
+              16
+            ],
+            "text": "57",
+            "semantic": "57"
+          },
+          {
+            "id": 65,
+            "type": "text",
+            "bbox": [
+              543,
+              493,
+              5,
+              16
+            ],
+            "text": "/",
+            "semantic": "/"
+          },
+          {
+            "id": 66,
+            "type": "text",
+            "bbox": [
+              547,
+              493,
+              23,
+              16
+            ],
+            "text": "136",
+            "semantic": "136"
+          },
+          {
+            "id": 67,
+            "type": "text",
+            "bbox": [
+              569,
+              493,
+              8,
+              16
+            ],
+            "text": "(",
+            "semantic": "("
+          },
+          {
+            "id": 68,
+            "type": "text",
+            "bbox": [
+              576,
+              493,
+              17,
+              16
+            ],
+            "text": "42",
+            "semantic": "42"
+          },
+          {
+            "id": 69,
+            "type": "text",
+            "bbox": [
+              592,
+              493,
+              17,
+              16
+            ],
+            "text": "%)",
+            "semantic": "%)"
+          },
+          {
+            "id": 70,
+            "type": "button",
+            "bbox": [
+              301,
+              502,
+              45,
+              44
+            ],
+            "text": "空闲计划",
+            "semantic": "空闲计划"
+          },
+          {
+            "id": 71,
+            "type": "input",
+            "bbox": [
+              1018,
+              508,
+              440,
+              38
+            ],
+            "text": "例如：数据清洗脚本",
+            "semantic": "例如：数据清洗脚本"
+          },
+          {
+            "id": 72,
+            "type": "text",
+            "bbox": [
+              314,
+              515,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 74,
+            "type": "text",
+            "bbox": [
+              362,
+              516,
+              53,
+              16
+            ],
+            "text": "空闲计划",
+            "semantic": "空闲计划"
+          },
+          {
+            "id": 75,
+            "type": "group",
+            "bbox": [
+              381,
+              529,
+              236,
+              800
+            ],
+            "text": "头脑风暴列",
+            "semantic": "头脑风暴列"
+          },
+          {
+            "id": 76,
+            "type": "group",
+            "bbox": [
+              631,
+              529,
+              236,
+              800
+            ],
+            "text": "设计列",
+            "semantic": "设计列"
+          },
+          {
+            "id": 77,
+            "type": "group",
+            "bbox": [
+              881,
+              529,
+              236,
+              800
+            ],
+            "text": "计划列",
+            "semantic": "计划列"
+          },
+          {
+            "id": 78,
+            "type": "group",
+            "bbox": [
+              1131,
+              529,
+              236,
+              800
+            ],
+            "text": "就绪列",
+            "semantic": "就绪列"
+          },
+          {
+            "id": 79,
+            "type": "group",
+            "bbox": [
+              1381,
+              529,
+              236,
+              800
+            ],
+            "text": "实现中列",
+            "semantic": "实现中列"
+          },
+          {
+            "id": 80,
+            "type": "group",
+            "bbox": [
+              1631,
+              529,
+              236,
+              800
+            ],
+            "text": "评审列",
+            "semantic": "评审列"
+          },
+          {
+            "id": 81,
+            "type": "group",
+            "bbox": [
+              1881,
+              529,
+              236,
+              800
+            ],
+            "text": "完成列",
+            "semantic": "完成列"
+          },
+          {
+            "id": 82,
+            "type": "group",
+            "bbox": [
+              2131,
+              529,
+              236,
+              800
+            ],
+            "text": "已取消列",
+            "semantic": "已取消列"
+          },
+          {
+            "id": 83,
+            "type": "group",
+            "bbox": [
+              382,
+              530,
+              234,
+              42
+            ],
+            "text": ""
+          },
+          {
+            "id": 84,
+            "type": "group",
+            "bbox": [
+              632,
+              530,
+              234,
+              42
+            ],
+            "text": ""
+          },
+          {
+            "id": 85,
+            "type": "group",
+            "bbox": [
+              882,
+              530,
+              234,
+              42
+            ],
+            "text": "描述",
+            "semantic": "描述"
+          },
+          {
+            "id": 86,
+            "type": "group",
+            "bbox": [
+              1132,
+              530,
+              234,
+              42
+            ],
+            "text": ""
+          },
+          {
+            "id": 87,
+            "type": "group",
+            "bbox": [
+              1382,
+              530,
+              234,
+              42
+            ],
+            "text": ""
+          },
+          {
+            "id": 88,
+            "type": "group",
+            "bbox": [
+              1632,
+              530,
+              234,
+              42
+            ],
+            "text": ""
+          },
+          {
+            "id": 89,
+            "type": "group",
+            "bbox": [
+              1882,
+              530,
+              234,
+              42
+            ],
+            "text": ""
+          },
+          {
+            "id": 90,
+            "type": "group",
+            "bbox": [
+              2132,
+              530,
+              234,
+              42
+            ],
+            "text": ""
+          },
+          {
+            "id": 91,
+            "type": "group",
+            "bbox": [
+              542,
+              541,
+              16,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 92,
+            "type": "group",
+            "bbox": [
+              840,
+              541,
+              12,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 93,
+            "type": "group",
+            "bbox": [
+              1033,
+              541,
+              11,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 94,
+            "type": "group",
+            "bbox": [
+              1266,
+              541,
+              21,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 95,
+            "type": "group",
+            "bbox": [
+              1525,
+              541,
+              12,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 96,
+            "type": "group",
+            "bbox": [
+              1804,
+              541,
+              11,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 97,
+            "type": "group",
+            "bbox": [
+              2018,
+              541,
+              19,
+              19
+            ],
+            "text": ""
+          },
+          {
+            "id": 99,
+            "type": "text",
+            "bbox": [
+              413,
+              542,
+              89,
+              17
+            ],
+            "text": "BRAINSTORM",
+            "semantic": "BRAINSTORM"
+          },
+          {
+            "id": 100,
+            "type": "text",
+            "bbox": [
+              542,
+              542,
+              16,
+              16
+            ],
+            "text": "17",
+            "semantic": "17"
+          },
+          {
+            "id": 101,
+            "type": "text",
+            "bbox": [
+              567,
+              542,
+              15,
+              15
+            ],
+            "text": "·",
+            "semantic": "·"
+          },
+          {
+            "id": 102,
+            "type": "text",
+            "bbox": [
+              581,
+              542,
+              21,
+              15
+            ],
+            "text": "24h",
+            "semantic": "24h"
+          },
+          {
+            "id": 103,
+            "type": "text",
+            "bbox": [
+              663,
+              542,
+              54,
+              17
+            ],
+            "text": "DESIGN",
+            "semantic": "DESIGN"
+          },
+          {
+            "id": 104,
+            "type": "text",
+            "bbox": [
+              840,
+              542,
+              12,
+              16
+            ],
+            "text": "0",
+            "semantic": "0"
+          },
+          {
+            "id": 105,
+            "type": "text",
+            "bbox": [
+              913,
+              542,
+              72,
+              17
+            ],
+            "text": "PLANNING",
+            "semantic": "PLANNING"
+          },
+          {
+            "id": 106,
+            "type": "text",
+            "bbox": [
+              1033,
+              542,
+              11,
+              16
+            ],
+            "text": "4",
+            "semantic": "4"
+          },
+          {
+            "id": 107,
+            "type": "text",
+            "bbox": [
+              1053,
+              542,
+              15,
+              15
+            ],
+            "text": "·",
+            "semantic": "·"
+          },
+          {
+            "id": 108,
+            "type": "text",
+            "bbox": [
+              1067,
+              542,
+              35,
+              15
+            ],
+            "text": "6h30m",
+            "semantic": "6h30m"
+          },
+          {
+            "id": 109,
+            "type": "text",
+            "bbox": [
+              1163,
+              542,
+              45,
+              17
+            ],
+            "text": "READY",
+            "semantic": "READY"
+          },
+          {
+            "id": 110,
+            "type": "text",
+            "bbox": [
+              1266,
+              542,
+              21,
+              16
+            ],
+            "text": "44",
+            "semantic": "44"
+          },
+          {
+            "id": 111,
+            "type": "text",
+            "bbox": [
+              1296,
+              542,
+              15,
+              15
+            ],
+            "text": "·",
+            "semantic": "·"
+          },
+          {
+            "id": 112,
+            "type": "text",
+            "bbox": [
+              1310,
+              542,
+              42,
+              15
+            ],
+            "text": "59h30m",
+            "semantic": "59h30m"
+          },
+          {
+            "id": 113,
+            "type": "text",
+            "bbox": [
+              1409,
+              542,
+              107,
+              17
+            ],
+            "text": "IMPLEMENTING",
+            "semantic": "IMPLEMENTING"
+          },
+          {
+            "id": 114,
+            "type": "text",
+            "bbox": [
+              1525,
+              542,
+              12,
+              16
+            ],
+            "text": "8",
+            "semantic": "8"
+          },
+          {
+            "id": 115,
+            "type": "text",
+            "bbox": [
+              1546,
+              542,
+              15,
+              15
+            ],
+            "text": "·",
+            "semantic": "·"
+          },
+          {
+            "id": 116,
+            "type": "text",
+            "bbox": [
+              1560,
+              542,
+              42,
+              15
+            ],
+            "text": "14h45m",
+            "semantic": "14h45m"
+          },
+          {
+            "id": 117,
+            "type": "text",
+            "bbox": [
+              1663,
+              542,
+              54,
+              17
+            ],
+            "text": "REVIEW",
+            "semantic": "REVIEW"
+          },
+          {
+            "id": 118,
+            "type": "text",
+            "bbox": [
+              1804,
+              542,
+              11,
+              16
+            ],
+            "text": "6",
+            "semantic": "6"
+          },
+          {
+            "id": 119,
+            "type": "text",
+            "bbox": [
+              1824,
+              542,
+              15,
+              15
+            ],
+            "text": "·",
+            "semantic": "·"
+          },
+          {
+            "id": 120,
+            "type": "text",
+            "bbox": [
+              1838,
+              542,
+              14,
+              15
+            ],
+            "text": "4h",
+            "semantic": "4h"
+          },
+          {
+            "id": 121,
+            "type": "text",
+            "bbox": [
+              1913,
+              542,
+              36,
+              17
+            ],
+            "text": "DONE",
+            "semantic": "DONE"
+          },
+          {
+            "id": 122,
+            "type": "text",
+            "bbox": [
+              2018,
+              542,
+              19,
+              16
+            ],
+            "text": "57",
+            "semantic": "57"
+          },
+          {
+            "id": 123,
+            "type": "text",
+            "bbox": [
+              2046,
+              542,
+              15,
+              15
+            ],
+            "text": "·",
+            "semantic": "·"
+          },
+          {
+            "id": 124,
+            "type": "text",
+            "bbox": [
+              2060,
+              542,
+              42,
+              15
+            ],
+            "text": "74h15m",
+            "semantic": "74h15m"
+          },
+          {
+            "id": 125,
+            "type": "text",
+            "bbox": [
+              2163,
+              542,
+              80,
+              17
+            ],
+            "text": "CANCELLED",
+            "semantic": "CANCELLED"
+          },
+          {
+            "id": 127,
+            "type": "button",
+            "bbox": [
+              301,
+              550,
+              45,
+              44
+            ],
+            "text": "拓扑",
+            "semantic": "拓扑"
+          },
+          {
+            "id": 129,
+            "type": "text",
+            "bbox": [
+              1018,
+              562,
+              26,
+              16
+            ],
+            "text": "描述",
+            "semantic": "描述"
+          },
+          {
+            "id": 130,
+            "type": "text",
+            "bbox": [
+              314,
+              563,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 131,
+            "type": "text",
+            "bbox": [
+              362,
+              564,
+              27,
+              16
+            ],
+            "text": "拓扑",
+            "semantic": "拓扑"
+          },
+          {
+            "id": 132,
+            "type": "button",
+            "bbox": [
+              393,
+              582,
+              202,
+              223
+            ],
+            "text": "任务 数据口径确认：探 objId + dump 字段 + 过滤反例（不需要后端改造），状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 数据口径确认：探 objId + dump 字段 + 过滤反例（不需要后端改造），状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 133,
+            "type": "button",
+            "bbox": [
+              893,
+              582,
+              202,
+              242
+            ],
+            "text": "任务 物联感知设备数据接入，状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 物联感知设备数据接入，状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 134,
+            "type": "button",
+            "bbox": [
+              1143,
+              582,
+              202,
+              223
+            ],
+            "text": "任务 mio-taskhub: 修复 run_at 处理与未来任务领取限制，状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 mio-taskhub: 修复 run_at 处理与未来任务领取限制，状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 135,
+            "type": "button",
+            "bbox": [
+              1393,
+              582,
+              202,
+              224
+            ],
+            "text": "任务 算法平台统一任务状态查询第十阶段，状态 failed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 算法平台统一任务状态查询第十阶段，状态 failed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 136,
+            "type": "button",
+            "bbox": [
+              1643,
+              582,
+              202,
+              256
+            ],
+            "text": "任务 CSDN 博文：mio-taskhub 跨 agent 任务中心实践，状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 CSDN 博文：mio-taskhub 跨 agent 任务中心实践，状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 137,
+            "type": "button",
+            "bbox": [
+              1893,
+              582,
+              202,
+              171
+            ],
+            "text": "任务 生命周期E2E-v2，状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 生命周期E2E-v2，状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 138,
+            "type": "input",
+            "bbox": [
+              1018,
+              584,
+              440,
+              72
+            ],
+            "text": "任务详细说明…",
+            "semantic": "任务详细说明…"
+          },
+          {
+            "id": 139,
+            "type": "text",
+            "bbox": [
+              406,
+              594,
+              134,
+              43
+            ],
+            "text": "数据口径确认：探 objId + dump 字段 + 过滤反例（不需要后端改造）",
+            "semantic": "数据口径确认：探 objId + dump 字段 + 过滤反例（不需要后端改造）"
+          },
+          {
+            "id": 140,
+            "type": "button",
+            "bbox": [
+              562,
+              594,
+              20,
+              21
+            ],
+            "text": "取消任务 数据口径确认：探 objId + dump 字段 + 过滤反例（不需要后端改造）",
+            "semantic": "取消任务 数据口径确认：探 objId + dump 字段 + 过滤反例（不需要后端改造）"
+          },
+          {
+            "id": 141,
+            "type": "text",
+            "bbox": [
+              906,
+              594,
+              134,
+              43
+            ],
+            "text": "物联感知设备数据接入",
+            "semantic": "物联感知设备数据接入"
+          },
+          {
+            "id": 142,
+            "type": "button",
+            "bbox": [
+              1062,
+              594,
+              20,
+              21
+            ],
+            "text": "取消任务 物联感知设备数据接入",
+            "semantic": "取消任务 物联感知设备数据接入"
+          },
+          {
+            "id": 143,
+            "type": "text",
+            "bbox": [
+              1156,
+              594,
+              162,
+              43
+            ],
+            "text": "mio-taskhub: 修复 run_at 处理与未来任务领取限制",
+            "semantic": "mio-taskhub: 修复 run_at 处理与未来任务领取限制"
+          },
+          {
+            "id": 144,
+            "type": "text",
+            "bbox": [
+              1406,
+              594,
+              162,
+              43
+            ],
+            "text": "算法平台统一任务状态查询第十阶段",
+            "semantic": "算法平台统一任务状态查询第十阶段"
+          },
+          {
+            "id": 145,
+            "type": "text",
+            "bbox": [
+              1656,
+              594,
+              162,
+              43
+            ],
+            "text": "CSDN 博文：mio-taskhub 跨 agent 任务中心实践",
+            "semantic": "CSDN 博文：mio-taskhub 跨 agent 任务中心实践"
+          },
+          {
+            "id": 146,
+            "type": "text",
+            "bbox": [
+              1906,
+              594,
+              162,
+              22
+            ],
+            "text": "生命周期E2E-v2",
+            "semantic": "生命周期E2E-v2"
+          },
+          {
+            "id": 148,
+            "type": "button",
+            "bbox": [
+              301,
+              598,
+              45,
+              44
+            ],
+            "text": "甘特",
+            "semantic": "甘特"
+          },
+          {
+            "id": 149,
+            "type": "text",
+            "bbox": [
+              314,
+              611,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 150,
+            "type": "text",
+            "bbox": [
+              362,
+              612,
+              27,
+              16
+            ],
+            "text": "甘特",
+            "semantic": "甘特"
+          },
+          {
+            "id": 151,
+            "type": "button",
+            "bbox": [
+              301,
+              646,
+              45,
+              44
+            ],
+            "text": "想法",
+            "semantic": "想法"
+          },
+          {
+            "id": 152,
+            "type": "text",
+            "bbox": [
+              314,
+              659,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 153,
+            "type": "text",
+            "bbox": [
+              362,
+              660,
+              27,
+              16
+            ],
+            "text": "想法",
+            "semantic": "想法"
+          },
+          {
+            "id": 155,
+            "type": "text",
+            "bbox": [
+              1018,
+              679,
+              52,
+              15
+            ],
+            "text": "定时任务",
+            "semantic": "定时任务"
+          },
+          {
+            "id": 156,
+            "type": "button",
+            "bbox": [
+              301,
+              694,
+              45,
+              44
+            ],
+            "text": "模板",
+            "semantic": "模板"
+          },
+          {
+            "id": 157,
+            "type": "button",
+            "bbox": [
+              1018,
+              701,
+              54,
+              30
+            ],
+            "text": "单次",
+            "semantic": "单次"
+          },
+          {
+            "id": 158,
+            "type": "button",
+            "bbox": [
+              1078,
+              701,
+              78,
+              30
+            ],
+            "text": "定时循环",
+            "semantic": "定时循环"
+          },
+          {
+            "id": 159,
+            "type": "text",
+            "bbox": [
+              314,
+              707,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 160,
+            "type": "text",
+            "bbox": [
+              362,
+              708,
+              27,
+              16
+            ],
+            "text": "模板",
+            "semantic": "模板"
+          },
+          {
+            "id": 163,
+            "type": "group",
+            "bbox": [
+              1201,
+              713,
+              99,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 164,
+            "type": "group",
+            "bbox": [
+              1406,
+              713,
+              65,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 165,
+            "type": "group",
+            "bbox": [
+              1927,
+              726,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 166,
+            "type": "group",
+            "bbox": [
+              2064,
+              728,
+              18,
+              11
+            ],
+            "text": ""
+          },
+          {
+            "id": 167,
+            "type": "button",
+            "bbox": [
+              301,
+              742,
+              45,
+              44
+            ],
+            "text": "定时",
+            "semantic": "定时"
+          },
+          {
+            "id": 169,
+            "type": "text",
+            "bbox": [
+              1018,
+              747,
+              39,
+              16
+            ],
+            "text": "优先级",
+            "semantic": "优先级"
+          },
+          {
+            "id": 171,
+            "type": "text",
+            "bbox": [
+              1244,
+              747,
+              91,
+              16
+            ],
+            "text": "预估时长（分）",
+            "semantic": "预估时长（分）"
+          },
+          {
+            "id": 172,
+            "type": "text",
+            "bbox": [
+              738,
+              748,
+              22,
+              23
+            ],
+            "text": ""
+          },
+          {
+            "id": 173,
+            "type": "text",
+            "bbox": [
+              314,
+              755,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 175,
+            "type": "text",
+            "bbox": [
+              362,
+              756,
+              27,
+              16
+            ],
+            "text": "定时",
+            "semantic": "定时"
+          },
+          {
+            "id": 176,
+            "type": "button",
+            "bbox": [
+              1893,
+              761,
+              202,
+              192
+            ],
+            "text": "任务 算法平台核心任务链治理第九阶段，状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 算法平台核心任务链治理第九阶段，状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 177,
+            "type": "button",
+            "bbox": [
+              1018,
+              769,
+              49,
+              31
+            ],
+            "text": "P0",
+            "semantic": "P0"
+          },
+          {
+            "id": 178,
+            "type": "button",
+            "bbox": [
+              1073,
+              769,
+              49,
+              31
+            ],
+            "text": "P1",
+            "semantic": "P1"
+          },
+          {
+            "id": 179,
+            "type": "button",
+            "bbox": [
+              1128,
+              769,
+              49,
+              31
+            ],
+            "text": "P2",
+            "semantic": "P2"
+          },
+          {
+            "id": 180,
+            "type": "button",
+            "bbox": [
+              1183,
+              769,
+              49,
+              31
+            ],
+            "text": "P3",
+            "semantic": "P3"
+          },
+          {
+            "id": 181,
+            "type": "text",
+            "bbox": [
+              1244,
+              769,
+              214,
+              38
+            ],
+            "text": "30",
+            "semantic": "30"
+          },
+          {
+            "id": 182,
+            "type": "text",
+            "bbox": [
+              1906,
+              773,
+              162,
+              43
+            ],
+            "text": "算法平台核心任务链治理第九阶段",
+            "semantic": "算法平台核心任务链治理第九阶段"
+          },
+          {
+            "id": 183,
+            "type": "group",
+            "bbox": [
+              427,
+              777,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 187,
+            "type": "group",
+            "bbox": [
+              1170,
+              777,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 189,
+            "type": "group",
+            "bbox": [
+              1441,
+              778,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 191,
+            "type": "group",
+            "bbox": [
+              564,
+              780,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 192,
+            "type": "group",
+            "bbox": [
+              1314,
+              780,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 193,
+            "type": "group",
+            "bbox": [
+              1564,
+              781,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 194,
+            "type": "button",
+            "bbox": [
+              301,
+              790,
+              45,
+              44
+            ],
+            "text": "统计",
+            "semantic": "统计"
+          },
+          {
+            "id": 195,
+            "type": "group",
+            "bbox": [
+              920,
+              796,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 196,
+            "type": "group",
+            "bbox": [
+              1064,
+              799,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 197,
+            "type": "text",
+            "bbox": [
+              314,
+              803,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 198,
+            "type": "text",
+            "bbox": [
+              362,
+              804,
+              27,
+              16
+            ],
+            "text": "统计",
+            "semantic": "统计"
+          },
+          {
+            "id": 199,
+            "type": "group",
+            "bbox": [
+              1691,
+              810,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 200,
+            "type": "button",
+            "bbox": [
+              393,
+              813,
+              202,
+              273
+            ],
+            "text": "任务 管网运营状况大屏按原型重构 — 需求与方案定稿（总控 T0），状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 管网运营状况大屏按原型重构 — 需求与方案定稿（总控 T0），状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 201,
+            "type": "button",
+            "bbox": [
+              1143,
+              813,
+              202,
+              223
+            ],
+            "text": "任务 chrome-ext-agent: CWS 商店上架收尾，状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 chrome-ext-agent: CWS 商店上架收尾，状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 202,
+            "type": "group",
+            "bbox": [
+              1814,
+              813,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 203,
+            "type": "button",
+            "bbox": [
+              1393,
+              814,
+              202,
+              190
+            ],
+            "text": "任务 desktop-agent: 扩展办公与真实网站场景覆盖，状态 failed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 desktop-agent: 扩展办公与真实网站场景覆盖，状态 failed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 205,
+            "type": "text",
+            "bbox": [
+              1018,
+              823,
+              110,
+              16
+            ],
+            "text": "目标 AGENT 类型",
+            "semantic": "目标 AGENT 类型"
+          },
+          {
+            "id": 206,
+            "type": "text",
+            "bbox": [
+              406,
+              825,
+              134,
+              43
+            ],
+            "text": "管网运营状况大屏按原型重构 — 需求与方案定稿（总控 T0）",
+            "semantic": "管网运营状况大屏按原型重构 — 需求与方案定稿（总控 T0）"
+          },
+          {
+            "id": 207,
+            "type": "button",
+            "bbox": [
+              562,
+              825,
+              20,
+              21
+            ],
+            "text": "取消任务 管网运营状况大屏按原型重构 — 需求与方案定稿（总控 T0）",
+            "semantic": "取消任务 管网运营状况大屏按原型重构 — 需求与方案定稿（总控 T0）"
+          },
+          {
+            "id": 208,
+            "type": "text",
+            "bbox": [
+              1156,
+              825,
+              134,
+              43
+            ],
+            "text": "chrome-ext-agent: CWS 商店上架收尾",
+            "semantic": "chrome-ext-agent: CWS 商店上架收尾"
+          },
+          {
+            "id": 209,
+            "type": "button",
+            "bbox": [
+              1312,
+              825,
+              20,
+              21
+            ],
+            "text": "取消任务 chrome-ext-agent: CWS 商店上架收尾",
+            "semantic": "取消任务 chrome-ext-agent: CWS 商店上架收尾"
+          },
+          {
+            "id": 210,
+            "type": "text",
+            "bbox": [
+              1406,
+              826,
+              162,
+              43
+            ],
+            "text": "desktop-agent: 扩展办公与真实网站场景覆盖",
+            "semantic": "desktop-agent: 扩展办公与真实网站场景覆盖"
+          },
+          {
+            "id": 211,
+            "type": "button",
+            "bbox": [
+              893,
+              832,
+              202,
+              241
+            ],
+            "text": "任务 运营状况专题展示（检查井运营状态），状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 运营状况专题展示（检查井运营状态），状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 212,
+            "type": "button",
+            "bbox": [
+              301,
+              838,
+              45,
+              44
+            ],
+            "text": "观测台",
+            "semantic": "观测台"
+          },
+          {
+            "id": 213,
+            "type": "text",
+            "bbox": [
+              906,
+              844,
+              134,
+              43
+            ],
+            "text": "运营状况专题展示（检查井运营状态）",
+            "semantic": "运营状况专题展示（检查井运营状态）"
+          },
+          {
+            "id": 214,
+            "type": "button",
+            "bbox": [
+              1062,
+              844,
+              20,
+              21
+            ],
+            "text": "取消任务 运营状况专题展示（检查井运营状态）",
+            "semantic": "取消任务 运营状况专题展示（检查井运营状态）"
+          },
+          {
+            "id": 215,
+            "type": "input",
+            "bbox": [
+              1018,
+              845,
+              440,
+              38
+            ],
+            "text": "留空表示任意 agent 可领取",
+            "semantic": "留空表示任意 agent 可领取"
+          },
+          {
+            "id": 216,
+            "type": "button",
+            "bbox": [
+              1643,
+              846,
+              202,
+              222
+            ],
+            "text": "任务 MCP claim task_id 探针（用后即弃），状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 MCP claim task_id 探针（用后即弃），状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 217,
+            "type": "text",
+            "bbox": [
+              314,
+              851,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 218,
+            "type": "text",
+            "bbox": [
+              362,
+              852,
+              40,
+              16
+            ],
+            "text": "观测台",
+            "semantic": "观测台"
+          },
+          {
+            "id": 220,
+            "type": "text",
+            "bbox": [
+              1656,
+              858,
+              162,
+              43
+            ],
+            "text": "MCP claim task_id 探针（用后即弃）",
+            "semantic": "MCP claim task_id 探针（用后即弃）"
+          },
+          {
+            "id": 221,
+            "type": "group",
+            "bbox": [
+              1951,
+              860,
+              66,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 222,
+            "type": "button",
+            "bbox": [
+              301,
+              886,
+              45,
+              44
+            ],
+            "text": "记忆",
+            "semantic": "记忆"
+          },
+          {
+            "id": 223,
+            "type": "text",
+            "bbox": [
+              314,
+              899,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 225,
+            "type": "text",
+            "bbox": [
+              1018,
+              899,
+              52,
+              16
+            ],
+            "text": "验收标准",
+            "semantic": "验收标准"
+          },
+          {
+            "id": 226,
+            "type": "text",
+            "bbox": [
+              362,
+              900,
+              27,
+              16
+            ],
+            "text": "记忆",
+            "semantic": "记忆"
+          },
+          {
+            "id": 227,
+            "type": "input",
+            "bbox": [
+              1018,
+              922,
+              440,
+              70
+            ],
+            "text": "完成定义 / 如何验收…",
+            "semantic": "完成定义 / 如何验收…"
+          },
+          {
+            "id": 228,
+            "type": "group",
+            "bbox": [
+              1941,
+              925,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 229,
+            "type": "group",
+            "bbox": [
+              2064,
+              928,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 231,
+            "type": "button",
+            "bbox": [
+              301,
+              934,
+              45,
+              44
+            ],
+            "text": "Mio 运行时",
+            "semantic": "Mio 运行时"
+          },
+          {
+            "id": 232,
+            "type": "group",
+            "bbox": [
+              1156,
+              943,
+              131,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 233,
+            "type": "group",
+            "bbox": [
+              1406,
+              944,
+              111,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 234,
+            "type": "text",
+            "bbox": [
+              314,
+              947,
+              19,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 235,
+            "type": "text",
+            "bbox": [
+              362,
+              948,
+              73,
+              16
+            ],
+            "text": "Mio 运行时",
+            "semantic": "Mio 运行时"
+          },
+          {
+            "id": 236,
+            "type": "button",
+            "bbox": [
+              1893,
+              961,
+              202,
+              223
+            ],
+            "text": "任务 chrome-ext-agent: 任务记忆（同域名高频任务置顶），状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 chrome-ext-agent: 任务记忆（同域名高频任务置顶），状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 237,
+            "type": "text",
+            "bbox": [
+              1906,
+              973,
+              162,
+              43
+            ],
+            "text": "chrome-ext-agent: 任务记忆（同域名高频任务置顶）",
+            "semantic": "chrome-ext-agent: 任务记忆（同域名高频任务置顶）"
+          },
+          {
+            "id": 238,
+            "type": "group",
+            "bbox": [
+              1420,
+              977,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 239,
+            "type": "group",
+            "bbox": [
+              1564,
+              979,
+              18,
+              11
+            ],
+            "text": ""
+          },
+          {
+            "id": 240,
+            "type": "group",
+            "bbox": [
+              1170,
+              1009,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 241,
+            "type": "group",
+            "bbox": [
+              1314,
+              1011,
+              18,
+              11
+            ],
+            "text": ""
+          },
+          {
+            "id": 242,
+            "type": "button",
+            "bbox": [
+              1393,
+              1012,
+              202,
+              191
+            ],
+            "text": "任务 desktop-agent: MCP 工具安全机制（确认/沙箱），状态 failed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 desktop-agent: MCP 工具安全机制（确认/沙箱），状态 failed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 244,
+            "type": "text",
+            "bbox": [
+              1018,
+              1015,
+              52,
+              16
+            ],
+            "text": "截止时间",
+            "semantic": "截止时间"
+          },
+          {
+            "id": 246,
+            "type": "text",
+            "bbox": [
+              1244,
+              1015,
+              26,
+              16
+            ],
+            "text": "项目",
+            "semantic": "项目"
+          },
+          {
+            "id": 247,
+            "type": "text",
+            "bbox": [
+              1406,
+              1024,
+              162,
+              43
+            ],
+            "text": "desktop-agent: MCP 工具安全机制（确认/沙箱）",
+            "semantic": "desktop-agent: MCP 工具安全机制（确认/沙箱）"
+          },
+          {
+            "id": 248,
+            "type": "input",
+            "bbox": [
+              1018,
+              1037,
+              214,
+              42
+            ],
+            "text": "yyyy/mm/日 --:--",
+            "semantic": "yyyy/mm/日 --:--"
+          },
+          {
+            "id": 249,
+            "type": "input",
+            "bbox": [
+              1244,
+              1037,
+              214,
+              38
+            ],
+            "text": "例如：数据平台",
+            "semantic": "例如：数据平台"
+          },
+          {
+            "id": 250,
+            "type": "group",
+            "bbox": [
+              1677,
+              1041,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 251,
+            "type": "group",
+            "bbox": [
+              1814,
+              1043,
+              18,
+              11
+            ],
+            "text": ""
+          },
+          {
+            "id": 252,
+            "type": "button",
+            "bbox": [
+              1143,
+              1044,
+              202,
+              192
+            ],
+            "text": "任务 建设算法平台功能中心并完成 Vue 前端改版，状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 建设算法平台功能中心并完成 Vue 前端改版，状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 253,
+            "type": "group",
+            "bbox": [
+              920,
+              1046,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 256,
+            "type": "group",
+            "bbox": [
+              1064,
+              1048,
+              18,
+              11
+            ],
+            "text": ""
+          },
+          {
+            "id": 257,
+            "type": "text",
+            "bbox": [
+              1031,
+              1049,
+              31,
+              20
+            ],
+            "text": "年",
+            "semantic": "年"
+          },
+          {
+            "id": 258,
+            "type": "text",
+            "bbox": [
+              1065,
+              1049,
+              29,
+              20
+            ],
+            "text": "月",
+            "semantic": "月"
+          },
+          {
+            "id": 259,
+            "type": "text",
+            "bbox": [
+              1097,
+              1049,
+              16,
+              20
+            ],
+            "text": "日",
+            "semantic": "日"
+          },
+          {
+            "id": 260,
+            "type": "text",
+            "bbox": [
+              1115,
+              1049,
+              16,
+              20
+            ],
+            "text": "小时",
+            "semantic": "小时"
+          },
+          {
+            "id": 261,
+            "type": "text",
+            "bbox": [
+              1134,
+              1049,
+              16,
+              20
+            ],
+            "text": "分钟",
+            "semantic": "分钟"
+          },
+          {
+            "id": 262,
+            "type": "button",
+            "bbox": [
+              1202,
+              1049,
+              17,
+              18
+            ],
+            "text": "显示当地日期和时间选择器",
+            "semantic": "显示当地日期和时间选择器"
+          },
+          {
+            "id": 263,
+            "type": "text",
+            "bbox": [
+              1061,
+              1050,
+              5,
+              18
+            ],
+            "text": "/",
+            "semantic": "/"
+          },
+          {
+            "id": 264,
+            "type": "text",
+            "bbox": [
+              1093,
+              1050,
+              5,
+              18
+            ],
+            "text": "/",
+            "semantic": "/"
+          },
+          {
+            "id": 265,
+            "type": "text",
+            "bbox": [
+              1112,
+              1050,
+              4,
+              18
+            ],
+            "text": ""
+          },
+          {
+            "id": 266,
+            "type": "text",
+            "bbox": [
+              1130,
+              1050,
+              5,
+              18
+            ],
+            "text": ":",
+            "semantic": ":"
+          },
+          {
+            "id": 267,
+            "type": "text",
+            "bbox": [
+              1156,
+              1056,
+              134,
+              43
+            ],
+            "text": "建设算法平台功能中心并完成 Vue 前端改版",
+            "semantic": "建设算法平台功能中心并完成 Vue 前端改版"
+          },
+          {
+            "id": 268,
+            "type": "button",
+            "bbox": [
+              1312,
+              1056,
+              20,
+              21
+            ],
+            "text": "取消任务 建设算法平台功能中心并完成 Vue 前端改版",
+            "semantic": "取消任务 建设算法平台功能中心并完成 Vue 前端改版"
+          },
+          {
+            "id": 269,
+            "type": "group",
+            "bbox": [
+              420,
+              1059,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 270,
+            "type": "group",
+            "bbox": [
+              564,
+              1061,
+              18,
+              11
+            ],
+            "text": ""
+          },
+          {
+            "id": 271,
+            "type": "button",
+            "bbox": [
+              1643,
+              1076,
+              202,
+              223
+            ],
+            "text": "任务 wire-probe MCP task_id 探针（用后即弃），状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 wire-probe MCP task_id 探针（用后即弃），状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 272,
+            "type": "button",
+            "bbox": [
+              893,
+              1081,
+              202,
+              242
+            ],
+            "text": "任务 排水管网下游再生水厂数据联动，状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 排水管网下游再生水厂数据联动，状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 273,
+            "type": "text",
+            "bbox": [
+              1656,
+              1088,
+              162,
+              43
+            ],
+            "text": "wire-probe MCP task_id 探针（用后即弃）",
+            "semantic": "wire-probe MCP task_id 探针（用后即弃）"
+          },
+          {
+            "id": 274,
+            "type": "group",
+            "bbox": [
+              1906,
+              1091,
+              131,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 275,
+            "type": "text",
+            "bbox": [
+              906,
+              1093,
+              134,
+              43
+            ],
+            "text": "排水管网下游再生水厂数据联动",
+            "semantic": "排水管网下游再生水厂数据联动"
+          },
+          {
+            "id": 276,
+            "type": "button",
+            "bbox": [
+              1062,
+              1093,
+              20,
+              21
+            ],
+            "text": "取消任务 排水管网下游再生水厂数据联动",
+            "semantic": "取消任务 排水管网下游再生水厂数据联动"
+          },
+          {
+            "id": 277,
+            "type": "button",
+            "bbox": [
+              393,
+              1094,
+              202,
+              256
+            ],
+            "text": "任务 历史信息建库（垮塌点位），状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 历史信息建库（垮塌点位），状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 279,
+            "type": "text",
+            "bbox": [
+              1018,
+              1095,
+              65,
+              16
+            ],
+            "text": "工作区路径",
+            "semantic": "工作区路径"
+          },
+          {
+            "id": 281,
+            "type": "text",
+            "bbox": [
+              1244,
+              1095,
+              26,
+              16
+            ],
+            "text": "标签",
+            "semantic": "标签"
+          },
+          {
+            "id": 282,
+            "type": "text",
+            "bbox": [
+              406,
+              1106,
+              134,
+              43
+            ],
+            "text": "历史信息建库（垮塌点位）",
+            "semantic": "历史信息建库（垮塌点位）"
+          },
+          {
+            "id": 283,
+            "type": "button",
+            "bbox": [
+              562,
+              1106,
+              20,
+              21
+            ],
+            "text": "取消任务 历史信息建库（垮塌点位）",
+            "semantic": "取消任务 历史信息建库（垮塌点位）"
+          },
+          {
+            "id": 284,
+            "type": "text",
+            "bbox": [
+              705,
+              1108,
+              88,
+              15
+            ],
+            "text": "拖拽任务到此处",
+            "semantic": "拖拽任务到此处"
+          },
+          {
+            "id": 285,
+            "type": "input",
+            "bbox": [
+              1018,
+              1118,
+              214,
+              37
+            ],
+            "text": "例如：/repo/agent-dev",
+            "semantic": "例如：/repo/agent-dev"
+          },
+          {
+            "id": 286,
+            "type": "input",
+            "bbox": [
+              1244,
+              1118,
+              214,
+              37
+            ],
+            "text": "blocked,waiting-review",
+            "semantic": "blocked,waiting-review"
+          },
+          {
+            "id": 290,
+            "type": "group",
+            "bbox": [
+              1201,
+              1143,
+              79,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 291,
+            "type": "group",
+            "bbox": [
+              1406,
+              1143,
+              111,
+              20
+            ],
+            "text": ""
+          },
+          {
+            "id": 292,
+            "type": "group",
+            "bbox": [
+              1920,
+              1157,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 293,
+            "type": "group",
+            "bbox": [
+              2064,
+              1159,
+              18,
+              11
+            ],
+            "text": ""
+          },
+          {
+            "id": 295,
+            "type": "text",
+            "bbox": [
+              1018,
+              1172,
+              52,
+              15
+            ],
+            "text": "文件路径",
+            "semantic": "文件路径"
+          },
+          {
+            "id": 296,
+            "type": "group",
+            "bbox": [
+              1420,
+              1175,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 297,
+            "type": "group",
+            "bbox": [
+              1564,
+              1178,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 298,
+            "type": "button",
+            "bbox": [
+              1893,
+              1192,
+              202,
+              224
+            ],
+            "text": "任务 chrome-ext-agent: 定时/周期任务（签到监控日报自动跑），状态 completed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 chrome-ext-agent: 定时/周期任务（签到监控日报自动跑），状态 completed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 299,
+            "type": "input",
+            "bbox": [
+              1018,
+              1194,
+              440,
+              38
+            ],
+            "text": "src/a.py,src/b.py",
+            "semantic": "src/a.py,src/b.py"
+          },
+          {
+            "id": 301,
+            "type": "text",
+            "bbox": [
+              1906,
+              1204,
+              162,
+              43
+            ],
+            "text": "chrome-ext-agent: 定时/周期任务（签到监控日报自动跑）",
+            "semantic": "chrome-ext-agent: 定时/周期任务（签到监控日报自动跑）"
+          },
+          {
+            "id": 302,
+            "type": "group",
+            "bbox": [
+              1170,
+              1208,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 303,
+            "type": "group",
+            "bbox": [
+              1314,
+              1211,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 304,
+            "type": "button",
+            "bbox": [
+              1393,
+              1211,
+              202,
+              190
+            ],
+            "text": "任务 robot: 跑通测试套件并补 CI，状态 failed。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 robot: 跑通测试套件并补 CI，状态 failed。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 305,
+            "type": "text",
+            "bbox": [
+              1406,
+              1223,
+              162,
+              43
+            ],
+            "text": "robot: 跑通测试套件并补 CI",
+            "semantic": "robot: 跑通测试套件并补 CI"
+          },
+          {
+            "id": 306,
+            "type": "button",
+            "bbox": [
+              1143,
+              1244,
+              202,
+              241
+            ],
+            "text": "任务 污水管网雨水入流分析算法应用，状态 queued。回车查看详情，Alt+方向键移动",
+            "semantic": "任务 污水管网雨水入流分析算法应用，状态 queued。回车查看详情，Alt+方向键移动"
+          },
+          {
+            "id": 308,
+            "type": "text",
+            "bbox": [
+              1018,
+              1248,
+              39,
+              16
+            ],
+            "text": "产出物",
+            "semantic": "产出物"
+          },
+          {
+            "id": 309,
+            "type": "text",
+            "bbox": [
+              1156,
+              1256,
+              134,
+              43
+            ],
+            "text": "污水管网雨水入流分析算法应用",
+            "semantic": "污水管网雨水入流分析算法应用"
+          },
+          {
+            "id": 310,
+            "type": "button",
+            "bbox": [
+              1312,
+              1256,
+              20,
+              21
+            ],
+            "text": "取消任务 污水管网雨水入流分析算法应用",
+            "semantic": "取消任务 污水管网雨水入流分析算法应用"
+          },
+          {
+            "id": 311,
+            "type": "input",
+            "bbox": [
+              1018,
+              1270,
+              440,
+              38
+            ],
+            "text": "report.md",
+            "semantic": "report.md"
+          },
+          {
+            "id": 312,
+            "type": "group",
+            "bbox": [
+              1677,
+              1271,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 313,
+            "type": "group",
+            "bbox": [
+              1814,
+              1274,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 315,
+            "type": "group",
+            "bbox": [
+              920,
+              1295,
+              29,
+              15
+            ],
+            "text": ""
+          },
+          {
+            "id": 316,
+            "type": "group",
+            "bbox": [
+              1064,
+              1298,
+              18,
+              10
+            ],
+            "text": ""
+          },
+          {
+            "id": 317,
+            "type": "button",
+            "bbox": [
+              301,
+              1299,
+              45,
+              44
+            ],
+            "text": "切换到标准对比",
+            "semantic": "切换到标准对比"
+          },
+          {
+            "id": 324,
+            "type": "button",
+            "bbox": [
+              1306,
+              1329,
+              46,
+              39
+            ],
+            "text": "取消",
+            "semantic": "取消"
+          },
+          {
+            "id": 325,
+            "type": "button",
+            "bbox": [
+              1362,
+              1329,
+              96,
+              39
+            ],
+            "text": "创建任务",
+            "semantic": "创建任务"
+          },
+          {
+            "id": 330,
+            "type": "group",
+            "bbox": [
+              318,
+              1347,
+              11,
+              10
+            ],
+            "text": "实时连接",
+            "semantic": "实时连接"
+          }
+        ],
+        "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1790747905603.png",
+        "metadata": {
+          "step": 5
+        }
+      },
+      "planner": null,
+      "metadata": null
+    }
+  ]
+}

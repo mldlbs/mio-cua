@@ -1,0 +1,100 @@
+"""Batch execution support: in-batch per-step screen verification.
+
+A plan may contain up to ``batch_limit`` actions. The loop executes them
+consecutively, but re-observes the screen (light: OCR only) after each one to
+confirm the action actually changed the screen before running the next. This
+preserves "one action, one perception" safety while amortizing LLM calls across
+a batch.
+"""
+
+from mio_cua.agent.expected import ExpectedVerifier
+from mio_cua.scene.diff import diff as scene_diff
+from mio_cua.scene.graph import SceneGraph, SceneNode
+
+# Action types whose purpose is to change the on-screen content. For these we
+# require an observable screen change when no explicit ``expected`` is present.
+VISIBLE_TYPES = ("click", "type", "key", "scroll")
+
+
+def verify_action(prev_obs, curr_obs, action, expected, node_id=None):
+    """Verify an action's on-screen effect between two observations.
+
+    Returns ``(ok, detail)``. Decision order:
+
+    1. ``expected`` (from an affordance, e.g. ``{'display': True}``) is
+       verified with ``ExpectedVerifier`` -- this is the strongest signal.
+       Expectations that require a *full* UIA-backed observation
+       (``state_toggle`` / ``window_title``) are deferred so a light OCR-only
+       frame never produces a false failure; the loop re-checks them on the
+       next full observation.
+    2. else, if ``action.type`` is a visible action, fall back to a diff of the
+       OCR-only layer between the two frames (any change = pass).
+    3. else (wait/launch/move_mouse/fs tools/...) -> pass, the action is not
+       expected to change the screen.
+    """
+    if expected:
+        _full_obs_keys = ("state_toggle", "window_title")
+        if any(k in expected for k in _full_obs_keys):
+            # Light frames (OCR-only) lack UIA state / window title; defer so we
+            # do not abort a batch on a verification we cannot yet perform.
+            return True, "deferred: full-observation verification pending"
+        prev_scene = getattr(prev_obs, "scene", None)
+        curr_scene = getattr(curr_obs, "scene", None)
+        if prev_scene is not None and curr_scene is not None:
+            return ExpectedVerifier().verify(
+                prev_scene, curr_scene, expected,
+                node_id=node_id,
+                curr_active_window=getattr(curr_obs, "active_window", ""),
+            )
+    if action.type not in VISIBLE_TYPES:
+        return True, "no visible expectation"
+    changes = _ocr_diff(prev_obs, curr_obs)
+    if changes:
+        return True, "screen changed: " + "; ".join(changes[:3])
+    return False, "screen did not change after action"
+
+
+def _ocr_diff(prev_obs, curr_obs):
+    """Diff ONLY the OCR layer of two observations.
+
+    Light observations carry OCR-only scenes. Comparing them against a full
+    scene directly would misreport every UIA/OmniParser node as "removed", so
+    both frames are projected to their OCR nodes before the scene diff runs.
+    """
+    prev_nodes = _ocr_nodes(prev_obs)
+    curr_nodes = _ocr_nodes(curr_obs)
+    if not prev_nodes and not curr_nodes:
+        return []
+    prev = SceneGraph(nodes=prev_nodes)
+    curr = SceneGraph(nodes=curr_nodes)
+    return [c.description for c in scene_diff(prev, curr)]
+
+
+def _ocr_nodes(obs):
+    """OCR-only projection of an observation.
+
+    Prefers the observation's element list (``source == "ocr"``): the merge
+    step preserves OCR elements alongside UIA ones, whereas the scene graph
+    *folds* overlapping OCR glyphs into the UIA node (source stays "uia"), so a
+    scene-node projection would silently drop those glyphs and a full frame
+    would always diff as "changed" against a light frame. Falls back to scene
+    nodes for observations without an element list.
+    """
+    els = getattr(obs, "elements", None) or []
+    ocr_els = [e for e in els if (getattr(e, "source", None) or "") == "ocr"]
+    if ocr_els:
+        nodes = []
+        for e in ocr_els:
+            l, t, w, h = (tuple(int(v) for v in e.bbox) if e.bbox else (0, 0, 0, 0))
+            nodes.append(SceneNode(
+                id=e.id, type="text", bbox=(l, t, w, h),
+                text=e.text or "", semantic=e.text or "",
+                confidence=float(getattr(e, "confidence", 1.0) or 1.0),
+                source="ocr", role="text",
+                state={"enabled": True, "visible": True, "focused": False},
+            ))
+        return nodes
+    scene = getattr(obs, "scene", None)
+    if scene is None:
+        return []
+    return [n for n in scene.nodes if (n.source or "") == "ocr"]

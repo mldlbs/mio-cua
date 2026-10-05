@@ -1,0 +1,768 @@
+{
+  "url_target": "https://chatgpt.com/",
+  "active_window": "ChatGPT - Google Chrome",
+  "active_process": "chrome",
+  "node_count": 59,
+  "element_count": 60,
+  "screenshot": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\1790816564396.png",
+  "candidates": [
+    {
+      "id": 9,
+      "type": "text",
+      "text": "ChatGPT",
+      "semantic": "ChatGPT",
+      "bbox": [
+        275,
+        2,
+        80,
+        22
+      ]
+    },
+    {
+      "id": 10,
+      "type": "text",
+      "text": "ChatGPT-任务管理",
+      "semantic": "ChatGPT-任务管理",
+      "bbox": [
+        514,
+        2,
+        139,
+        22
+      ]
+    },
+    {
+      "id": 11,
+      "type": "text",
+      "text": "chatgpt.com",
+      "semantic": "chatgpt.com",
+      "bbox": [
+        135,
+        46,
+        102,
+        22
+      ]
+    },
+    {
+      "id": 14,
+      "type": "text",
+      "text": "ChatGPT",
+      "semantic": "ChatGPT",
+      "bbox": [
+        4,
+        93,
+        87,
+        26
+      ]
+    }
+  ],
+  "all_nodes": [
+    {
+      "id": 1,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        682,
+        0,
+        1248,
+        1560
+      ]
+    },
+    {
+      "id": 2,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        682,
+        0,
+        1248,
+        1560
+      ]
+    },
+    {
+      "id": 3,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        682,
+        0,
+        1248,
+        1560
+      ]
+    },
+    {
+      "id": 4,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        682,
+        0,
+        1248,
+        1560
+      ]
+    },
+    {
+      "id": 5,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        682,
+        0,
+        1248,
+        1560
+      ]
+    },
+    {
+      "id": 6,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        682,
+        0,
+        1248,
+        1560
+      ]
+    },
+    {
+      "id": 7,
+      "type": "group",
+      "text": "",
+      "semantic": "",
+      "bbox": [
+        682,
+        0,
+        1248,
+        1560
+      ]
+    },
+    {
+      "id": 8,
+      "type": "text",
+      "text": "A智能决策中心",
+      "semantic": "A智能决策中心",
+      "bbox": [
+        35,
+        1,
+        117,
+        24
+      ]
+    },
+    {
+      "id": 9,
+      "type": "text",
+      "text": "ChatGPT",
+      "semantic": "ChatGPT",
+      "bbox": [
+        275,
+        2,
+        80,
+        22
+      ]
+    },
+    {
+      "id": 10,
+      "type": "text",
+      "text": "ChatGPT-任务管理",
+      "semantic": "ChatGPT-任务管理",
+      "bbox": [
+        514,
+        2,
+        139,
+        22
+      ]
+    },
+    {
+      "id": 11,
+      "type": "text",
+      "text": "chatgpt.com",
+      "semantic": "chatgpt.com",
+      "bbox": [
+        135,
+        46,
+        102,
+        22
+      ]
+    },
+    {
+      "id": 12,
+      "type": "text",
+      "text": "0日",
+      "semantic": "0日",
+      "bbox": [
+        162,
+        92,
+        64,
+        27
+      ]
+    },
+    {
+      "id": 13,
+      "type": "text",
+      "text": "免费试用",
+      "semantic": "免费试用",
+      "bbox": [
+        2399,
+        92,
+        87,
+        27
+      ]
+    },
+    {
+      "id": 14,
+      "type": "text",
+      "text": "ChatGPT",
+      "semantic": "ChatGPT",
+      "bbox": [
+        4,
+        93,
+        87,
+        26
+      ]
+    },
+    {
+      "id": 15,
+      "type": "text",
+      "text": "聊天",
+      "semantic": "聊天",
+      "bbox": [
+        1326,
+        93,
+        37,
+        25
+      ]
+    },
+    {
+      "id": 16,
+      "type": "text",
+      "text": "★工作",
+      "semantic": "★工作",
+      "bbox": [
+        1435,
+        95,
+        52,
+        23
+      ]
+    },
+    {
+      "id": 17,
+      "type": "text",
+      "text": "新聊天",
+      "semantic": "新聊天",
+      "bbox": [
+        4,
+        144,
+        78,
+        27
+      ]
+    },
+    {
+      "id": 18,
+      "type": "text",
+      "text": "期目",
+      "semantic": "期目",
+      "bbox": [
+        4,
+        216,
+        78,
+        27
+      ]
+    },
+    {
+      "id": 19,
+      "type": "text",
+      "text": "①定时任务",
+      "semantic": "①定时任务",
+      "bbox": [
+        6,
+        252,
+        89,
+        27
+      ]
+    },
+    {
+      "id": 20,
+      "type": "text",
+      "text": "@插件",
+      "semantic": "@插件",
+      "bbox": [
+        4,
+        288,
+        64,
+        27
+      ]
+    },
+    {
+      "id": 21,
+      "type": "text",
+      "text": "xapo",
+      "semantic": "xapo",
+      "bbox": [
+        4,
+        360,
+        78,
+        27
+      ]
+    },
+    {
+      "id": 22,
+      "type": "text",
+      "text": "…·更多",
+      "semantic": "…·更多",
+      "bbox": [
+        6,
+        398,
+        59,
+        23
+      ]
+    },
+    {
+      "id": 23,
+      "type": "text",
+      "text": "项目",
+      "semantic": "项目",
+      "bbox": [
+        4,
+        445,
+        34,
+        21
+      ]
+    },
+    {
+      "id": 24,
+      "type": "text",
+      "text": "白任务管理",
+      "semantic": "白任务管理",
+      "bbox": [
+        6,
+        478,
+        86,
+        22
+      ]
+    },
+    {
+      "id": 25,
+      "type": "text",
+      "text": "白记忆图谱",
+      "semantic": "白记忆图谱",
+      "bbox": [
+        4,
+        512,
+        91,
+        26
+      ]
+    },
+    {
+      "id": 26,
+      "type": "text",
+      "text": "白视觉控制",
+      "semantic": "白视觉控制",
+      "bbox": [
+        6,
+        551,
+        87,
+        22
+      ]
+    },
+    {
+      "id": 27,
+      "type": "text",
+      "text": "mio-browser-agent",
+      "semantic": "mio-browser-agent",
+      "bbox": [
+        6,
+        587,
+        160,
+        22
+      ]
+    },
+    {
+      "id": 28,
+      "type": "text",
+      "text": "白看看小猫",
+      "semantic": "白看看小猫",
+      "bbox": [
+        4,
+        621,
+        91,
+        26
+      ]
+    },
+    {
+      "id": 29,
+      "type": "text",
+      "text": "你好，Meng。准备好开始了吗?",
+      "semantic": "你好，Meng。准备好开始了吗?",
+      "bbox": [
+        1222,
+        631,
+        348,
+        35
+      ]
+    },
+    {
+      "id": 30,
+      "type": "text",
+      "text": "直看更多",
+      "semantic": "直看更多",
+      "bbox": [
+        6,
+        658,
+        62,
+        22
+      ]
+    },
+    {
+      "id": 31,
+      "type": "text",
+      "text": "十有问题，随便问",
+      "semantic": "十有问题，随便问",
+      "bbox": [
+        1033,
+        711,
+        153,
+        26
+      ]
+    },
+    {
+      "id": 32,
+      "type": "text",
+      "text": "思考",
+      "semantic": "思考",
+      "bbox": [
+        1620,
+        711,
+        66,
+        27
+      ]
+    },
+    {
+      "id": 33,
+      "type": "text",
+      "text": "聊天",
+      "semantic": "聊天",
+      "bbox": [
+        3,
+        712,
+        38,
+        24
+      ]
+    },
+    {
+      "id": 34,
+      "type": "text",
+      "text": "9",
+      "semantic": "9",
+      "bbox": [
+        1708,
+        715,
+        16,
+        19
+      ]
+    },
+    {
+      "id": 35,
+      "type": "text",
+      "text": "设计Windows模拟系统",
+      "semantic": "设计Windows模拟系统",
+      "bbox": [
+        6,
+        746,
+        160,
+        22
+      ]
+    },
+    {
+      "id": 36,
+      "type": "text",
+      "text": "前端术语表",
+      "semantic": "前端术语表",
+      "bbox": [
+        4,
+        783,
+        79,
+        22
+      ]
+    },
+    {
+      "id": 37,
+      "type": "text",
+      "text": "小说对话场景要素",
+      "semantic": "小说对话场景要素",
+      "bbox": [
+        4,
+        819,
+        120,
+        22
+      ]
+    },
+    {
+      "id": 38,
+      "type": "text",
+      "text": "查看Linux内存",
+      "semantic": "查看Linux内存",
+      "bbox": [
+        3,
+        852,
+        102,
+        28
+      ]
+    },
+    {
+      "id": 39,
+      "type": "text",
+      "text": "读取手机文件",
+      "semantic": "读取手机文件",
+      "bbox": [
+        4,
+        889,
+        92,
+        24
+      ]
+    },
+    {
+      "id": 40,
+      "type": "text",
+      "text": "项目开发文档整理",
+      "semantic": "项目开发文档整理",
+      "bbox": [
+        6,
+        929,
+        116,
+        18
+      ]
+    },
+    {
+      "id": 41,
+      "type": "text",
+      "text": "豆包PPT优化提示词",
+      "semantic": "豆包PPT优化提示词",
+      "bbox": [
+        6,
+        964,
+        129,
+        22
+      ]
+    },
+    {
+      "id": 42,
+      "type": "text",
+      "text": "管段健康度翻译",
+      "semantic": "管段健康度翻译",
+      "bbox": [
+        6,
+        999,
+        104,
+        22
+      ]
+    },
+    {
+      "id": 43,
+      "type": "text",
+      "text": "创建 SSH Key",
+      "semantic": "创建 SSH Key",
+      "bbox": [
+        4,
+        1031,
+        96,
+        28
+      ]
+    },
+    {
+      "id": 44,
+      "type": "text",
+      "text": "评审Agent项目",
+      "semantic": "评审Agent项目",
+      "bbox": [
+        3,
+        1070,
+        106,
+        25
+      ]
+    },
+    {
+      "id": 45,
+      "type": "text",
+      "text": "BFS插值算法解析",
+      "semantic": "BFS插值算法解析",
+      "bbox": [
+        4,
+        1107,
+        117,
+        22
+      ]
+    },
+    {
+      "id": 46,
+      "type": "text",
+      "text": "排查PostgreSQL连接配置",
+      "semantic": "排查PostgreSQL连接配置",
+      "bbox": [
+        4,
+        1143,
+        168,
+        22
+      ]
+    },
+    {
+      "id": 47,
+      "type": "text",
+      "text": "Gogs管理Spec计划",
+      "semantic": "Gogs管理Spec计划",
+      "bbox": [
+        6,
+        1179,
+        127,
+        22
+      ]
+    },
+    {
+      "id": 48,
+      "type": "text",
+      "text": "Chrome执行脚本",
+      "semantic": "Chrome执行脚本",
+      "bbox": [
+        6,
+        1215,
+        116,
+        22
+      ]
+    },
+    {
+      "id": 49,
+      "type": "text",
+      "text": "Agent录制原理#+#+#+#+",
+      "semantic": "Agent录制原理#+#+#+#+",
+      "bbox": [
+        2,
+        1247,
+        183,
+        29
+      ]
+    },
+    {
+      "id": 50,
+      "type": "text",
+      "text": "GitHub涨星指南",
+      "semantic": "GitHub涨星指南",
+      "bbox": [
+        4,
+        1284,
+        115,
+        25
+      ]
+    },
+    {
+      "id": 51,
+      "type": "text",
+      "text": "deepseek hamess 发布",
+      "semantic": "deepseek hamess 发布",
+      "bbox": [
+        4,
+        1324,
+        159,
+        21
+      ]
+    },
+    {
+      "id": 52,
+      "type": "text",
+      "text": "OCR功能扩展",
+      "semantic": "OCR功能扩展",
+      "bbox": [
+        4,
+        1358,
+        98,
+        22
+      ]
+    },
+    {
+      "id": 53,
+      "type": "text",
+      "text": "Mermald美化提示词",
+      "semantic": "Mermald美化提示词",
+      "bbox": [
+        4,
+        1393,
+        141,
+        22
+      ]
+    },
+    {
+      "id": 54,
+      "type": "text",
+      "text": "WorkBuddy",
+      "semantic": "WorkBuddy",
+      "bbox": [
+        2208,
+        1445,
+        75,
+        22
+      ]
+    },
+    {
+      "id": 55,
+      "type": "text",
+      "text": "Meng huai",
+      "semantic": "Meng huai",
+      "bbox": [
+        33,
+        1450,
+        82,
+        24
+      ]
+    },
+    {
+      "id": 56,
+      "type": "text",
+      "text": "免费版",
+      "semantic": "免费版",
+      "bbox": [
+        35,
+        1472,
+        44,
+        19
+      ]
+    },
+    {
+      "id": 57,
+      "type": "text",
+      "text": "任务操作待您确认",
+      "semantic": "任务操作待您确认",
+      "bbox": [
+        2186,
+        1478,
+        124,
+        22
+      ]
+    },
+    {
+      "id": 58,
+      "type": "text",
+      "text": "任务有操作需要您的确认，请点击查看",
+      "semantic": "任务有操作需要您的确认，请点击查看",
+      "bbox": [
+        2184,
+        1495,
+        264,
+        27
+      ]
+    },
+    {
+      "id": 59,
+      "type": "text",
+      "text": "领取优惠",
+      "semantic": "领取优惠",
+      "bbox": [
+        86,
+        1509,
+        75,
+        23
+      ]
+    }
+  ]
+}

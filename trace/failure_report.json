@@ -1,0 +1,177 @@
+{
+  "scenario": "browser_search",
+  "task": "打开浏览器，在搜索引擎中搜索「今日新闻」",
+  "trace_id": "trace_1790813796",
+  "timestamp": 1790813796.9002414,
+  "duration_s": 50.57,
+  "total_steps": 5,
+  "search_performed_this_run": true,
+  "valid": true,
+  "failure_summary": {
+    "total_steps": 5,
+    "category_counts": {
+      "environment_error": 1,
+      "ok": 4
+    },
+    "perception_rate": 0.0,
+    "planner_rate": 0.0,
+    "action_rate": 0.0,
+    "environment_rate": 0.2
+  },
+  "step_results": [
+    {
+      "category": "environment_error",
+      "detail": "active_window='微信' (process='weixin'), expected='Edge' — Observation 缺少目标应用上下文",
+      "confidence": 0.9
+    },
+    {
+      "category": null,
+      "detail": "target not visible yet, agent driving the search box (key)",
+      "confidence": 0.0
+    },
+    {
+      "category": null,
+      "detail": "target not visible yet, agent driving the search box (type)",
+      "confidence": 0.0
+    },
+    {
+      "category": null,
+      "detail": "no failure detected or unclassifiable",
+      "confidence": 0.0
+    },
+    {
+      "category": null,
+      "detail": "no failure detected or unclassifiable",
+      "confidence": 0.0
+    }
+  ],
+  "step_details": [
+    {
+      "step": 0,
+      "active_window": "微信",
+      "action_type": "focus_window",
+      "action_params": {
+        "title": "Edge"
+      },
+      "classification": "environment_error",
+      "detail": "active_window='微信' (process='weixin'), expected='Edge' — Observation 缺少目标应用上下文",
+      "confidence": 0.9,
+      "scene_nodes": 22,
+      "quality": {
+        "node_count": 22,
+        "confidence": 0.661,
+        "is_usable": true,
+        "has_search_box": false
+      }
+    },
+    {
+      "step": 1,
+      "active_window": "MIO·HUB — 任务总线",
+      "action_type": "key",
+      "action_params": {
+        "keys": "ctrl+t"
+      },
+      "classification": null,
+      "detail": "target not visible yet, agent driving the search box (key)",
+      "confidence": 0.0,
+      "scene_nodes": 139,
+      "quality": {
+        "node_count": 139,
+        "confidence": 0.795,
+        "is_usable": true,
+        "has_search_box": true
+      },
+      "planner": {
+        "llm_response_preview": "I'll open a new browser tab and search for \"今日新闻\" on a search engine.\n",
+        "decision_state": {
+          "target_visible": false,
+          "no_progress_count": 0,
+          "should_switch": false,
+          "strategy_history": []
+        }
+      }
+    },
+    {
+      "step": 2,
+      "active_window": "新建标签页 - 个人 - Microsoft​ Edge",
+      "action_type": "type",
+      "action_params": {
+        "element_id": 96,
+        "text": "今日新闻"
+      },
+      "classification": null,
+      "detail": "target not visible yet, agent driving the search box (type)",
+      "confidence": 0.0,
+      "scene_nodes": 120,
+      "quality": {
+        "node_count": 120,
+        "confidence": 0.683,
+        "is_usable": true,
+        "has_search_box": true
+      },
+      "planner": {
+        "llm_response_preview": "浏览器已经打开并显示新建标签页页面。我看到搜索输入框（节点96）可用。现在输入搜索词「今日新闻」并搜索。\n",
+        "decision_state": {
+          "target_visible": false,
+          "no_progress_count": 0,
+          "should_switch": false,
+          "strategy_history": []
+        }
+      }
+    },
+    {
+      "step": 3,
+      "active_window": "新建标签页 - 个人 - Microsoft​ Edge",
+      "action_type": "click",
+      "action_params": {
+        "element_id": 102
+      },
+      "classification": null,
+      "detail": "no failure detected or unclassifiable",
+      "confidence": 0.0,
+      "scene_nodes": 142,
+      "quality": {
+        "node_count": 142,
+        "confidence": 0.687,
+        "is_usable": true,
+        "has_search_box": true
+      },
+      "planner": {
+        "llm_response_preview": "浏览器已打开，搜索框中已显示\"今日新闻\"。我直接点击搜索按钮提交搜索。\n",
+        "decision_state": {
+          "target_visible": false,
+          "no_progress_count": 0,
+          "should_switch": false,
+          "strategy_history": []
+        }
+      }
+    },
+    {
+      "step": 4,
+      "active_window": "今日新闻 - 搜索 - 个人 - Microsoft​ Edge",
+      "action_type": "success",
+      "action_params": {
+        "result": "浏览器（Microsoft Edge）已打开，并在必应搜索引擎中搜索了「今日新闻」，搜索结果页面已显示。"
+      },
+      "classification": null,
+      "detail": "no failure detected or unclassifiable",
+      "confidence": 0.0,
+      "scene_nodes": 212,
+      "quality": {
+        "node_count": 212,
+        "confidence": 0.755,
+        "is_usable": true,
+        "has_search_box": true
+      },
+      "planner": {
+        "llm_response_preview": "The task is already complete. The Edge browser is open and has already performed the search for \"今日新闻\" — the Bing search results page is displayed with relevant news results (今日头条, 央视网, Google News, BBC, 华尔街日报中文网, 美国之音中文网, etc.).\n",
+        "decision_state": {
+          "target_visible": false,
+          "no_progress_count": 0,
+          "should_switch": false,
+          "strategy_history": []
+        }
+      }
+    }
+  ]
+}

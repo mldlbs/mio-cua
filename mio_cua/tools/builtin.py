@@ -1,0 +1,90 @@
+﻿from mio_cua.tools.registry import ToolRegistry
+from mio_cua.tools import click, type as type_tool, key, scroll, wait, screenshot, launch, focus_window, move_mouse, success, fail
+from mio_cua.tools import fs
+from mio_cua.tools import clipboard as clipboard_tool
+from mio_cua.tools import drag as drag_tool
+from mio_cua.tools import selection as selection_tool
+from mio_cua.tools import taskbar as taskbar_tool
+
+_SCHEMAS = {
+    "click": {"type": "function", "function": {"name": "click", "description": "Click mouse at coordinates or element", "parameters": {"type": "object", "properties": {
+        "element_id": {"type": "integer"}, "x": {"type": "number"}, "y": {"type": "number"},
+        "button": {"type": "string", "enum": ["left", "right"]}, "double": {"type": "boolean"}}}}},
+    "type": {"type": "function", "function": {"name": "type", "description": "Type text", "parameters": {"type": "object", "properties": {
+        "text": {"type": "string"}, "element_id": {"type": "integer"}}, "required": ["text"]}}},
+    "key": {"type": "function", "function": {"name": "key", "description": "Send key combination like ctrl+c", "parameters": {"type": "object", "properties": {
+        "keys": {"type": "string"}}, "required": ["keys"]}}},
+    "scroll": {"type": "function", "function": {"name": "scroll", "description": "Scroll", "parameters": {"type": "object", "properties": {
+        "direction": {"type": "string", "enum": ["up", "down"]}, "amount": {"type": "integer"}}}}},
+    "wait": {"type": "function", "function": {"name": "wait", "description": "Wait seconds", "parameters": {"type": "object", "properties": {
+        "seconds": {"type": "number"}}, "required": ["seconds"]}}},
+    "screenshot": {"type": "function", "function": {"name": "screenshot", "description": "Take screenshot", "parameters": {"type": "object", "properties": {
+        "region": {"type": "string"}}}}},
+    "launch": {"type": "function", "function": {"name": "launch", "description": "Launch a program, command, or file path. To open a file with an app, pass the command with the path, e.g. 'notepad C:\\Users\\x\\Desktop\\data.txt' or 'calc'. App windows opened via launch are kept in background so you can open many in parallel.", "parameters": {"type": "object", "properties": {
+        "command": {"type": "string"}}, "required": ["command"]}}},
+    "focus_window": {"type": "function", "function": {"name": "focus_window", "description": "Focus a window by title", "parameters": {"type": "object", "properties": {
+        "title": {"type": "string"}}, "required": ["title"]}}},
+    "taskbar": {"type": "function", "function": {"name": "taskbar", "description": "Inspect or operate the Windows taskbar. action='list' returns taskbar items as [{name,kind,rect}] using deterministic UIA names (running apps, Start, Search, clock, tray) -- use it to see which apps are open and to learn exact item names. action='click' activates an item by name substring; pass target taken from a 'list' result, NEVER pixel coordinates. Use this to switch to an already-open app or to read the clock/notifications.", "parameters": {"type": "object", "properties": {
+        "action": {"type": "string", "enum": ["list", "click"], "default": "list"},
+        "target": {"type": "string"}}}}},
+    "move_mouse": {"type": "function", "function": {"name": "move_mouse", "description": "Move mouse (hover)", "parameters": {"type": "object", "properties": {
+        "element_id": {"type": "integer"}, "x": {"type": "number"}, "y": {"type": "number"}}}}},
+    "success": {"type": "function", "function": {"name": "success", "description": "Task complete", "parameters": {"type": "object", "properties": {
+        "result": {"type": "string"}}, "required": ["result"]}}},
+    "fail": {"type": "function", "function": {"name": "fail", "description": "Task failed", "parameters": {"type": "object", "properties": {
+        "reason": {"type": "string"}}, "required": ["reason"]}}},
+    "make_dir": {"type": "function", "function": {"name": "make_dir", "description": "Create a directory (recursively) if it does not exist. PREFERRED over clicking in Explorer for organizing files -- deterministic, no UI needed.", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}}, "required": ["path"]}}},
+    "move_file": {"type": "function", "function": {"name": "move_file", "description": "Move ONE file into a directory. PREFERRED over Explorer click-and-drag when organizing files. Refuses to overwrite.", "parameters": {"type": "object", "properties": {
+        "src": {"type": "string"}, "dest": {"type": "string"}}, "required": ["src", "dest"]}}},
+    "move_files": {"type": "function", "function": {"name": "move_files", "description": "Move a LIST of files into one directory in a single call -- use this when organizing MANY files at once (e.g. all .pdf into 文档). More efficient than move_file per file. Refuses to overwrite.", "parameters": {"type": "object", "properties": {
+        "files": {"type": "array", "items": {"type": "string"}}, "dest": {"type": "string"}}, "required": ["files", "dest"]}}},
+    "list_dir": {"type": "function", "function": {"name": "list_dir", "description": "List files and directories under a path (files first, one per line). Use to inventory a folder instead of reading Explorer icons -- more complete and reliable.", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}}, "required": ["path"]}}},
+    "read_file": {"type": "function", "function": {"name": "read_file", "description": "Read a text file's first N characters (default 2000). Use to retrieve file contents the agent needs (e.g. reading numbers from a data file before computing).", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}, "max_chars": {"type": "integer"}}, "required": ["path"]}}},
+    "write_file": {"type": "function", "function": {"name": "write_file", "description": "Write text to a file. mode=create makes a new file (refuses if it exists), append adds to the end, write overwrites (requires allow_overwrite=True). Creates parent dirs.", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}, "content": {"type": "string"},
+        "mode": {"type": "string", "enum": ["create", "append", "write"]},
+        "allow_overwrite": {"type": "boolean"}}, "required": ["path", "content"]}}},
+    "search_files": {"type": "function", "function": {"name": "search_files", "description": "Recursively search a directory for files by name substring, extension, and/or content pattern. Returns up to 50 paths.", "parameters": {"type": "object", "properties": {
+        "path": {"type": "string"}, "name": {"type": "string"}, "ext": {"type": "string"},
+        "pattern": {"type": "string"}, "max_results": {"type": "integer"}}, "required": ["path"]}}},
+    "drag": {"type": "function", "function": {"name": "drag", "description": "Press and drag the mouse from (x1,y1) to (x2,y2), then release. For selecting text ranges or moving items.", "parameters": {"type": "object", "properties": {
+        "x1": {"type": "number"}, "y1": {"type": "number"}, "x2": {"type": "number"}, "y2": {"type": "number"},
+        "element_id": {"type": "integer"}}}}},
+    "select_element": {"type": "function", "function": {"name": "select_element", "description": "Select an element's text by dragging across its bbox (single-line). Then ctrl+c and verify with clipboard_get.", "parameters": {"type": "object", "properties": {
+        "element_id": {"type": "integer"}}, "required": ["element_id"]}}},
+    "clipboard_get": {"type": "function", "function": {"name": "clipboard_get", "description": "Read the clipboard text as structured JSON {text,has_text,length}. Use AFTER ctrl+c to verify what was copied.", "parameters": {"type": "object", "properties": {}}}},
+    "clipboard_set": {"type": "function", "function": {"name": "clipboard_set", "description": "Put text on the clipboard (combine with ctrl+v to paste without typing).", "parameters": {"type": "object", "properties": {
+        "text": {"type": "string"}}, "required": ["text"]}}},
+}
+
+
+def register_builtin_tools(registry: ToolRegistry):
+    for name, func in [
+        ("click", click.click),
+        ("type", type_tool.type),
+        ("key", key.key),
+        ("scroll", scroll.scroll),
+        ("wait", wait.wait),
+        ("screenshot", screenshot.screenshot),
+        ("launch", launch.launch),
+        ("focus_window", focus_window.focus_window),
+        ("taskbar", taskbar_tool.taskbar),
+        ("move_mouse", move_mouse.move_mouse),
+        ("success", success.success),
+        ("fail", fail.fail),
+        ("make_dir", fs.make_dir),
+        ("move_file", fs.move_file),
+        ("move_files", fs.move_files),
+        ("list_dir", fs.list_dir),
+        ("read_file", fs.read_file),
+        ("write_file", fs.write_file),
+        ("search_files", fs.search_files),
+        ("drag", drag_tool.drag),
+        ("select_element", selection_tool.select_element),
+        ("clipboard_get", clipboard_tool.clipboard_get),
+        ("clipboard_set", clipboard_tool.clipboard_set),
+    ]:
+        registry.register(name, func, _SCHEMAS[name])

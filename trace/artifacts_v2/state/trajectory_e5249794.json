@@ -1,0 +1,170 @@
+[
+  {
+    "step": 0,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033346570320",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 1,
+    "action": "launch",
+    "params": {
+      "command": "wechat"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033346326176",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "reused already-running wechat window"
+  },
+  {
+    "step": 2,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033372848944",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 3,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033346723040",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 4,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033372825936",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 5,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033371950176",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 6,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033371885904",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 7,
+    "action": "launch",
+    "params": {
+      "command": "wechat"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2032756015184",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "reused already-running wechat window"
+  },
+  {
+    "step": 8,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033346306384",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 9,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033374689584",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 10,
+    "action": "focus_window",
+    "params": {
+      "title": "微信"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2033346376432",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "focused"
+  },
+  {
+    "step": 11,
+    "action": "launch",
+    "params": {
+      "command": "wechat"
+    },
+    "target": null,
+    "bbox": null,
+    "reason": null,
+    "obs_id": "2032756235728",
+    "active_window": "wechat_兴蓉整理.md - Visual Studio Code",
+    "result_success": true,
+    "result_msg": "reused already-running wechat window"
+  }
+]

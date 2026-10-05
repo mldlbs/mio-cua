@@ -1,0 +1,14 @@
+id: web_search
+title: "浏览器：真实网页搜索（纯视觉）"
+instruction: >-
+  用 Microsoft Edge 打开 DuckDuckGo 搜索页 https://duckduckgo.com。
+  浏览器窗口标题会包含 "DuckDuckGo" 或 "duckduckgo"。
+  在搜索输入框中输入 "desktop automation"（用 type，element_id 指向搜索框）。
+  输入后【必须按回车键 key(keys="enter") 提交搜索】——不要只截图，不要重复输入。
+  等待搜索结果页面出现（页面会显示搜索结果标题，标题含 "desktop automation"）。
+  确认搜索结果页面出现后，调用 success 报告完成了搜索。
+timeout_s: 240
+max_steps: 40
+checks:
+  - type: active_window
+    contains: Edge

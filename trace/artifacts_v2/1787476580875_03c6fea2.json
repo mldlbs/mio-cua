@@ -1,0 +1,1780 @@
+{
+  "observation": {
+    "screenshot_path": "E:\\work\\code\\agent-dev\\desktop-agent\\trace\\artifacts_v2\\1787476544537.png",
+    "timestamp": 1787476544.5683753,
+    "active_window": "微信",
+    "dpi_scale": 1.0,
+    "elements": [
+      {
+        "id": 0,
+        "source": "uia",
+        "text": "MMUIRenderSubWindowHW",
+        "role": "Pane",
+        "bbox": [
+          982,
+          219,
+          880,
+          640
+        ],
+        "confidence": 1.0,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 1,
+        "source": "ocr",
+        "text": "115269",
+        "role": "text",
+        "bbox": [
+          1297,
+          266,
+          53,
+          18
+        ],
+        "confidence": 0.8386962839535305,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 2,
+        "source": "ocr",
+        "text": "xn9GZeSuJW5qq8muZ7qRDr",
+        "role": "text",
+        "bbox": [
+          1412,
+          304,
+          196,
+          18
+        ],
+        "confidence": 0.9164312274559684,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 3,
+        "source": "ocr",
+        "text": "UqfRQRTjwEiK4LRjiFbGtiPTj4",
+        "role": "text",
+        "bbox": [
+          1413,
+          324,
+          194,
+          17
+        ],
+        "confidence": 0.9246264806500187,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 4,
+        "source": "ocr",
+        "text": "17:07",
+        "role": "text",
+        "bbox": [
+          1243,
+          326,
+          30,
+          15
+        ],
+        "confidence": 0.8162718415260315,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 5,
+        "source": "ocr",
+        "text": "2nRa-3RNoRW93hF9lhfVMtz",
+        "role": "text",
+        "bbox": [
+          1414,
+          342,
+          194,
+          15
+        ],
+        "confidence": 0.8788656704127789,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 6,
+        "source": "ocr",
+        "text": "115269",
+        "role": "text",
+        "bbox": [
+          1626,
+          356,
+          45,
+          15
+        ],
+        "confidence": 0.8308000564575195,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 7,
+        "source": "ocr",
+        "text": "EUiUAqOk0Wh1Kn3B13kN08",
+        "role": "text",
+        "bbox": [
+          1412,
+          360,
+          197,
+          18
+        ],
+        "confidence": 0.8992694383082183,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 8,
+        "source": "ocr",
+        "text": "VqhNRLOOsJe2gJbSIE9iERjD",
+        "role": "text",
+        "bbox": [
+          1414,
+          382,
+          193,
+          15
+        ],
+        "confidence": 0.9015070652961731,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 9,
+        "source": "ocr",
+        "text": "16:42",
+        "role": "text",
+        "bbox": [
+          1243,
+          391,
+          30,
+          16
+        ],
+        "confidence": 0.826649526755015,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 10,
+        "source": "ocr",
+        "text": "hDIBpVKCZ6Rzy2wnD_C5t7O",
+        "role": "text",
+        "bbox": [
+          1412,
+          399,
+          196,
+          18
+        ],
+        "confidence": 0.9140720578531424,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 11,
+        "source": "ocr",
+        "text": "11:22",
+        "role": "text",
+        "bbox": [
+          1552,
+          450,
+          36,
+          18
+        ],
+        "confidence": 0.7468810180823008,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 12,
+        "source": "ocr",
+        "text": "115269",
+        "role": "text",
+        "bbox": [
+          1100,
+          453,
+          52,
+          19
+        ],
+        "confidence": 0.8178325636046273,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 13,
+        "source": "ocr",
+        "text": "16:18",
+        "role": "text",
+        "bbox": [
+          1242,
+          456,
+          32,
+          16
+        ],
+        "confidence": 0.7613299489021301,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 14,
+        "source": "ocr",
+        "text": "sk-c88cbfae818644c8d1c3da",
+        "role": "text",
+        "bbox": [
+          1417,
+          497,
+          191,
+          15
+        ],
+        "confidence": 0.8963624697465163,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 15,
+        "source": "ocr",
+        "text": "66cfe2fd7399b3994d8b5f",
+        "role": "text",
+        "bbox": [
+          1418,
+          517,
+          174,
+          15
+        ],
+        "confidence": 0.9463771685310032,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 16,
+        "source": "ocr",
+        "text": "15:35",
+        "role": "text",
+        "bbox": [
+          1244,
+          522,
+          28,
+          13
+        ],
+        "confidence": 0.7710727254549662,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 17,
+        "source": "ocr",
+        "text": "https://ai.crlkcloud.cyou/key:",
+        "role": "text",
+        "bbox": [
+          1417,
+          534,
+          191,
+          18
+        ],
+        "confidence": 0.9074661549060575,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 18,
+        "source": "ocr",
+        "text": "15:35",
+        "role": "text",
+        "bbox": [
+          1243,
+          586,
+          31,
+          16
+        ],
+        "confidence": 0.8264072636763254,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 19,
+        "source": "ocr",
+        "text": "16:18",
+        "role": "text",
+        "bbox": [
+          1552,
+          586,
+          36,
+          16
+        ],
+        "confidence": 0.7524161140124003,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 20,
+        "source": "ocr",
+        "text": "zen-proxy.zip",
+        "role": "text",
+        "bbox": [
+          1361,
+          636,
+          91,
+          18
+        ],
+        "confidence": 0.8266770456518445,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 21,
+        "source": "ocr",
+        "text": "14:34",
+        "role": "text",
+        "bbox": [
+          1244,
+          652,
+          28,
+          13
+        ],
+        "confidence": 0.7068478266398112,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 22,
+        "source": "ocr",
+        "text": "3.0K",
+        "role": "text",
+        "bbox": [
+          1360,
+          658,
+          30,
+          17
+        ],
+        "confidence": 0.7837215185165405,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      },
+      {
+        "id": 23,
+        "source": "ocr",
+        "text": "12:07",
+        "role": "text",
+        "bbox": [
+          1243,
+          716,
+          29,
+          15
+        ],
+        "confidence": 0.8133794168631235,
+        "enabled": true,
+        "visible": true,
+        "focused": false,
+        "metadata": {}
+      }
+    ],
+    "ui_tree": null,
+    "scene": {
+      "nodes": [
+        {
+          "id": 0,
+          "type": "group",
+          "bbox": [
+            982,
+            219,
+            880,
+            640
+          ],
+          "text": "MMUIRenderSubWindowHW",
+          "confidence": 1.0,
+          "semantic": "MMUIRenderSubWindowHW",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "uia",
+          "role": "pane",
+          "metadata": {}
+        },
+        {
+          "id": 1,
+          "type": "text",
+          "bbox": [
+            1297,
+            266,
+            53,
+            18
+          ],
+          "text": "115269",
+          "confidence": 0.8386962839535305,
+          "semantic": "115269",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 2,
+          "type": "text",
+          "bbox": [
+            1412,
+            304,
+            196,
+            18
+          ],
+          "text": "xn9GZeSuJW5qq8muZ7qRDr",
+          "confidence": 0.9164312274559684,
+          "semantic": "xn9GZeSuJW5qq8muZ7qRDr",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 3,
+          "type": "text",
+          "bbox": [
+            1413,
+            324,
+            194,
+            17
+          ],
+          "text": "UqfRQRTjwEiK4LRjiFbGtiPTj4",
+          "confidence": 0.9246264806500187,
+          "semantic": "UqfRQRTjwEiK4LRjiFbGtiPTj4",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 4,
+          "type": "text",
+          "bbox": [
+            1243,
+            326,
+            30,
+            15
+          ],
+          "text": "17:07",
+          "confidence": 0.8162718415260315,
+          "semantic": "17:07",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 5,
+          "type": "text",
+          "bbox": [
+            1414,
+            342,
+            194,
+            15
+          ],
+          "text": "2nRa-3RNoRW93hF9lhfVMtz",
+          "confidence": 0.8788656704127789,
+          "semantic": "2nRa-3RNoRW93hF9lhfVMtz",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 6,
+          "type": "text",
+          "bbox": [
+            1626,
+            356,
+            45,
+            15
+          ],
+          "text": "115269",
+          "confidence": 0.8308000564575195,
+          "semantic": "115269",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 7,
+          "type": "text",
+          "bbox": [
+            1412,
+            360,
+            197,
+            18
+          ],
+          "text": "EUiUAqOk0Wh1Kn3B13kN08",
+          "confidence": 0.8992694383082183,
+          "semantic": "EUiUAqOk0Wh1Kn3B13kN08",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 8,
+          "type": "text",
+          "bbox": [
+            1414,
+            382,
+            193,
+            15
+          ],
+          "text": "VqhNRLOOsJe2gJbSIE9iERjD",
+          "confidence": 0.9015070652961731,
+          "semantic": "VqhNRLOOsJe2gJbSIE9iERjD",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 9,
+          "type": "text",
+          "bbox": [
+            1243,
+            391,
+            30,
+            16
+          ],
+          "text": "16:42",
+          "confidence": 0.826649526755015,
+          "semantic": "16:42",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 10,
+          "type": "text",
+          "bbox": [
+            1412,
+            399,
+            196,
+            18
+          ],
+          "text": "hDIBpVKCZ6Rzy2wnD_C5t7O",
+          "confidence": 0.9140720578531424,
+          "semantic": "hDIBpVKCZ6Rzy2wnD_C5t7O",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 11,
+          "type": "text",
+          "bbox": [
+            1552,
+            450,
+            36,
+            18
+          ],
+          "text": "11:22",
+          "confidence": 0.7468810180823008,
+          "semantic": "11:22",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 12,
+          "type": "text",
+          "bbox": [
+            1100,
+            453,
+            52,
+            19
+          ],
+          "text": "115269",
+          "confidence": 0.8178325636046273,
+          "semantic": "115269",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 13,
+          "type": "text",
+          "bbox": [
+            1242,
+            456,
+            32,
+            16
+          ],
+          "text": "16:18",
+          "confidence": 0.7613299489021301,
+          "semantic": "16:18",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 14,
+          "type": "text",
+          "bbox": [
+            1417,
+            497,
+            191,
+            15
+          ],
+          "text": "sk-c88cbfae818644c8d1c3da",
+          "confidence": 0.8963624697465163,
+          "semantic": "sk-c88cbfae818644c8d1c3da",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 15,
+          "type": "text",
+          "bbox": [
+            1418,
+            517,
+            174,
+            15
+          ],
+          "text": "66cfe2fd7399b3994d8b5f",
+          "confidence": 0.9463771685310032,
+          "semantic": "66cfe2fd7399b3994d8b5f",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 16,
+          "type": "text",
+          "bbox": [
+            1244,
+            522,
+            28,
+            13
+          ],
+          "text": "15:35",
+          "confidence": 0.7710727254549662,
+          "semantic": "15:35",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 17,
+          "type": "text",
+          "bbox": [
+            1417,
+            534,
+            191,
+            18
+          ],
+          "text": "https://ai.crlkcloud.cyou/key:",
+          "confidence": 0.9074661549060575,
+          "semantic": "https://ai.crlkcloud.cyou/key:",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 18,
+          "type": "text",
+          "bbox": [
+            1243,
+            586,
+            31,
+            16
+          ],
+          "text": "15:35",
+          "confidence": 0.8264072636763254,
+          "semantic": "15:35",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 19,
+          "type": "text",
+          "bbox": [
+            1552,
+            586,
+            36,
+            16
+          ],
+          "text": "16:18",
+          "confidence": 0.7524161140124003,
+          "semantic": "16:18",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 20,
+          "type": "text",
+          "bbox": [
+            1361,
+            636,
+            91,
+            18
+          ],
+          "text": "zen-proxy.zip",
+          "confidence": 0.8266770456518445,
+          "semantic": "zen-proxy.zip",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 21,
+          "type": "text",
+          "bbox": [
+            1244,
+            652,
+            28,
+            13
+          ],
+          "text": "14:34",
+          "confidence": 0.7068478266398112,
+          "semantic": "14:34",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 22,
+          "type": "text",
+          "bbox": [
+            1360,
+            658,
+            30,
+            17
+          ],
+          "text": "3.0K",
+          "confidence": 0.7837215185165405,
+          "semantic": "3.0K",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        },
+        {
+          "id": 23,
+          "type": "text",
+          "bbox": [
+            1243,
+            716,
+            29,
+            15
+          ],
+          "text": "12:07",
+          "confidence": 0.8133794168631235,
+          "semantic": "12:07",
+          "state": {
+            "enabled": true,
+            "visible": true,
+            "focused": false
+          },
+          "source": "ocr",
+          "role": "text",
+          "metadata": {}
+        }
+      ],
+      "relations": [
+        {
+          "source": 0,
+          "target": 1,
+          "kind": "child",
+          "weight": 0.0016938920454545455
+        },
+        {
+          "source": 0,
+          "target": 2,
+          "kind": "child",
+          "weight": 0.006264204545454545
+        },
+        {
+          "source": 0,
+          "target": 3,
+          "kind": "child",
+          "weight": 0.005855823863636363
+        },
+        {
+          "source": 0,
+          "target": 4,
+          "kind": "child",
+          "weight": 0.0007990056818181819
+        },
+        {
+          "source": 0,
+          "target": 5,
+          "kind": "child",
+          "weight": 0.005166903409090909
+        },
+        {
+          "source": 0,
+          "target": 6,
+          "kind": "child",
+          "weight": 0.0011985085227272727
+        },
+        {
+          "source": 0,
+          "target": 7,
+          "kind": "child",
+          "weight": 0.006296164772727273
+        },
+        {
+          "source": 0,
+          "target": 8,
+          "kind": "child",
+          "weight": 0.005140269886363636
+        },
+        {
+          "source": 0,
+          "target": 9,
+          "kind": "child",
+          "weight": 0.0008522727272727272
+        },
+        {
+          "source": 0,
+          "target": 10,
+          "kind": "child",
+          "weight": 0.006264204545454545
+        },
+        {
+          "source": 0,
+          "target": 11,
+          "kind": "child",
+          "weight": 0.0011505681818181819
+        },
+        {
+          "source": 0,
+          "target": 12,
+          "kind": "child",
+          "weight": 0.0017542613636363637
+        },
+        {
+          "source": 0,
+          "target": 13,
+          "kind": "child",
+          "weight": 0.0009090909090909091
+        },
+        {
+          "source": 0,
+          "target": 14,
+          "kind": "child",
+          "weight": 0.005087002840909091
+        },
+        {
+          "source": 0,
+          "target": 15,
+          "kind": "child",
+          "weight": 0.004634232954545454
+        },
+        {
+          "source": 0,
+          "target": 16,
+          "kind": "child",
+          "weight": 0.0006463068181818182
+        },
+        {
+          "source": 0,
+          "target": 17,
+          "kind": "child",
+          "weight": 0.006104403409090909
+        },
+        {
+          "source": 0,
+          "target": 18,
+          "kind": "child",
+          "weight": 0.0008806818181818182
+        },
+        {
+          "source": 0,
+          "target": 19,
+          "kind": "child",
+          "weight": 0.0010227272727272728
+        },
+        {
+          "source": 0,
+          "target": 20,
+          "kind": "child",
+          "weight": 0.0029083806818181817
+        },
+        {
+          "source": 0,
+          "target": 21,
+          "kind": "child",
+          "weight": 0.0006463068181818182
+        },
+        {
+          "source": 0,
+          "target": 22,
+          "kind": "child",
+          "weight": 0.0009055397727272727
+        },
+        {
+          "source": 0,
+          "target": 23,
+          "kind": "child",
+          "weight": 0.0007723721590909091
+        },
+        {
+          "source": 0,
+          "target": 15,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 16,
+          "target": 0,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 0,
+          "target": 17,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 0,
+          "target": 20,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 1,
+          "target": 4,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 3,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 3,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 5,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 7,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 7,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 8,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 10,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 10,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 14,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 15,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 2,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 3,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 5,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 5,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 7,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 7,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 8,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 10,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 10,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 14,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 15,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 3,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 5,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 9,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 13,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 16,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 18,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 21,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 4,
+          "target": 23,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 6,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 7,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 7,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 8,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 10,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 10,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 14,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 15,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 5,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 6,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 8,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 8,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 10,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 10,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 11,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 14,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 15,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 7,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 8,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 10,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 10,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 11,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 14,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 14,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 15,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 8,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 10,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 13,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 13,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 16,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 18,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 21,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 9,
+          "target": 23,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 10,
+          "target": 11,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 10,
+          "target": 14,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 10,
+          "target": 14,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 10,
+          "target": 15,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 10,
+          "target": 15,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 10,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 12,
+          "target": 11,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 13,
+          "target": 11,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 11,
+          "target": 14,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 11,
+          "target": 15,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 11,
+          "target": 17,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 11,
+          "target": 19,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 12,
+          "target": 13,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 13,
+          "target": 16,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 13,
+          "target": 16,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 13,
+          "target": 18,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 13,
+          "target": 21,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 13,
+          "target": 23,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 14,
+          "target": 15,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 14,
+          "target": 15,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 14,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 14,
+          "target": 17,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 14,
+          "target": 19,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 16,
+          "target": 15,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 15,
+          "target": 17,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 15,
+          "target": 17,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 15,
+          "target": 19,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 16,
+          "target": 17,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 16,
+          "target": 18,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 16,
+          "target": 18,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 16,
+          "target": 21,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 16,
+          "target": 23,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 17,
+          "target": 19,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 18,
+          "target": 19,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 18,
+          "target": 21,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 18,
+          "target": 21,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 18,
+          "target": 23,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 21,
+          "target": 20,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 20,
+          "target": 22,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 21,
+          "target": 22,
+          "kind": "leftOf",
+          "weight": 1.0
+        },
+        {
+          "source": 21,
+          "target": 22,
+          "kind": "near",
+          "weight": 1.0
+        },
+        {
+          "source": 21,
+          "target": 23,
+          "kind": "above",
+          "weight": 1.0
+        },
+        {
+          "source": 21,
+          "target": 23,
+          "kind": "near",
+          "weight": 1.0
+        }
+      ],
+      "affordances": [],
+      "display_ids": [],
+      "regions": [],
+      "active_window": "微信"
+    }
+  },
+  "action": {
+    "id": "a-000009",
+    "type": "click",
+    "params": {
+      "x": 1130,
+      "y": 67
+    }
+  },
+  "result": {
+    "action_id": "a-000009",
+    "success": true,
+    "message": "clicked",
+    "observation_changed": false,
+    "retryable": false,
+    "metadata": {}
+  },
+  "task_id": "4aa814dd",
+  "timestamp": 1787476580.8758516,
+  "seq": 9
+}

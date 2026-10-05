@@ -1,0 +1,81 @@
+{
+  "trace_id": "sample_wechat_capture",
+  "created_at": 1755936000.0,
+  "task": {
+    "instruction": "在微信中，找到左侧聊天列表里的群『兴蓉项目群』，打开它。",
+    "target_context": {"app": "WeChat", "keyword": "兴蓉"},
+    "metadata": {"keyword": "兴蓉"}
+  },
+  "metadata": {"app": "WeChat", "recorder_version": "v1"},
+  "entries": [
+    {
+      "obs_before": {
+        "id": 1,
+        "timestamp": 1755936000.0,
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 2, "type": "text", "text": "文件传输助手", "bbox": [860, 200, 200, 40]},
+          {"id": 3, "type": "text", "text": "家庭群", "bbox": [860, 250, 200, 40]},
+          {"id": 4, "type": "text", "text": "同事群", "bbox": [860, 300, 200, 40]},
+          {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+        ],
+        "metadata": {}
+      },
+      "action": {
+        "id": "a-001",
+        "type": "scroll",
+        "params": {"direction": "down", "amount": 5},
+        "timestamp": 1755936000.5,
+        "result": {"sent": true}
+      },
+      "obs_after": {
+        "id": 2,
+        "timestamp": 1755936001.0,
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 6, "type": "text", "text": "项目讨论", "bbox": [860, 200, 200, 40]},
+          {"id": 7, "type": "text", "text": "兴蓉项目群", "bbox": [860, 250, 200, 40]},
+          {"id": 8, "type": "text", "text": "采购群", "bbox": [860, 300, 200, 40]},
+          {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+        ],
+        "metadata": {}
+      }
+    },
+    {
+      "obs_before": {
+        "id": 2,
+        "timestamp": 1755936001.0,
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 6, "type": "text", "text": "项目讨论", "bbox": [860, 200, 200, 40]},
+          {"id": 7, "type": "text", "text": "兴蓉项目群", "bbox": [860, 250, 200, 40]},
+          {"id": 8, "type": "text", "text": "采购群", "bbox": [860, 300, 200, 40]},
+          {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+        ],
+        "metadata": {}
+      },
+      "action": {
+        "id": "a-002",
+        "type": "click",
+        "params": {"element_id": 7},
+        "timestamp": 1755936001.5,
+        "result": {"sent": true}
+      },
+      "obs_after": {
+        "id": 3,
+        "timestamp": 1755936002.0,
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 10, "type": "text", "text": "兴蓉项目群", "bbox": [900, 120, 300, 30]},
+          {"id": 11, "type": "text", "text": "2026-08-22 周三", "bbox": [900, 160, 300, 20]},
+          {"id": 12, "type": "text", "text": "张三: 收到，明天开会讨论", "bbox": [900, 200, 500, 40]}
+        ],
+        "metadata": {}
+      }
+    }
+  ]
+}

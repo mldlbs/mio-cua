@@ -1,0 +1,113 @@
+{
+  "id": "synthetic_planner_v1",
+  "description": "Phase 2 Synthetic Planner Benchmark: 5 decision types, fixed observations, real LLM",
+  "scenarios": [
+    {
+      "id": "target_visible_click",
+      "description": "Target 兴蓉项目群 is visible in sidebar; planner should click it",
+      "observation": {
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 2, "type": "text", "text": "文件传输助手", "bbox": [860, 200, 200, 40]},
+          {"id": 3, "type": "text", "text": "兴蓉项目群", "bbox": [860, 250, 200, 40]},
+          {"id": 4, "type": "text", "text": "家庭群", "bbox": [860, 300, 200, 40]},
+          {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+        ]
+      },
+      "expected_action_type": "click",
+      "goal": {
+        "instruction": "在微信中，找到左侧聊天列表里的群『兴蓉项目群』，打开它。",
+        "target_context": {"app": "WeChat", "keyword": "兴蓉"},
+        "metadata": {"keyword": "兴蓉"},
+        "type": "target_visible"
+      },
+      "notes": "Target is directly visible; planner should click element 3"
+    },
+    {
+      "id": "target_invisible_search",
+      "description": "Target not visible, search box available; planner should use search",
+      "observation": {
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 2, "type": "text", "text": "文件传输助手", "bbox": [860, 200, 200, 40]},
+          {"id": 3, "type": "text", "text": "家庭群", "bbox": [860, 250, 200, 40]},
+          {"id": 4, "type": "text", "text": "同事群", "bbox": [860, 300, 200, 40]},
+          {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+        ]
+      },
+      "expected_action_type": "search",
+      "goal": {
+        "instruction": "在微信中，找到左侧聊天列表里的群『兴蓉项目群』，打开它。",
+        "target_context": {"app": "WeChat", "keyword": "兴蓉"},
+        "metadata": {"keyword": "兴蓉"},
+        "type": "target_visible_then_click"
+      },
+      "notes": "Target not visible but search box exists; planner should prefer search"
+    },
+    {
+      "id": "target_invisible_scroll",
+      "description": "Target not visible, no search box; planner should scroll",
+      "observation": {
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 2, "type": "text", "text": "文件传输助手", "bbox": [860, 200, 200, 40]},
+          {"id": 3, "type": "text", "text": "家庭群", "bbox": [860, 250, 200, 40]},
+          {"id": 4, "type": "text", "text": "同事群", "bbox": [860, 300, 200, 40]}
+        ]
+      },
+      "expected_action_type": "scroll",
+      "goal": {
+        "instruction": "在微信中，找到左侧聊天列表里的群『兴蓉项目群』，打开它。",
+        "target_context": {"app": "WeChat", "keyword": "兴蓉"},
+        "metadata": {"keyword": "兴蓉"},
+        "type": "target_visible_then_click"
+      },
+      "notes": "Target not visible, no search box; only scroll is viable"
+    },
+    {
+      "id": "context_mismatch_focus",
+      "description": "Active window is Chrome, not WeChat; planner should focus WeChat first",
+      "observation": {
+        "active_window": "Chrome",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "ChromeWindow", "bbox": [0, 0, 1920, 1080]},
+          {"id": 1, "type": "text", "text": "ChatGPT - OpenAI", "bbox": [100, 100, 400, 30]},
+          {"id": 2, "type": "text", "text": "New chat", "bbox": [100, 200, 200, 40]}
+        ]
+      },
+      "expected_action_type": "focus_window",
+      "goal": {
+        "instruction": "在微信中，找到左侧聊天列表里的群『兴蓉项目群』，打开它。",
+        "target_context": {"app": "WeChat", "keyword": "兴蓉"},
+        "metadata": {"keyword": "兴蓉"},
+        "type": "context_mismatch"
+      },
+      "notes": "Active window is Chrome; planner MUST focus WeChat before anything else"
+    },
+    {
+      "id": "invalid_candidate_refuse",
+      "description": "Only non-matching candidates visible; planner should NOT click any of them",
+      "observation": {
+        "active_window": "WeChat",
+        "scene_nodes": [
+          {"id": 0, "type": "group", "semantic": "MMUIRenderSubWindowHW", "bbox": [840, 100, 900, 700]},
+          {"id": 2, "type": "text", "text": "文件传输助手", "bbox": [860, 200, 200, 40]},
+          {"id": 3, "type": "text", "text": "家庭群", "bbox": [860, 250, 200, 40]},
+          {"id": 4, "type": "text", "text": "同事群", "bbox": [860, 300, 200, 40]},
+          {"id": 5, "type": "input", "semantic": "SearchBox", "bbox": [860, 150, 200, 30], "text": "搜索"}
+        ]
+      },
+      "expected_action_type": "scroll",
+      "goal": {
+        "instruction": "在微信中，找到左侧聊天列表里的群『兴蓉项目群』，打开它。",
+        "target_context": {"app": "WeChat", "keyword": "兴蓉"},
+        "metadata": {"keyword": "兴蓉"},
+        "type": "target_visible_then_click"
+      },
+      "notes": "No matching candidate; planner must NOT click non-matching items, should scroll or search"
+    }
+  ]
+}

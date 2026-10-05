@@ -1,0 +1,17 @@
+{
+  "trace_id": "trace_1787489205",
+  "created_at": 1787489205.9856935,
+  "task": {
+    "instruction": "找到名为「兴蓉」的群并打开",
+    "target_context": {
+      "app": "WeChat"
+    },
+    "metadata": {}
+  },
+  "metadata": {
+    "steps": 0,
+    "final_status": "FAIL",
+    "final_summary": "loop error: name 'get_active_window' is not defined"
+  },
+  "entries": []
+}

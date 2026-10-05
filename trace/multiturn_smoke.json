@@ -1,0 +1,80 @@
+{
+  "scenario": "chatgpt_multiturn",
+  "turns_requested": 3,
+  "turns_run": 3,
+  "limit_chars": 20,
+  "summary": {
+    "non_empty": 3,
+    "tagged": 3,
+    "under_limit": 3,
+    "stable": 3,
+    "non_empty_rate": 1.0,
+    "tagged_rate": 1.0,
+    "under_limit_rate": 1.0,
+    "stable_rate": 1.0
+  },
+  "why_counts": {
+    "1 node(s) below turn anchor y=802": 1,
+    "1 node(s) below turn anchor y=713": 1,
+    "1 node(s) below turn anchor y=638": 1
+  },
+  "results": [
+    {
+      "turn": 1,
+      "token": "R001",
+      "prompt": "R001 请用不超过20个字回答，并在句末附上 R001：太阳从哪边升起",
+      "text": "太阳从东方升起。R001",
+      "chars": 12,
+      "why": "1 node(s) below turn anchor y=802",
+      "stable": true,
+      "tagged": true,
+      "under_limit": true,
+      "duration_s": 14.4,
+      "nodes": 201,
+      "left": 846,
+      "right": 2177,
+      "floor": 1338,
+      "user_y": 802,
+      "reply_y": 877,
+      "pieces": 1
+    },
+    {
+      "turn": 2,
+      "token": "R002",
+      "prompt": "R002 请用不超过20个字回答，并在句末附上 R002：水的化学式是什么",
+      "text": "水的化学式是H₂O。R002",
+      "chars": 14,
+      "why": "1 node(s) below turn anchor y=713",
+      "stable": true,
+      "tagged": true,
+      "under_limit": true,
+      "duration_s": 12.0,
+      "nodes": 202,
+      "left": 846,
+      "right": 2177,
+      "floor": 1338,
+      "user_y": 713,
+      "reply_y": 788,
+      "pieces": 1
+    },
+    {
+      "turn": 3,
+      "token": "R003",
+      "prompt": "R003 请用不超过20个字回答，并在句末附上 R003：一年有几个月",
+      "text": "一年有12个月。R003",
+      "chars": 12,
+      "why": "1 node(s) below turn anchor y=638",
+      "stable": true,
+      "tagged": true,
+      "under_limit": true,
+      "duration_s": 10.7,
+      "nodes": 196,
+      "left": 846,
+      "right": 2177,
+      "floor": 1338,
+      "user_y": 638,
+      "reply_y": 713,
+      "pieces": 1
+    }
+  ]
+}
