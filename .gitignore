@@ -12,6 +12,9 @@ dist/
 # Pre-publish content drafts (release schedule + release notes) - not public
 publish/
 
+# Working docs (specs, plans, growth/SEO notes) - local only, not published
+docs/
+
 # Local LLM credentials - never commit
 .llm_env
 *.secret

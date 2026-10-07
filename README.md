@@ -46,8 +46,7 @@
 7. [安全机制](#7-安全机制)
 8. [实验与可观测性（Phase 3）](#8-实验与可观测性phase-3)
 9. [开发](#9-开发)
-10. [文档索引](#10-文档索引)
-11. [已知限制](#11-已知限制)
+10. [已知限制](#10-已知限制)
 
 ---
 
@@ -347,7 +346,6 @@ desktop-agent/
 │   ├── mcp_server.py       # 36 个 MCP 工具
 │   └── config.py           # DEFAULTS + AgentConfig
 ├── tests/                  # 59 文件 / 468 用例
-├── docs/                   # 规格与增长文档（见下）
 ├── experiments/            # A/B/C/D 真实 sweep 装置
 ├── scripts/  smoke/  phase3_demo/  trace/  traces/  models/
 ├── config.zen.yaml  config.proxy.yaml   # 代理接入样例
@@ -375,25 +373,7 @@ twine upload dist/*
 
 ---
 
-## 10. 文档索引
-
-| 文档 | 内容 |
-|---|---|
-| [MCP.md](MCP.md) | MCP server 接入与各工具说明 |
-| [CHANGELOG.md](CHANGELOG.md) | 版本变更（Keep a Changelog 格式） |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | 贡献流程、安全规则、如何加 smoke 场景 |
-| [SMOKE.md](SMOKE.md) | 冒烟测试场景与设计 |
-| [docs/tutorial-en.md](docs/tutorial-en.md) | 英文快速上手（~5 分钟跑通首个任务） |
-| [docs/agent-runtime-v2.md](docs/agent-runtime-v2.md) | Runtime v2 架构（Belief/Progress/Recovery） |
-| [docs/content-pack.md](docs/content-pack.md) | 内容/发布素材包 |
-| [docs/growth-plan-30d.md](docs/growth-plan-30d.md) | 30 天增长计划 |
-| [docs/py-publish.md](docs/py-publish.md) | PyPI 发布流程 |
-| [docs/seo-checklist.md](docs/seo-checklist.md) | SEO 检查清单 |
-| [docs/superpowers/](docs/superpowers/) | 能力/提示词素材 |
-
----
-
-## 11. 已知限制
+## 10. 已知限制
 
 - **PyPI 尚未发布**：`pip install mio-cua` 当前不可用，须从源码 `pip install -e .`；`CHANGELOG.md` 的 `Unreleased` 仍挂「Publish to PyPI」待办。
 - **仅 Windows**：感知依赖 `pywin32` / `pywinauto` / UIA，无 Linux/macOS 支持（路线图中有 vision-only 回退设想，未实现）。
