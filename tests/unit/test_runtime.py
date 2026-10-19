@@ -61,6 +61,30 @@ def test_observation_extracts_sidebar_candidates():
     assert robs.target_visible is True  # 兴蓉 in 兴蓉项目群
 
 
+def test_container_elements_are_not_candidates():
+    """A UIA container's text is its class name or the window title, never a
+    chat item. Seen live (2026-10-05): a WeChat window root reported '微信' and
+    a pane reported 'MMUIRenderSubWindowHW', both leaking into candidates."""
+    nodes = [
+        _Node(0, "group", semantic="Weixin", bbox=(840, 480, 880, 640)),
+    ]
+
+    class _El:
+        def __init__(self, role, text, bbox):
+            self.role, self.text, self.bbox = role, text, bbox
+
+    elements = [
+        _El("Window", "微信", (840, 480, 880, 640)),          # window root
+        _El("Pane", "MMUIRenderSubWindowHW", (848, 480, 860, 632)),  # frame pane
+        _El("ListItem", "兴蓉项目群", (900, 650, 200, 30)),      # a real chat item
+    ]
+    obs = FakeObs("微信", nodes, elements=elements)
+    robs = RuntimeObservation.from_obs(obs, {"app": "微信", "keyword": "兴蓉"})
+    assert "兴蓉项目群" in robs.candidates
+    assert "微信" not in robs.candidates
+    assert "MMUIRenderSubWindowHW" not in robs.candidates
+
+
 def test_candidates_are_in_visual_top_to_bottom_order():
     """Node order is not on-screen order; candidates must be sorted by y.
 

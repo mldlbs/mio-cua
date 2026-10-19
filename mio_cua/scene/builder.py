@@ -38,6 +38,17 @@ def _normalize_role(role):
     return (role or "").strip().lower()
 
 
+def is_container_role(role) -> bool:
+    """True for UIA control types that are containers/frames, not content items.
+
+    A container's "text" is its class name or window title (e.g. a WeChat pane
+    reporting "MMUIRenderSubWindowHW", or the window root reporting the app
+    name), so a container must never be taken for a clickable item -- the exact
+    "identity by string" trap, seen live leaking into the sidebar candidates.
+    """
+    return _normalize_role(role) in _CONTAINER_ROLES
+
+
 def _node_type(role, text):
     r = _normalize_role(role)
     if r in _CLICKABLE_ROLES:

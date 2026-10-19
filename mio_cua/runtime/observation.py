@@ -97,6 +97,7 @@ class RuntimeObservation:
 
         # Window bbox (for window-relative sidebar detection).
         from mio_cua.automation.windows import frame_bbox
+        from mio_cua.scene.builder import is_container_role
         window_bbox = frame_bbox(nodes)
 
         sidebar_right = None
@@ -136,6 +137,13 @@ class RuntimeObservation:
             text = (getattr(e, "text", "") or "").strip()
             if text:
                 visible_texts.append(text)
+            # A container/frame element carries its class name or the window
+            # title as "text" (a WeChat pane reports "MMUIRenderSubWindowHW",
+            # the window root reports the app name) -- never a chat item. The
+            # scene-node loop already skips containers; this loop did not, so
+            # those strings leaked into the candidates (seen live 2026-10-05).
+            if is_container_role(getattr(e, "role", "")):
+                continue
             if text and in_sidebar(bbox) and valid(bbox):
                 items.append((text, bbox))
 
