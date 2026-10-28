@@ -19,7 +19,6 @@ from mio_cua.automation.input_controller import InputController
 from mio_cua.models.action import Action
 from mio_cua.perception.perception import Perception
 
-
 @dataclass
 class InitialState:
     app: str
@@ -29,6 +28,7 @@ class InitialState:
     candidates: List[str]
     conversation: List[str]
     screenshot: Optional[str]
+    conversation_title: str = ""
     ok: bool = True
     problems: List[str] = field(default_factory=list)
 
@@ -36,6 +36,7 @@ class InitialState:
         """Stable hash of the parts that must not change between runs."""
         payload = "|".join([
             self.app,
+            self.conversation_title,
             str(self.rect),
             ",".join(self.candidates),
             "//".join(self.conversation[-3:]),
@@ -46,6 +47,7 @@ class InitialState:
         return {"app": self.app, "window": self.window, "rect": self.rect,
                 "node_count": self.node_count, "candidates": self.candidates,
                 "conversation": self.conversation[-5:],
+                "conversation_title": self.conversation_title,
                 "screenshot": self.screenshot, "ok": self.ok,
                 "problems": self.problems, "signature": self.signature()}
 
@@ -106,6 +108,63 @@ def _has_menu(obs) -> bool:
         if role in ("menu", "contextmenu"):
             return True
     return False
+
+
+def _ocr_region_text(box, scale: int = 2) -> str:
+    """OCR one screen rectangle, upscaled: small header text is often missed
+    when the whole window is recognised at once."""
+    try:
+        import numpy as np
+        from PIL import Image
+        from mio_cua.vision import ocr as ocr_module
+        from mio_cua.vision.screen import capture_rect
+
+        img = capture_rect(box)
+        if scale != 1:
+            img = img.resize((img.width * scale, img.height * scale), Image.LANCZOS)
+        els = ocr_module.get_elements(np.array(img))
+    except Exception:
+        return ""
+    parts = [(e.bbox[1], e.bbox[0], (e.text or "").strip()) for e in els
+             if (e.text or "").strip()]
+    parts.sort()
+    return " ".join(t for _y, _x, t in parts)
+
+
+def title_matches(observed: str, expected: str) -> bool:
+    """Whitespace-insensitive match; OCR may split a name into pieces."""
+    o = "".join((observed or "").split())
+    e = "".join((expected or "").split())
+    return bool(o) and bool(e) and (o == e or e in o or o in e)
+
+
+def conversation_title(obs) -> str:
+    """The open conversation's name, from the header band of the right pane.
+
+    Nodes first (cheap), then a cropped, upscaled OCR of just the header band --
+    the whole-window pass frequently drops this small text. Returns "" when it
+    cannot be read; callers must treat "" as "unknown" and abort the round.
+    """
+    rect = _window_rect(obs)
+    if not rect:
+        return ""
+    split = _pane_split(rect)
+    band_top = rect[1]
+    band_bottom = rect[1] + max(64, int(rect[3] * 0.10))
+    rows = []
+    for _t, text, bbox in _nodes(obs):
+        text = (text or "").strip()
+        if not text:
+            continue
+        if bbox[0] >= split and band_top <= bbox[1] <= band_bottom:
+            rows.append((bbox[1], bbox[0], text))
+    rows.sort()
+    if rows:
+        return rows[0][2]
+
+    crop = (split, band_top, max(0, rect[0] + rect[2] - split),
+            max(20, band_bottom - band_top))
+    return _ocr_region_text(crop).strip()
 
 
 def _focus_exact(title: str) -> bool:
@@ -213,6 +272,7 @@ def reset(perception: Perception, pc: InputController, app: str = "微信",
         node_count=len(_nodes(obs)),
         candidates=sidebar_candidates(obs),
         conversation=conversation_texts(obs),
+        conversation_title=conversation_title(obs),
         screenshot=shot,
         ok=not problems,
         problems=problems,

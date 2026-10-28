@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from experiments.ab import scenarios as scenario_mod  # noqa: E402
 from experiments.ab.events import stats_for  # noqa: E402
-from experiments.ab.reset import conversation_texts, reset, _has_menu  # noqa: E402
+from experiments.ab.reset import conversation_texts, reset, _has_menu, title_matches  # noqa: E402
 
 RUNS_DIR = Path(__file__).resolve().parent / "runs"
 
@@ -122,6 +122,13 @@ def run_one(arm: str, scenario, args, out_dir: Path) -> dict:
               "reset_ok": state.ok, "problems": state.problems}
     if not state.ok:
         record["discarded"] = "reset failed"
+        return record
+    # Fail closed on the wrong conversation: sending without confirming the open
+    # chat is exactly how a test message reaches a real contact.
+    if not title_matches(state.conversation_title, args.target):
+        record["discarded"] = (
+            f"target conversation not open: header={state.conversation_title!r} "
+            f"expected={args.target!r}")
         return record
 
     had_menu = False
@@ -219,7 +226,8 @@ def main(argv=None) -> int:
             sigs.append(st.signature())
             oks.append(st.ok)
             print(f"init {i + 1}: ok={st.ok} sig={st.signature()} "
-                  f"nodes={st.node_count} problems={st.problems}")
+                  f"nodes={st.node_count} chat={st.conversation_title!r} "
+                  f"problems={st.problems}")
         consistent = len(set(sigs)) == 1 and all(oks)
         print("consistent:", consistent)
         return 0 if consistent else 1

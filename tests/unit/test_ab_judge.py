@@ -122,3 +122,11 @@ def test_t4_failure_when_message_was_already_there():
 def test_t4_failure_when_wrong_text_submitted():
     v = judge_two_step(["旧消息"], ["旧消息", "别的内容"], "提交内容")
     assert v.ok is False
+
+def test_title_matches_tolerates_ocr_spacing_and_split_names():
+    from experiments.ab.reset import title_matches
+    assert title_matches("文件传输助手", "文件传输助手") is True
+    assert title_matches("文件 传输助手", "文件传输助手") is True
+    assert title_matches("文件传输助", "文件传输助手") is True
+    assert title_matches("微信ClawBot AI", "文件传输助手") is False
+    assert title_matches("", "文件传输助手") is False      # unknown must fail closed
