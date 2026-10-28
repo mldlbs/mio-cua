@@ -357,6 +357,9 @@ def test_second_instance_starts_when_not_strict(monkeypatch):
     monkeypatch.delenv("MIO_CUA_STRICT_SINGLE", raising=False)
     monkeypatch.setattr(mcp_server, "_INSTANCE_OK", None)
     monkeypatch.setattr(mcp_server, "_INSTANCE_HANDLE", None)
+    # never touch the real lock file: a test pid in instance.json pollutes the
+    # diagnostics of the live server (seen 2026-10-28)
+    monkeypatch.setattr(mcp_server, "_write_instance_lock", lambda: None)
 
     assert mcp_server._acquire_single_instance() is True
     assert mcp_server._INSTANCE_OK is True
@@ -371,6 +374,7 @@ def test_strict_single_still_refuses(monkeypatch):
     monkeypatch.setenv("MIO_CUA_STRICT_SINGLE", "1")
     monkeypatch.setattr(mcp_server, "_INSTANCE_OK", None)
     monkeypatch.setattr(mcp_server, "_INSTANCE_HANDLE", None)
+    monkeypatch.setattr(mcp_server, "_write_instance_lock", lambda: None)
 
     assert mcp_server._acquire_single_instance() is False
     assert mcp_server._INSTANCE_OK is False
