@@ -2,6 +2,7 @@
 from dataclasses import dataclass, field
 from mio_cua.automation.windows import matches_target
 from mio_cua.models.action import Action, Plan
+from mio_cua.models.task import task_keyword
 from mio_cua.providers.base import Provider
 
 
@@ -206,7 +207,7 @@ class Planner:
         General navigation state: target_visible, context_valid, exploration_available.
         Returns list of hint strings. Empty if no keyword or target is visible.
         """
-        keyword = (getattr(task, "metadata", None) or {}).get("keyword", "")
+        keyword = task_keyword(task)
         if not keyword:
             return []
 

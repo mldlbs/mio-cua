@@ -26,7 +26,7 @@ from mio_cua.agent.expected import ExpectedVerifier
 from mio_cua.agent.loop import AgentLoop
 from mio_cua.events import ObservationCreated, ActionStarted, ActionFinished, TaskFinished
 from mio_cua.models.action_result import ActionResult
-from mio_cua.models.task import Task, TaskResult
+from mio_cua.models.task import Task, TaskResult, task_keyword
 from mio_cua.runtime.belief import BeliefState
 from mio_cua.runtime.observation import RuntimeObservation
 from mio_cua.runtime.progress import ProgressEvaluator
@@ -51,7 +51,13 @@ class AgentLoopV2(AgentLoop):
         finished_summary = ""
         terminal = "RUNNING"
 
-        belief = BeliefState(getattr(task, "target_context", None) or {})
+        target_ctx = dict(getattr(task, "target_context", None) or {})
+        if not target_ctx.get("keyword"):
+            # v2 reads the keyword from target_context. A caller that stored it
+            # in metadata (the v1 convention) would otherwise lose the
+            # target-visibility guard entirely, so normalise once here.
+            target_ctx["keyword"] = task_keyword(task)
+        belief = BeliefState(target_ctx)
         progress = ProgressEvaluator()
         recovery = RecoveryManager(
             registry=self.registry,

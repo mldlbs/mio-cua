@@ -9,7 +9,7 @@ from mio_cua.automation.input_controller import InputController
 from mio_cua.automation.windows import matches_target
 from mio_cua.events import ObservationCreated, ActionStarted, ActionFinished, TaskFinished
 from mio_cua.models.action_result import ActionResult
-from mio_cua.models.task import Task, TaskResult
+from mio_cua.models.task import Task, TaskResult, task_keyword
 from mio_cua.perception.quality import assess_quality
 from mio_cua.scene.memory import SceneMemory
 
@@ -100,7 +100,7 @@ class AgentLoop:
         if action.type not in ("click", "select_element", "type"):
             return True
         # Get target keyword from task
-        keyword = (getattr(task, "metadata", None) or {}).get("keyword", "")
+        keyword = task_keyword(task)
         if not keyword:
             return True
         # Check if target keyword is in any visible element
@@ -503,7 +503,7 @@ class AgentLoop:
                             continue
                     # Target Discovery Guard: warn about wrong clicks when target not visible
                     if action.type == "click":
-                        keyword = (getattr(task, "metadata", None) or {}).get("keyword", "")
+                        keyword = task_keyword(task)
                         if keyword:
                             clicked_id = action.params.get("id")
                             clicked_node = None
@@ -595,7 +595,7 @@ class AgentLoop:
                     if action.type == "scroll":
                         try:
                             post_obs = self.perception.observe()
-                            keyword = (getattr(task, "metadata", None) or {}).get("keyword", "")
+                            keyword = task_keyword(task)
                             if keyword:
                                 prev_candidates = self._extract_sidebar_candidates(obs)
                                 new_candidates = self._extract_sidebar_candidates(post_obs)
