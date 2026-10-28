@@ -227,6 +227,11 @@ def _acquire_single_instance() -> bool:
                 pass
             _INSTANCE_HANDLE = None
             _INSTANCE_OK = True
+            # With several servers allowed, the file's useful meaning is "the
+            # most recently started instance" (the mutex holder is no longer
+            # exclusive). Record ourselves so health/diagnostics are not stuck
+            # on an old pid.
+            _write_instance_lock()
             return True
 
         _INSTANCE_HANDLE = handle  # keep alive for process lifetime
