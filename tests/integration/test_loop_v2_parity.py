@@ -10,6 +10,7 @@ cannot drop it again without a red test.
 
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
@@ -93,3 +94,64 @@ def test_v2_dismisses_a_context_menu_before_planning():
     esc_calls = [c for c in registry.calls if c[0] == "key" and c[1].get("keys") == "esc"]
     assert esc_calls, f"context menu was not dismissed; calls={registry.calls}"
     assert result.status == "SUCCESS"
+
+class LightPerception:
+    """Perception with a light path, so in-batch verification is possible."""
+
+    def __init__(self):
+        self.count = 0
+
+    @staticmethod
+    def _scene():
+        # A window frame is required: v2 blocks raw x/y clicks that fall outside
+        # it (the click-coordinate guard), and frame_bbox picks role="window".
+        return SceneGraph(nodes=[
+            SceneNode(id=0, type="group", bbox=(0, 0, 800, 600), role="window"),
+        ])
+
+    def observe(self):
+        self.count += 1
+        return Observation(screenshot_path=None, timestamp=float(self.count),
+                           active_window="Calc", dpi_scale=1.0, elements=[],
+                           scene=self._scene())
+
+    def observe_light(self):
+        self.count += 1
+        return Observation(screenshot_path=None, timestamp=float(self.count),
+                           active_window="Calc", dpi_scale=1.0, elements=[],
+                           scene=self._scene())
+
+
+def _run_batch_case(monkeypatch, batch_verify: bool):
+    """One click followed by success(), with a light path available."""
+    import mio_cua.runtime.loop as v2
+
+    calls = {"verify": 0}
+
+    def fake_verify(*args, **kwargs):
+        calls["verify"] += 1
+        return True, "ok"
+
+    monkeypatch.setattr(v2, "verify_action", fake_verify)
+
+    config = SimpleNamespace(batch_limit=3, batch_verify=batch_verify,
+                             enable_verification=True, enable_recovery=True)
+    registry = RecordingRegistry()
+    planner = ScriptedPlanner([Plan(actions=[
+        Action("a1", "click", {"x": 10, "y": 10}),
+        Action("a2", "success", {"result": "done"}),
+    ])])
+    loop = AgentLoopV2(perception=LightPerception(), planner=planner, registry=registry,
+                       safety=FakeSafety(), events=EventBus(), config=config)
+    loop.run(Task(instruction="click then finish"))
+    return calls["verify"]
+
+
+def test_v2_runs_in_batch_verification_when_enabled(monkeypatch):
+    assert _run_batch_case(monkeypatch, batch_verify=True) >= 1
+
+
+def test_v2_skips_in_batch_verification_when_disabled(monkeypatch):
+    """batch_verify=False means 'verify on the next full observation' -- the
+    click must NOT go through the light verification path."""
+    assert _run_batch_case(monkeypatch, batch_verify=False) == 0

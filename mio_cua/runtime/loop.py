@@ -219,6 +219,9 @@ class AgentLoopV2(AgentLoop):
 
                 ctx = self._make_ctx(obs)
                 config_batch_limit = getattr(self.config, "batch_limit", 3) if self.config else 3
+                # v1 honoured this switch; v2 silently ignored it, so a caller
+                # that turned batch verification off still paid for it.
+                config_batch_verify = getattr(self.config, "batch_verify", True) if self.config else True
                 batch_executed = 0
                 light_base = obs
 
@@ -427,7 +430,8 @@ class AgentLoopV2(AgentLoop):
                         k in expected for k in ("state_toggle", "window_title"))
 
                     if getattr(self.config, "enable_verification", True) and action.type == "click" and (
-                        _needs_full or not has_successor or light_observe is None
+                        _needs_full or not has_successor or not config_batch_verify
+                        or light_observe is None
                     ):
                         if _needs_full or pending is not None:
                             self._pending_verify = pending
