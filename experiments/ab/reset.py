@@ -65,13 +65,35 @@ def _window_rect(obs) -> Optional[tuple]:
     return frame_bbox(nodes)
 
 
-def _pane_split(rect) -> int:
-    return rect[0] + int(rect[2] * 0.5) if rect else 0
+def _pane_split(obs, rect=None) -> int:
+    """X where the conversation pane starts (right of the chat list).
+
+    A fixed 50% midpoint is wrong for WeChat: the chat list plus icon rail take
+    ~22%, so the midpoint falls inside the conversation and the title/header is
+    excluded. The search box lives in the chat list, so its right edge is the
+    evidence-based boundary; fall back to a quarter of the window.
+    """
+    if rect is None:
+        rect = _window_rect(obs)
+    if not rect:
+        return 0
+    band = rect[1] + max(120, int(rect[3] * 0.15))
+    boxes = []
+    for _t, text, bbox in _nodes(obs):
+        if "搜索" not in (text or ""):
+            continue
+        if rect[1] <= bbox[1] <= band:
+            boxes.append(bbox)
+    if boxes:
+        boxes.sort(key=lambda b: (b[1], b[0]))
+        b = boxes[0]
+        return b[0] + b[2] + 24
+    return rect[0] + int(rect[2] * 0.25)
 
 
 def sidebar_candidates(obs) -> List[str]:
     rect = _window_rect(obs)
-    split = _pane_split(rect)
+    split = _pane_split(obs, rect)
     out = []
     for _t, text, bbox in _nodes(obs):
         text = (text or "").strip()
@@ -93,7 +115,7 @@ def sidebar_candidates(obs) -> List[str]:
 def conversation_texts(obs) -> List[str]:
     """Message-pane lines, top-to-bottom (right of the window's mid-line)."""
     rect = _window_rect(obs)
-    split = _pane_split(rect)
+    split = _pane_split(obs, rect)
     rows = [(bbox[1], bbox[0], (text or "").strip()) for _t, text, bbox in _nodes(obs)
             if (text or "").strip() and bbox[0] >= split]
     rows.sort()
@@ -148,18 +170,20 @@ def conversation_title(obs) -> str:
     rect = _window_rect(obs)
     if not rect:
         return ""
-    split = _pane_split(rect)
+    split = _pane_split(obs, rect)
     band_top = rect[1]
     band_bottom = rect[1] + max(64, int(rect[3] * 0.10))
     rows = []
     for _t, text, bbox in _nodes(obs):
         text = (text or "").strip()
-        if not text:
+        if not text or len(text) < 2:      # window icons are single glyphs
             continue
         if bbox[0] >= split and band_top <= bbox[1] <= band_bottom:
             rows.append((bbox[1], bbox[0], text))
-    rows.sort()
     if rows:
+        # The title is the longest text in the header band; sorting by y would
+        # pick a window control icon sitting slightly higher.
+        rows.sort(key=lambda r: (-len(r[2]), r[0], r[1]))
         return rows[0][2]
 
     crop = (split, band_top, max(0, rect[0] + rect[2] - split),
@@ -188,20 +212,28 @@ def _focus_exact(title: str) -> bool:
 
     win32gui.EnumWindows(cb, None)
     for hwnd in hits:
-        try:
-            win32gui.ShowWindow(hwnd, 9)      # SW_RESTORE
-            time.sleep(0.4)
-        except Exception:
-            pass
-        if not _focus_latest([hwnd]):
-            continue
-        for _ in range(3):
+        for _attempt in range(3):
+            try:
+                win32gui.ShowWindow(hwnd, 9)      # SW_RESTORE
+                win32gui.BringWindowToTop(hwnd)
+                time.sleep(0.3)
+            except Exception:
+                pass
+            try:
+                _focus_latest([hwnd])
+            except Exception:
+                pass
+            try:
+                win32gui.SetForegroundWindow(hwnd)
+            except Exception:
+                pass
+            for _ in range(3):
+                if win32gui.GetForegroundWindow() == hwnd:
+                    return True
+                ctypes.windll.user32.SwitchToThisWindow(hwnd, True)
+                time.sleep(0.15)
             if win32gui.GetForegroundWindow() == hwnd:
                 return True
-            ctypes.windll.user32.SwitchToThisWindow(hwnd, True)
-            time.sleep(0.15)
-        if win32gui.GetForegroundWindow() == hwnd:
-            return True
     return False
 
 
@@ -222,7 +254,16 @@ def reset(perception: Perception, pc: InputController, app: str = "微信",
     time.sleep(0.8)
     obs = perception.observe()
     if (getattr(obs, "active_window", "") or "").strip() != app:
-        problems.append(f"foreground is {getattr(obs, 'active_window', '')!r}")
+        # Fail closed BEFORE any input: pressing Esc / ctrl+end into the wrong
+        # window is a real side effect (seen on OpenCode during selfcheck).
+        return InitialState(
+            app=app, window=getattr(obs, "active_window", "") or "", rect=_window_rect(obs),
+            node_count=len(_nodes(obs)), candidates=[], conversation=[],
+            screenshot=getattr(obs, "screenshot_path", None),
+            conversation_title="", ok=False,
+            problems=[f"foreground is {getattr(obs, 'active_window', '')!r}, "
+                      f"expected {app!r}; no input sent"],
+        )
     rect = _window_rect(obs)
 
     # 1) dismiss popups/menus (Esc twice: menu, then any overlay)
