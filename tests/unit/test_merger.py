@@ -61,13 +61,15 @@ def test_merge_keeps_ocr_when_uia_text_empty():
     assert any(e.source == "ocr" and e.text == "123" for e in merged)
 
 
-def test_merge_keeps_uia_for_non_ascii_ocr_overlap():
-    # OCR text is non-ASCII (e.g. a glyph) -> keep the UIA label.
+def test_merge_keeps_uia_label_and_a_contained_glyph():
+    # Contract change (2026-10-28): a big UIA box containing a small OCR glyph
+    # is a container/label relationship -- the label must survive, and the glyph
+    # is kept rather than discarded, because containers may not swallow text.
     uia = [_txtel(0, (0, 0, 100, 50), "uia", "Backspace")]
     ocr = [_txtel(1, (5, 5, 30, 20), "ocr", "⌫")]
     merged = merge(ocr, uia)
-    assert len(merged) == 1
-    assert merged[0].source == "uia"
+    assert "Backspace" in [e.text for e in merged]
+    assert "⌫" in [e.text for e in merged]
 
 
 def test_merge_ids_stable_when_uia_enumeration_order_changes():
