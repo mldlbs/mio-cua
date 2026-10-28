@@ -323,3 +323,54 @@ def test_single_instance_allow_multi_override(monkeypatch):
     assert mcp_server._INSTANCE_OK is True
     # never touched the real mutex
     assert mcp_server._INSTANCE_HANDLE is None
+
+
+def _fake_already_running(monkeypatch):
+    """Make the kernel report 'mutex exists' without touching the real one."""
+    import ctypes
+
+    class _Kernel32:
+        def __init__(self):
+            # plain callables (not bound methods): the code sets .restype/.argtypes
+            self.CreateMutexW = lambda *a: 1234
+            self.CloseHandle = lambda *a: 1
+
+    class _WinDLL:
+        def __init__(self, *a, **k):
+            pass
+
+        def __call__(self, *a, **k):
+            return _Kernel32()
+
+    monkeypatch.setattr(ctypes, "WinDLL", _WinDLL())
+    monkeypatch.setattr(ctypes, "get_last_error", lambda: 183)  # ERROR_ALREADY_EXISTS
+
+
+def test_second_instance_starts_when_not_strict(monkeypatch):
+    """Multiple MCP servers must coexist: clients spawn one per session. They
+    no longer fight over the cursor because every action takes the desktop-input
+    mutex, so a duplicate instance is a warning, not a refusal."""
+    from mio_cua import mcp_server
+
+    _fake_already_running(monkeypatch)
+    monkeypatch.delenv("MIO_CUA_ALLOW_MULTI", raising=False)
+    monkeypatch.delenv("MIO_CUA_STRICT_SINGLE", raising=False)
+    monkeypatch.setattr(mcp_server, "_INSTANCE_OK", None)
+    monkeypatch.setattr(mcp_server, "_INSTANCE_HANDLE", None)
+
+    assert mcp_server._acquire_single_instance() is True
+    assert mcp_server._INSTANCE_OK is True
+
+
+def test_strict_single_still_refuses(monkeypatch):
+    """The old behaviour stays available as an explicit opt-in."""
+    from mio_cua import mcp_server
+
+    _fake_already_running(monkeypatch)
+    monkeypatch.delenv("MIO_CUA_ALLOW_MULTI", raising=False)
+    monkeypatch.setenv("MIO_CUA_STRICT_SINGLE", "1")
+    monkeypatch.setattr(mcp_server, "_INSTANCE_OK", None)
+    monkeypatch.setattr(mcp_server, "_INSTANCE_HANDLE", None)
+
+    assert mcp_server._acquire_single_instance() is False
+    assert mcp_server._INSTANCE_OK is False

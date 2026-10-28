@@ -66,5 +66,16 @@ class InputController:
         raise RuntimeError(f"element_id {element_id!r} not found in current observation")
 
     def execute(self, action: Action) -> RawResult:
-        self.resolve(action)
-        return self.backend.execute(action)
+        # Resolve and act under one cross-process lock: grounding must be
+        # computed in the same critical section as the click/type, otherwise
+        # another mio-cua process can move the target between the two.
+        from mio_cua.automation.desktop_lock import desktop_action_lock
+
+        with desktop_action_lock() as acquired:
+            if not acquired:
+                raise RuntimeError(
+                    "desktop input is busy: another mio-cua process is acting "
+                    "on this machine (waited for the input mutex)"
+                )
+            self.resolve(action)
+            return self.backend.execute(action)

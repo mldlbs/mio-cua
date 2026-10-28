@@ -198,19 +198,36 @@ def _acquire_single_instance() -> bool:
 
         if err == ERROR_ALREADY_EXISTS:
             holder = _read_instance_lock()
-            logger.error(
-                "duplicate mio-cua MCP instance detected: another server is "
-                "already running (pid=%s, started_at=%s). Refusing to start — "
-                "two servers would fight over the cursor. Set "
-                "MIO_CUA_ALLOW_MULTI=1 to override.",
+            if os.environ.get("MIO_CUA_STRICT_SINGLE") == "1":
+                logger.error(
+                    "duplicate mio-cua MCP instance detected (pid=%s) and "
+                    "MIO_CUA_STRICT_SINGLE=1: refusing to start.",
+                    holder.get("pid", "unknown"),
+                )
+                try:
+                    kernel32.CloseHandle(ctypes.c_void_p(handle))
+                except Exception:
+                    pass
+                _INSTANCE_OK = False
+                return False
+            # Several servers are fine now: every ACTION takes the desktop-input
+            # mutex, so concurrent instances cannot fight over the cursor. The
+            # old hard refusal made any second client (each session spawns its
+            # own server) fail to start.
+            logger.warning(
+                "another mio-cua MCP instance is already running (pid=%s, "
+                "started_at=%s); continuing — input actions are serialized "
+                "through the desktop-input mutex. Set MIO_CUA_STRICT_SINGLE=1 "
+                "to restore refuse-to-start.",
                 holder.get("pid", "unknown"), holder.get("started_at", "unknown"),
             )
             try:
                 kernel32.CloseHandle(ctypes.c_void_p(handle))
             except Exception:
                 pass
-            _INSTANCE_OK = False
-            return False
+            _INSTANCE_HANDLE = None
+            _INSTANCE_OK = True
+            return True
 
         _INSTANCE_HANDLE = handle  # keep alive for process lifetime
         _write_instance_lock()
@@ -847,8 +864,9 @@ async def mio_health() -> str:
         size = 0
     lines.append(f"- log: {_LOG_FILE} ({size} bytes)")
     lines.append(
-        f"- single-instance: held={_INSTANCE_OK} "
-        f"allow_multi={os.environ.get('MIO_CUA_ALLOW_MULTI', '0')}"
+        f"- single-instance: advisory (held={_INSTANCE_OK}, "
+        f"strict={os.environ.get('MIO_CUA_STRICT_SINGLE', '0')}) — "
+        f"input actions are serialized by the desktop-input mutex"
     )
     lines.append("layers:")
     lines.append(f"  - uia:        {_uia_status()}")
