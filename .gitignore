@@ -5,6 +5,10 @@ models/
 __pycache__/
 *.pyc
 *.egg-info/
+
+# Project-local virtualenvs (never commit; big and machine-specific)
+.venv/
+.venv*/
 .pytest_cache/
 
 dist/

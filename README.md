@@ -354,12 +354,34 @@ desktop-agent/
 └── dist/                   # 已构建 mio_cua-0.3.0 wheel + sdist
 ```
 
+### 环境
+
+需要 **Python 3.10–3.12**（上限 `<3.13`：OCR 依赖 `rapidocr_onnxruntime` 最新版仍只声明 `>=3.6,<3.13`）。请使用**项目内** `.venv`，不要把解释器指向项目外的目录。
+
+```bash
+python3.12 -m venv .venv          # 或: uv venv .venv --python 3.12
+.\.venv\Scripts\python.exe -m pip install -e ".[vision,gpu,test]"
+```
+
+**DirectML 冲突（必读）**：`rapidocr_onnxruntime` 会连带装上平包的 `onnxruntime`，它与 `onnxruntime-directml` 提供同名模块并**遮蔽 GPU 后端**（`DmlExecutionProvider` 消失）。装完后补两步：
+
+```bash
+.\.venv\Scripts\python.exe -m pip uninstall -y onnxruntime
+.\.venv\Scripts\python.exe -m pip install --force-reinstall onnxruntime-directml
+.\.venv\Scripts\python.exe -c "import onnxruntime as o; print(o.get_available_providers())"
+```
+
+期望输出 `['DmlExecutionProvider', 'CPUExecutionProvider']`。
+
+**MCP 依赖**：`mcp` 必须保持 `<2`——2.x 把 `mcp.server.fastmcp` 改名为 `MCPServer`，本项目的 MCP server 会在 import 阶段直接失败。
+
 ### 测试
 
 ```bash
-pip install pytest
-pytest tests/ -q
+.\.venv\Scripts\python.exe -m pytest tests -q
 ```
+
+基线：**622 passed / 2 skipped / 1 failed**。唯一失败项是 `test_mcp_clipboard_set_get_roundtrip`——`OpenClipboard` 返回 Windows 错误 5（剪贴板被远程会话或其他进程占用），属于环境干扰，不是代码回归。
 
 测试覆盖感知、规划、批处理、场景 Diff、输入控制、Grounding、Recovery、Phase 3 录制/回放/归因/基准等，共 **468** 个用例。确定性测试（simulation / record 集成）无需桌面或 LLM 即可运行。
 
