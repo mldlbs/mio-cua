@@ -174,8 +174,30 @@ def _click(pc, bbox):
 
 
 def open_chat(pc: InputController, perception: Perception, app: str = "微信",
-              target: str = "文件传输助手", settle_s: float = 1.5) -> OpenResult:
-    """Search for ``target`` and open it, or fail without side effects."""
+              target: str = "文件传输助手", settle_s: float = 2.0,
+              attempts: int = 2) -> OpenResult:
+    """Search for ``target`` and open it, or fail without side effects.
+
+    ``attempts`` retries the whole search once: clicking a row in WeChat's
+    search overlay can race the overlay closing and hit the chat list
+    underneath. The retry does NOT loosen the gate -- the header is re-verified
+    every time, and a mismatch is still a failure.
+    """
+    last: Optional[OpenResult] = None
+    for attempt in range(1, max(1, attempts) + 1):
+        res = _open_once(pc, perception, app, target, settle_s)
+        res.evidence["attempt"] = attempt
+        if res.ok:
+            return res
+        last = res
+        # a wrong title may mean the overlay closed mid-click; retry once
+        if "conversation title" not in (res.why or ""):
+            return res
+    return last or OpenResult(False, why="open failed")
+
+
+def _open_once(pc: InputController, perception: Perception, app: str,
+               target: str, settle_s: float) -> OpenResult:
     from experiments.ab.reset import (_focus_exact, _pane_split, _window_rect,
                                       conversation_title)
 

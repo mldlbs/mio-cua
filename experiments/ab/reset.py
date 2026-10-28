@@ -113,11 +113,26 @@ def sidebar_candidates(obs) -> List[str]:
 
 
 def conversation_texts(obs) -> List[str]:
-    """Message-pane lines, top-to-bottom (right of the window's mid-line)."""
+    """Message-pane lines, top-to-bottom (right of the chat list, above the composer).
+
+    The composer band and its controls ("发送", glyph-only buttons) are excluded:
+    counting them made the "last message" a button label instead of the message.
+    """
     rect = _window_rect(obs)
     split = _pane_split(obs, rect)
-    rows = [(bbox[1], bbox[0], (text or "").strip()) for _t, text, bbox in _nodes(obs)
-            if (text or "").strip() and bbox[0] >= split]
+    composer = _composer_bbox(obs)
+    limit = composer[1] if composer else None
+    control = {"发送", "?", "？", ">", ">", "+", "×"}
+    rows = []
+    for _t, text, bbox in _nodes(obs):
+        text = (text or "").strip()
+        if not text or bbox[0] < split:
+            continue
+        if limit is not None and bbox[1] >= limit - 4:
+            continue
+        if text in control or len(text) < 2:
+            continue
+        rows.append((bbox[1], bbox[0], text))
     rows.sort()
     return [text for _y, _x, text in rows]
 
