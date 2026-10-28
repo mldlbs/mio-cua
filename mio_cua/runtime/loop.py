@@ -130,6 +130,30 @@ class AgentLoopV2(AgentLoop):
                         })
                         break
 
+                # --- Obstruction recovery (deterministic, not a blind retry) ---
+                # A stray context menu swallows every click, so it is dismissed
+                # with Esc before planning. v1 had this; v2 lost it in the
+                # rewrite, which is why the audit flagged it as a regression.
+                obstruction = self._detect_obstruction(obs, task)
+                if obstruction == "context_menu":
+                    logger.info("obstruction: context menu detected, dismissing with Esc")
+                    self.emit("recovery_started", steps, {
+                        "recovery": {"reason": "obstruction",
+                                     "strategy": "dismiss_esc",
+                                     "previous_action": "observe"},
+                    })
+                    try:
+                        self.registry.call("key", {"keys": "esc"}, self._make_ctx(obs))
+                    except Exception:
+                        pass
+                    time.sleep(0.3)
+                    if self._trajectory:
+                        self._trajectory[-1]["recovery"] = "context_menu:dismissed"
+                    self.emit("recovery_completed", steps, {
+                        "recovery": {"reason": "obstruction", "success": True},
+                    })
+                    continue
+
                 diff = compute_diff(prev, obs)
                 if prev is not None and not diff.changes:
                     no_change += 1
