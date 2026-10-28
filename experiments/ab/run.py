@@ -196,6 +196,10 @@ def main(argv=None) -> int:
     ap.add_argument("--message", default="ab-test-message")
     ap.add_argument("--selfcheck", type=int, default=0,
                     help="reset N times and compare initial-state signatures")
+    ap.add_argument("--open-check", type=int, default=0,
+                    help="open the target chat N times (search + identity only, no messages)")
+    ap.add_argument("--expect", default="ok", choices=("ok", "refuse"),
+                    help="with --open-check: every attempt must succeed, or every attempt must be refused")
     ap.add_argument("--allow-draft-clear", action="store_true",
                     help="permit wiping an existing composer draft (off by default)")
     ap.add_argument("--trial", action="store_true", help="3 runs/arm/task")
@@ -231,6 +235,23 @@ def main(argv=None) -> int:
         consistent = len(set(sigs)) == 1 and all(oks)
         print("consistent:", consistent)
         return 0 if consistent else 1
+
+    if args.open_check:
+        from experiments.ab.open_chat import open_chat
+        from mio_cua.automation.input_controller import InputController
+        from mio_cua.perception.perception import Perception
+        pc, perception = InputController(), Perception()
+        passes = 0
+        for i in range(args.open_check):
+            r = open_chat(pc, perception, app=args.app, target=args.target)
+            wanted = r.ok if args.expect == "ok" else (not r.ok)
+            passes += 1 if wanted else 0
+            print(f"open {i + 1}: ok={r.ok} title={r.title!r} why={r.why} "
+                  f"rows={(r.evidence or {}).get('rows')} "
+                  f"reason={(r.evidence or {}).get('match_reason')} "
+                  f"picked={(r.evidence or {}).get('picked')}")
+        print(f"open-check: {passes}/{args.open_check} as expected (expect={args.expect})")
+        return 0 if passes == args.open_check else 1
 
     runs = args.runs or (3 if args.trial else 0)
     if not runs:

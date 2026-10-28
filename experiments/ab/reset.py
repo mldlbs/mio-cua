@@ -172,7 +172,9 @@ def conversation_title(obs) -> str:
         return ""
     split = _pane_split(obs, rect)
     band_top = rect[1]
-    band_bottom = rect[1] + max(64, int(rect[3] * 0.10))
+    # Narrow band: the title row sits at the very top of the pane. A wider band
+    # reaches a pinned card / first message, whose long text then wins.
+    band_bottom = rect[1] + max(56, int(rect[3] * 0.08))
     rows = []
     for _t, text, bbox in _nodes(obs):
         text = (text or "").strip()
