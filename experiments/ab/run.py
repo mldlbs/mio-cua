@@ -274,6 +274,69 @@ def run_one(arm: str, scenario, args, out_dir: Path) -> dict:
     return record
 
 
+def run_one_notepad(arm: str, scenario, args, out_dir: Path) -> dict:
+    """Notepad variant of run_one: disposable process, exact state."""
+    from mio_cua.automation.input_controller import InputController
+    from mio_cua.models.task import Task
+    from experiments.ab import notepad as npad
+
+    pc = InputController()
+    hwnd = npad.reset(npad.TEST_DIR)
+    record = {"arm": arm, "task": scenario.name, "git_sha": _git_sha(),
+              "site": "notepad", "test_dir": str(npad.TEST_DIR)}
+    if hwnd is None:
+        record["discarded"] = "notepad reset failed (no empty document)"
+        return record
+    before = npad.snapshot(hwnd)
+    record["before"] = before
+
+    if scenario.prepare == "find_dialog":
+        injected = npad.inject_find_dialog(pc, hwnd)
+        record["menu_injected"] = injected
+        if not injected:
+            record["discarded"] = "T3 injection failed: no 查找 dialog"
+            npad.kill_all()
+            return record
+
+    sink = _Sink()
+    logcap = _LogCapture()
+    logging.getLogger("mio_cua").addHandler(logcap)
+    agent = build_agent(arm, str(out_dir / "artifacts"))
+    task = Task(instruction=scenario.instruction,
+                target_context={"app": args.app, "keyword": scenario.keyword},
+                metadata={"keyword": scenario.keyword})
+    t0 = time.time()
+    try:
+        result = agent.run(task, event_sinks=[sink] if arm == "v2" else None)
+        status, summary = result.status, result.summary
+    except Exception as exc:                      # noqa: BLE001
+        status, summary = "ERROR", f"{type(exc).__name__}: {exc}"
+    finally:
+        logging.getLogger("mio_cua").removeHandler(logcap)
+        duration = round(time.time() - t0, 1)
+        after_hwnd = npad.main_window() or hwnd
+        after = npad.snapshot(after_hwnd)
+
+    ctx = {"expected": scenario.expected, "keyword": scenario.keyword,
+           "doc_after": after.get("doc"), "dialogs_after": after.get("dialogs"),
+           "files_before": before.get("files"), "files_after": after.get("files"),
+           "out_path": str(npad.TEST_DIR / npad.OUT_FILE),
+           "before_messages": [], "after_messages": [],
+           "trajectory": _load_trajectory(out_dir / "artifacts"),
+           "status": status}
+    verdict = scenario.judge(ctx)
+    record.update({"status": status, "summary": summary, "duration_s": duration,
+                   "after": after, "verdict": verdict.as_dict(),
+                   "stats": stats_for({"trajectory": ctx["trajectory"],
+                                       "events": sink.events if arm == "v2" else None,
+                                       "log_text": logcap.buf.getvalue(),
+                                       "keyword": scenario.keyword}).as_dict(),
+                   "events": sink.events if arm == "v2" else None,
+                   "log_tail": logcap.buf.getvalue().splitlines()[-5:]})
+    npad.kill_all()
+    return record
+
+
 def _write(out_dir: Path, record: dict) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     name = f"{record['arm']}-{record['task']}-{int(time.time() * 1000)}.json"
@@ -283,7 +346,9 @@ def _write(out_dir: Path, record: dict) -> None:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="V1/V2 A/B runner (harness only)")
-    ap.add_argument("--app", default="微信")
+    ap.add_argument("--app", default="记事本")
+    ap.add_argument("--site", default="notepad", choices=("notepad", "wechat"),
+                    help="which app the trial drives (notepad is the migrated target)")
     ap.add_argument("--target", default="文件传输助手")
     ap.add_argument("--message", default="ab-test-message")
     ap.add_argument("--selfcheck", type=int, default=0,
@@ -304,7 +369,11 @@ def main(argv=None) -> int:
                     help="auto: search+unique-match+verify; manual: the chat must already be open (verified only)")
     args = ap.parse_args(argv)
 
-    scens = scenario_mod.build(target=args.target, message=args.message)
+    if args.site == "notepad":
+        from experiments.ab import notepad as npad
+        scens = scenario_mod.build_notepad(str(npad.TEST_DIR), message=args.message)
+    else:
+        scens = scenario_mod.build(target=args.target, message=args.message)
     tasks = [t.strip() for t in args.tasks.split(",") if t.strip() in scens]
     arms = [a.strip() for a in args.arms.split(",") if a.strip() in ARM_FLAGS]
 
@@ -362,7 +431,8 @@ def main(argv=None) -> int:
         for _ in range(runs):
             for arm in arms:                      # interleaved on purpose
                 out_dir = out_root / session / arm / task_name
-                rec = run_one(arm, sc, args, out_dir)
+                rec = (run_one_notepad(arm, sc, args, out_dir)
+                       if args.site == "notepad" else run_one(arm, sc, args, out_dir))
                 _write(out_dir, rec)
                 total += 1
                 v = rec.get("verdict") or {}
