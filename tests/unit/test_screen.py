@@ -1,4 +1,8 @@
-﻿from mio_cua.vision.screen import capture
+﻿import pytest
+
+from mio_cua.vision.screen import capture
+
+pytestmark = pytest.mark.desktop
 
 
 def test_capture_returns_pil_image():

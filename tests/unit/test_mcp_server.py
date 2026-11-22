@@ -65,6 +65,7 @@ def test_mcp_missing_path_errors(tmp_path):
     assert "Error" in content[0].text
 
 
+@pytest.mark.desktop
 def test_mcp_observe_scene_returns_window_and_elements():
     from mio_cua.mcp_server import mcp
     content, _ = _run(mcp.call_tool("mio_observe_scene", {"max_elements": 5}))
@@ -74,6 +75,7 @@ def test_mcp_observe_scene_returns_window_and_elements():
     assert ("id=" in text) or ("no elements" in text)
 
 
+@pytest.mark.desktop
 def test_mcp_screenshot_returns_path(tmp_path):
     from mio_cua.mcp_server import mcp
     out = tmp_path / "shot.png"
@@ -83,6 +85,7 @@ def test_mcp_screenshot_returns_path(tmp_path):
     assert out.exists()
 
 
+@pytest.mark.desktop
 def test_mcp_observe_scene_reports_source_and_confidence():
     from mio_cua.mcp_server import mcp
     content, _ = _run(mcp.call_tool("mio_observe_scene", {"max_elements": 3}))

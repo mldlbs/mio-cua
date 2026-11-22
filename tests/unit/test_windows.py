@@ -1,4 +1,6 @@
-﻿from mio_cua.automation.windows import set_dpi_aware, get_active_window, get_cursor
+﻿import pytest
+
+from mio_cua.automation.windows import set_dpi_aware, get_active_window, get_cursor
 
 
 def _gnode(type_, bbox=None, semantic="", role=""):
@@ -48,16 +50,19 @@ def test_frame_bbox_ignores_non_group_nodes():
     assert frame_bbox(None) is None
 
 
+@pytest.mark.desktop
 def test_dpi_aware_runs():
     set_dpi_aware()  # should not raise
 
 
+@pytest.mark.desktop
 def test_get_cursor_tuple():
     x, y = get_cursor()
     assert isinstance(x, int)
     assert isinstance(y, int)
 
 
+@pytest.mark.desktop
 def test_get_active_window_str():
     title = get_active_window()
     assert isinstance(title, str)

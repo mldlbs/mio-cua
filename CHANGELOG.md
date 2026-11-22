@@ -43,6 +43,7 @@ work; released sections are tagged on `master`.
 ### Fixed
 
 - `cli.py:_analyze_recorded` 写 `report.md` 时使用 `os.path.join` 但函数内未 `import os`，`run --record` 末尾会抛 `NameError`；已补 import。
+- **CI 在无交互桌面的 runner 上误报**：新增 `@pytest.mark.desktop` 标记与 `tests/conftest.py` 探针（`GetForegroundWindow` + 窗口尺寸），无桌面会话时自动跳过真实截屏/UIA/前台窗口用例（`test_screen` 1 项、`test_windows` 3 项、`test_mcp_server` 的 observe/screenshot 3 项）。本地可 `MIO_TEST_NO_DESKTOP=1` 复现 CI 环境（实测 696 passed / 9 skipped）。CI 另加 `PYTHONUTF8`/`PYTHONIOENCODING` 与 `::error::` 失败标注，避免 Windows runner 的 cp1252 编码噪声。同时删除 `pyproject.toml` 里被 `pytest.ini` 覆盖的重复 pytest 配置，避免改错地方。
 - 防文档漂移：新增 `tests/unit/test_docs_tool_count.py`，校验 `mcp_server.py` 的 `@mcp.tool` 集合与 README / MCP.md 的工具名集合、以及两处声明的数字三者一致，不一致即 FAIL。
 - `perception/quality.py` — `assess_quality(None)` 现在安全返回"无场景图"报告，而非 `AttributeError`；修复 Agent 循环在无 `scene` 的观察（如确定性 simulation 测试）上直接 FAIL 的问题。
 

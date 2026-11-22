@@ -25,7 +25,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[test]"
       - name: Unit + integration tests
-        run: pytest -q
+        env:
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: utf-8
+        shell: pwsh
+        run: |
+          pytest -q --tb=short -ra 2>&1 | Tee-Object -FilePath pytest-output.txt
+          $code = $LASTEXITCODE
+          if ($code -ne 0) {
+            Get-Content pytest-output.txt | Select-String -Pattern '^(FAILED|ERROR)\s' |
+              ForEach-Object { Write-Host "::error::$($_.Line)" }
+          }
+          exit $code
       - name: Docs tool inventory must match code
         run: pytest tests/unit/test_docs_tool_count.py -q
 

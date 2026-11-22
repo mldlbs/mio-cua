@@ -115,6 +115,9 @@ mio-cua gen-scenario --image shot.png --name calc -o calc.yaml
 ## Tests
 
 - Unit tests: `tests/unit/` — mock perception/LLM, never touch the desktop.
+  A few tests genuinely need a desktop (capture / UIA / foreground window); they
+  are marked `@pytest.mark.desktop` and auto-skip when no interactive session is
+  detected. Reproduce headless CI locally with `MIO_TEST_NO_DESKTOP=1`.
 - Integration tests: `tests/integration/` — loop + planner + CLI against
   scripted/mock desktops.
 - Run everything before pushing: `python -m pytest -q`.
