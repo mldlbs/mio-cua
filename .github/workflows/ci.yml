@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: pytest (py${{ matrix.python-version }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+      - name: Unit + integration tests
+        run: pytest -q
+      - name: Docs tool inventory must match code
+        run: pytest tests/unit/test_docs_tool_count.py -q
+
+  build:
+    name: build + twine check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist + wheel
+        run: |
+          python -m pip install --upgrade pip build twine
+          python -m build
+      - name: Verify metadata
+        run: twine check dist/*
+      - name: Guard against oversized artifacts
+        shell: pwsh
+        run: |
+          $limit = 10MB
+          $big = Get-ChildItem dist -File | Where-Object { $_.Length -gt $limit }
+          if ($big) {
+            $big | ForEach-Object { Write-Error "artifact too large: $($_.Name) ($([math]::Round($_.Length/1MB,1)) MB)" }
+            exit 1
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*

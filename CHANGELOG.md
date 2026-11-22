@@ -8,8 +8,16 @@ work; released sections are tagged on `master`.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-22
+
 ### Added
 
+- **`mio-cua history` 实装**（此前是占位）：新增只读层 `mio_cua/evaluation/inspect.py`，
+  把已录制的 Phase 3 轨迹渲染成列表/详情/JSON，供 CLI、MCP 与未来面板复用。
+  - `mio-cua history` — 最近 20 条（`--limit` 可调），按 `started_at` 倒序，列 `DATE/TASK_ID/STATUS/DURATION/GOAL`。
+  - `mio-cua history <task_id>` — 详情：goal、状态、时长、事件按类型计数、失败归因（类别/置信度/原因）、轨迹路径。
+  - `--events` 打印事件时间线；`--failed` 只看失败；`--json` 结构化输出；`--dir` 覆盖默认 `<artifact_dir>/traces`。
+  - 列表只读 `metadata.json`（不解析可能达数 MB 的 `trace.jsonl`），单条坏轨迹会被跳过而非让整条命令失败。
 - **依赖**：`numpy>=1.24` 加入核心依赖（`perception/quality.py` 视觉兜底与测试需要）。
 - **Phase 3 — 真实轨迹录制 / Replay / 失败归因（spec §5-§30）**：
   - `evaluation/schema.py` — 权威数据模型（stdlib-only，避免循环依赖）：`Trace`/`TraceEvent`/`ObservationSnapshot`/`BeliefSnapshot`/`PlanSnapshot`/`ActionRecord`/`VerificationRecord`/`ProgressRecord`/`RecoveryRecord`/`FailureAttribution`/`PlanComparison`/`BenchmarkResult`/`TraceRedactor`，统一 `to_dict`/`from_dict` 与 `schema_version=1`。
@@ -34,12 +42,14 @@ work; released sections are tagged on `master`.
 
 ### Fixed
 
+- `cli.py:_analyze_recorded` 写 `report.md` 时使用 `os.path.join` 但函数内未 `import os`，`run --record` 末尾会抛 `NameError`；已补 import。
+- 防文档漂移：新增 `tests/unit/test_docs_tool_count.py`，校验 `mcp_server.py` 的 `@mcp.tool` 集合与 README / MCP.md 的工具名集合、以及两处声明的数字三者一致，不一致即 FAIL。
 - `perception/quality.py` — `assess_quality(None)` 现在安全返回"无场景图"报告，而非 `AttributeError`；修复 Agent 循环在无 `scene` 的观察（如确定性 simulation 测试）上直接 FAIL 的问题。
 
 ### Docs
 
-- **文档计数校准（2026-11-22 实测）**：MCP 工具 36→**38**（README 分组表补 `mio_ask_web_chat` / `mio_health`，MCP.md 补 `mio_health`，两处表格现与 `mcp_server.py` 的 `@mcp.tool` 注册数逐一对应）；代码规模 102→**106** 个 `.py` / 12,087→**12,232** 行；测试 59→**75** 个文件 / 468→**682** 个用例；测试基线更新为 **680 passed / 2 skipped / 0 failed**（原记录 622/2/1，`test_mcp_clipboard_set_get_roundtrip` 失败为剪贴板被占用的环境干扰）。
-- **README 重写（中文，实测指标）**：纠正「32 工具」为实测 **36**；更正 Quick Start 的 `pip install mio-cua` 为源码安装（PyPI 尚未发布）；补全 `history` CLI 子命令、`MIO_CUA_*` 环境变量、A/B/C/D 实验层开关与 Phase 3 可观测性说明。
+- **文档计数校准（2026-11-22 实测）**：MCP 工具 36→**38**（README 分组表补 `mio_ask_web_chat` / `mio_health`，MCP.md 补 `mio_health`，两处表格现与 `mcp_server.py` 的 `@mcp.tool` 注册数逐一对应）；代码规模 102→**107** 个 `.py` / 12,087→**12,560** 行；测试 59→**77** 个文件 / 468→**703** 个用例；测试基线更新为 **703 passed / 2 skipped / 0 failed**（原记录 622/2/1，`test_mcp_clipboard_set_get_roundtrip` 失败为剪贴板被占用的环境干扰）。
+- **README 重写（中文，实测指标）**：更正 Quick Start 的 `pip install mio-cua` 为源码安装（PyPI 尚未发布）；补全 `history` CLI 子命令、`MIO_CUA_*` 环境变量、A/B/C/D 实验层开关与 Phase 3 可观测性说明。
 - **MCP.md 工具表补全**：新增 `mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 四个 workflow MVP 工具，工具计数更新为 36。
 - `mcp_server.py` — `mio_kill_process` 在 `taskkill` 失败时不再因 `e.stderr` 为 `None`（GBK 输出解码失败）而崩溃；改为按字节捕获并以 `utf-8/replace` 解码，异常路径返回结构化错误字符串。
 - **Phase 3 回归修复（均由新增测试捕获）**：
@@ -122,6 +132,7 @@ work; released sections are tagged on `master`.
 
 - README metadata, `server.json` for the MCP Registry.
 
+[0.4.0]: https://github.com/mldlbs/mio-cua/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/mldlbs/mio-cua/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/mldlbs/mio-cua/compare/0.1.5...0.2.0
 [0.1.5]: https://github.com/mldlbs/mio-cua/compare/0.1.2...0.1.5

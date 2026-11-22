@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mio-cua"
-version = "0.3.0"
+version = "0.4.0"
 description = "Mio Computer-Use Agent: Windows desktop automation AI agent (SDK + CLI)"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
@@ -37,7 +37,7 @@ gpu = [
     # NOTE: rapidocr pulls plain onnxruntime, which shadows this package (both
     # provide the `onnxruntime` module). After installing, uninstall
     # `onnxruntime` and reinstall `onnxruntime-directml --reinstall` to get
-    # DmlExecutionProvider; see README "开发" section.
+    # DmlExecutionProvider; see README "寮€鍙? section.
     "onnxruntime-directml>=1.20",
 ]
 test = [

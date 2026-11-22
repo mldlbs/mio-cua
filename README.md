@@ -14,7 +14,7 @@
   <a href="https://github.com/mldlbs/mio-cua"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-mldlbs%2Fmio--cua-blue"/></a>
   <img alt="Python" src="https://img.shields.io/badge/Python-%3E%3D3.10-blue"/>
   <img alt="Platform" src="https://img.shields.io/badge/Platform-Windows%2010%2B-0078d6"/>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.3.0-green"/>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.4.0-green"/>
 </p>
 
 ---
@@ -23,12 +23,12 @@
 
 | 项 | 值 |
 |---|---|
-| 版本 | `0.3.0`（`pyproject.toml` / `server.json`） |
+| 版本 | `0.4.0`（`pyproject.toml` / `server.json`） |
 | 平台 | Windows 10+（依赖 `pywin32` / `pywinauto` / `pynput`） |
 | 模型接入 | OpenAI 兼容端点（单一 provider：`openai`；默认 `gpt-4o`） |
 | 对外能力 | CLI（6 个子命令）+ MCP server（**38** 个工具，stdio 传输） |
-| 代码规模 | `mio_cua/` 下 **106** 个 `.py` 文件 / **约 12,232** 行 |
-| 测试 | **75** 个测试文件 / **682** 个用例（详见「开发」节） |
+| 代码规模 | `mio_cua/` 下 **107** 个 `.py` 文件 / **约 12,560** 行 |
+| 测试 | **77** 个测试文件 / **703** 个用例（详见「开发」节） |
 | 发布状态 | 源码安装 `pip install -e .`；已构建 `dist/*.whl` 与 `*.tar.gz`；**尚未上传 PyPI**（见「已知限制」） |
 
 > ⚠️ **安装方式更正**：README 旧版写 `pip install mio-cua`，但 PyPI 发布仍是 `Unreleased` 待办项（见 `CHANGELOG.md`），当前 **PyPI 上还没有该包**。请改为从源码安装，见下方「快速开始」。
@@ -165,8 +165,23 @@ mio-cua gen-scenario --image shot.png -o calculator.yaml      # 截图 → YAML 
 mio-cua resume <task_id>                        # 继续被打断的任务
 mio-cua replay <task_id> --full                # 从产物逐步回放调试
 mio-cua providers                               # 列出可用 provider（当前仅 openai）
-mio-cua history [task_id]                       # 查看任务历史
+mio-cua history                                 # 最近 20 条录制轨迹（--limit/--failed/--json）
+mio-cua history <task_id> --events              # 单任务详情 + 事件时间线
 ```
+
+### `history` 参数
+
+`history` 只读已落盘的 Phase 3 轨迹（默认 `<artifact_dir>/traces`，即 `~/.mio_cua/artifacts/traces`），
+不重跑任务、不碰桌面；列表只解析 `metadata.json`，单条损坏轨迹会被跳过。
+
+| 参数 | 作用 |
+|---|---|
+| `[task_id]` | 省略=列表；给定=详情 |
+| `--dir PATH` | 覆盖轨迹根目录（例如仓库内调试用的 `traces/`） |
+| `--limit N` | 列表条数（默认 20） |
+| `--failed` | 只显示非 SUCCESS |
+| `--events` | 详情里追加事件时间线（类型 + 时间 + 一行摘要） |
+| `--json` | 结构化输出，便于脚本/CI 消费 |
 
 ### `run` 参数
 
@@ -329,7 +344,7 @@ v0.3 引入真实轨迹录制 / 回放 / 失败归因 / 基准，让「去模型
 
 ```
 desktop-agent/
-├── mio_cua/                # 核心包（106 .py / ~12.2k 行）
+├── mio_cua/                # 核心包（107 .py / ~12.6k 行）
 │   ├── agent/              # Planner / 批量规划 / runtime 接入
 │   ├── automation/         # Grounding（实时 UIA 重匹配）、InputController
 │   ├── evaluation/         # Phase 3：schema/attribution/recorder/replay/benchmark
@@ -347,13 +362,13 @@ desktop-agent/
 │   ├── cli.py              # 6 个子命令
 │   ├── mcp_server.py       # 38 个 MCP 工具
 │   └── config.py           # DEFAULTS + AgentConfig
-├── tests/                  # 75 文件 / 682 用例
+├── tests/                  # 77 文件 / 703 用例
 ├── experiments/            # A/B/C/D 真实 sweep 装置
 ├── scripts/  smoke/  phase3_demo/  trace/  traces/  models/
 ├── config.zen.yaml  config.proxy.yaml   # 代理接入样例
 ├── server.json             # MCP Registry 元数据
 ├── pyproject.toml  CHANGELOG.md  MCP.md  SMOKE.md  CONTRIBUTING.md
-└── dist/                   # 已构建 mio_cua-0.3.0 wheel + sdist
+└── dist/                   # 已构建 mio_cua-0.4.0 wheel + sdist（构建产物，不入库）
 ```
 
 ### 环境
@@ -383,9 +398,9 @@ python3.12 -m venv .venv          # 或: uv venv .venv --python 3.12
 .\.venv\Scripts\python.exe -m pytest tests -q
 ```
 
-基线（2026-11-22，Windows / Python 3.12.10）：**680 passed / 2 skipped / 0 failed**（约 3.5 分钟）。`test_mcp_clipboard_set_get_roundtrip` 偶发失败属环境干扰——`OpenClipboard` 返回 Windows 错误 5（剪贴板被远程会话或其他进程占用），不是代码回归；重跑即可。
+基线（2026-11-22，Windows / Python 3.12.10）：**703 passed / 2 skipped / 0 failed**（约 3.5 分钟）。`test_mcp_clipboard_set_get_roundtrip` 偶发失败属环境干扰——`OpenClipboard` 返回 Windows 错误 5（剪贴板被远程会话或其他进程占用），不是代码回归；重跑即可。
 
-测试覆盖感知、规划、批处理、场景 Diff、输入控制、Grounding、Recovery、Phase 3 录制/回放/归因/基准等，共 **682** 个用例。确定性测试（simulation / record 集成）无需桌面或 LLM 即可运行。
+测试覆盖感知、规划、批处理、场景 Diff、输入控制、Grounding、Recovery、Phase 3 录制/回放/归因/基准、轨迹检视（`history`）与文档一致性等，共 **703** 个用例。确定性测试（simulation / record 集成）无需桌面或 LLM 即可运行。
 
 ### 打包
 
@@ -399,12 +414,11 @@ twine upload dist/*
 
 ## 10. 已知限制
 
-- **PyPI 尚未发布**：`pip install mio-cua` 当前不可用，须从源码 `pip install -e .`；`CHANGELOG.md` 的 `Unreleased` 仍挂「Publish to PyPI」待办。
+- **PyPI 尚未发布**：`pip install mio-cua` 当前不可用，须从源码 `pip install -e .`；0.4.0 已具备可发布状态（`dist/` + `twine check` 通过），上传仍需维护者 token。
 - **仅 Windows**：感知依赖 `pywin32` / `pywinauto` / UIA，无 Linux/macOS 支持（路线图中有 vision-only 回退设想，未实现）。
-- **新 MCP 工具文档滞后**：`mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 已实装但未进 [MCP.md](MCP.md) 老表格（本 README 已补全）。
-- **`history` 命令为占位**：`mio-cua history [task_id]` 当前仅打印 `history <id>`，未实现真实历史查询（`cli.py:58`）。
 - **`providers` 仅 `openai`**：`mio-cua providers` 固定输出 `openai`；其他 OpenAI 兼容端点通过改 `base_url`/`api_key_env` 复用同一 provider，而非新增 provider 类。
 - **OmniParser 依赖模型权重**：纯视觉网页解析首次需下载 OmniParser 权重（`OMNIPARSER_DIR` / `OMNIPARSER_WEIGHTS` 可指定离线路径）。
+- **真实桌面 A/B/C/D 证据仍缺**：`experiments/real_sweep.py` 的装置与单测齐备，但 `results/real_sweep.csv` 尚未在真实微信桌面上跑出（需 GUI + 微信 + `OPENAI_API_KEY`）；现有证据只有 `experiments/results/mechanism_proof.json`。
 
 ---
 

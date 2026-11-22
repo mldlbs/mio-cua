@@ -39,7 +39,7 @@ pip install -e ".[gpu]"      # + DirectML GPU acceleration
 
 ## Development workflow
 
-1. **Branch off `master`**, give it a descriptive name (`feat/...`, `fix/...`).
+1. **Branch off `main`**, give it a descriptive name (`feat/...`, `fix/...`).
 2. **Write a failing test first** (TDD). Keep tests fast — unit tests must not
    touch a real desktop or call an LLM.
 3. **Implement the minimal change**, then make the test pass.
@@ -118,6 +118,42 @@ mio-cua gen-scenario --image shot.png --name calc -o calc.yaml
 - Integration tests: `tests/integration/` — loop + planner + CLI against
   scripted/mock desktops.
 - Run everything before pushing: `python -m pytest -q`.
+
+## Release process
+
+CI (`.github/workflows/ci.yml`) runs `pytest -q` on Windows for Python 3.10/3.12
+plus a `build + twine check` job on every push and PR.
+
+Versions live in **four** places and must be bumped together: `pyproject.toml`,
+`server.json` (two `version` fields), `README.md` (badge + metrics table) and
+`CHANGELOG.md`.
+
+1. Fold `## [Unreleased]` into `## [x.y.z] - YYYY-MM-DD`, leave an empty
+   `[Unreleased]` on top, and add the `[x.y.z]: https://github.com/.../compare/...`
+   link at the bottom.
+2. Build and verify metadata:
+
+```bash
+python -m build
+twine check dist/*
+```
+
+3. Sanity-check the artifacts: `mio_cua/prompts/*.txt` must be inside the wheel,
+   and **no `trace/` / `traces/` payloads** may be inside either artifact (the
+   repo carries ~100 MB of historical traces).
+4. Before the very first upload, confirm the name is still free:
+   `pip index versions mio-cua`.
+5. Upload (maintainer only — token from the environment, never committed):
+
+```powershell
+$env:TWINE_USERNAME = "__token__"
+$env:TWINE_PASSWORD = "pypi-..."
+python -m twine upload dist/*
+```
+
+6. Post-upload smoke in a clean venv: `pip install mio-cua==x.y.z`, then
+   `mio-cua providers` and `mio-cua-mcp` (the stdio server must start).
+7. Tag: `git tag -a x.y.z -m "mio-cua x.y.z" && git push origin x.y.z`.
 
 ## Need help?
 
