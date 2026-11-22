@@ -73,6 +73,11 @@ _ITEMS = [
     {"name": "", "kind": "Button", "rect": [120, 1560, 40, 40]},
 ]
 
+# Windows localizes taskbar labels; the same button reads differently per UI language.
+_START_LABELS = {"\u5f00\u59cb", "Start"}
+_SEARCH_LABELS = {"\u641c\u7d22", "Search"}
+_WINDOW_BUTTON = re.compile(r"- \d+ (?:%s|running windows?)" % "\u4e2a\u8fd0\u884c\u7a97\u53e3", re.IGNORECASE)
+
 
 def _stub(monkeypatch, element=None, items=None):
     from mio_cua.tools import taskbar as tb
@@ -103,6 +108,12 @@ def test_locate_taskbar_hwnd_returns_handle():
 
 
 def test_enumerate_taskbar_contains_known_labels():
+    """Taskbar labels are localized: zh-CN 开始/搜索, en-US Start/Search.
+
+    Asserting a single language made this test pass on a Chinese desktop and
+    fail on the (English) Windows CI runner, which is an environment coupling
+    rather than a real regression.
+    """
     from mio_cua.automation.windows import enumerate_taskbar, locate_taskbar_hwnd
 
     hwnd = locate_taskbar_hwnd()
@@ -111,11 +122,30 @@ def test_enumerate_taskbar_contains_known_labels():
     items, truncated = enumerate_taskbar(hwnd)
     names = [i["name"] for i in items]
 
-    assert "\u5f00\u59cb" in names
-    assert "\u641c\u7d22" in names
-    assert any(re.search(r"- \d+ \u4e2a\u8fd0\u884c\u7a97\u53e3", n) for n in names), names
+    assert _START_LABELS & set(names), f"no start-button label in {names}"
+    assert _SEARCH_LABELS & set(names), f"no search-box label in {names}"
     assert all(len(i["rect"]) == 4 for i in items)
     assert all(set(i) == {"name", "kind", "rect"} for i in items)
+
+
+def test_enumerate_taskbar_window_button_suffix():
+    """Running-window buttons carry "<app> - N 个运行窗口" (zh) / "N running window(s)" (en).
+
+    Skipped when the taskbar shows no app window: a fresh CI runner has none, and
+    the suffix format is only observable from a real button.
+    """
+    from mio_cua.automation.windows import enumerate_taskbar, locate_taskbar_hwnd
+
+    hwnd = locate_taskbar_hwnd()
+    if not hwnd:
+        pytest.skip("taskbar window not available in this session")
+    items, _ = enumerate_taskbar(hwnd)
+    names = [i["name"] for i in items]
+
+    window_labels = [n for n in names if _WINDOW_BUTTON.search(n)]
+    if not window_labels:
+        pytest.skip("taskbar shows no running-window button on this session")
+    assert window_labels
 
 
 def test_enumerate_taskbar_under_three_seconds():

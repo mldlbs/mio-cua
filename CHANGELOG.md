@@ -43,7 +43,8 @@ work; released sections are tagged on `master`.
 ### Fixed
 
 - `cli.py:_analyze_recorded` 写 `report.md` 时使用 `os.path.join` 但函数内未 `import os`，`run --record` 末尾会抛 `NameError`；已补 import。
-- **CI 在无交互桌面的 runner 上误报**：新增 `@pytest.mark.desktop` 标记与 `tests/conftest.py` 探针（`GetForegroundWindow` + 窗口尺寸），无桌面会话时自动跳过真实截屏/UIA/前台窗口用例（`test_screen` 1 项、`test_windows` 3 项、`test_mcp_server` 的 observe/screenshot 3 项）。本地可 `MIO_TEST_NO_DESKTOP=1` 复现 CI 环境（实测 696 passed / 9 skipped）。CI 另加 `PYTHONUTF8`/`PYTHONIOENCODING` 与 `::error::` 失败标注，避免 Windows runner 的 cp1252 编码噪声。同时删除 `pyproject.toml` 里被 `pytest.ini` 覆盖的重复 pytest 配置，避免改错地方。
+- **语言耦合的测试**：`test_taskbar.py::test_enumerate_taskbar_contains_known_labels` 硬断言中文 `开始`/`搜索`，在英文 Windows（CI runner）上失败。改为语言无关：开始/搜索按钮接受 `开始|Start`、`搜索|Search`；窗口按钮后缀（`- N 个运行窗口` / `N running window`）拆成独立用例，没有运行窗口时 skip。
+- **CI 可观测性**：`pytest` 在 CI 上以 `PYTHONUTF8`/`PYTHONIOENCODING=utf-8` 运行，失败时用 `::error::` 输出 `FAILED/ERROR` 行（GitHub 会把它变成 check-run annotation，可匿名通过 API 读取）；真实桌面用例统一打 `@pytest.mark.desktop`，需要时可 `-m "not desktop"` 单独排除（不自动跳过——实测 runner 的 UIA/截屏可用）。同时删除 `pyproject.toml` 里被 `pytest.ini` 覆盖的重复 pytest 配置。
 - 防文档漂移：新增 `tests/unit/test_docs_tool_count.py`，校验 `mcp_server.py` 的 `@mcp.tool` 集合与 README / MCP.md 的工具名集合、以及两处声明的数字三者一致，不一致即 FAIL。
 - `perception/quality.py` — `assess_quality(None)` 现在安全返回"无场景图"报告，而非 `AttributeError`；修复 Agent 循环在无 `scene` 的观察（如确定性 simulation 测试）上直接 FAIL 的问题。
 
