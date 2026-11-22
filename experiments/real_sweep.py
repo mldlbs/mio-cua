@@ -39,6 +39,11 @@ import sys
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
+# Run as `python experiments/real_sweep.py` (README) puts experiments/ on
+# sys.path[0], not the repo root, so `import mio_cua` fails unless the package
+# is pip-installed. Bootstrap the root to match how the docs invoke it.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from mio_cua.agent_factory import Agent
 from mio_cua.config import AgentConfig
 from mio_cua.models.task import Task
@@ -161,11 +166,13 @@ def _accumulate(m: RunMetrics, result, sink: CollectorSink, state_dir: str):
                 m.recovery_ok += 1
 
 
-def run_version(name: str, overrides: dict, task: Task, runs: int, artifact_dir: str) -> RunMetrics:
+def run_version(name: str, overrides: dict, task: Task, runs: int, artifact_dir: str,
+                base_config=None) -> RunMetrics:
     m = RunMetrics()
     state_dir = os.path.join(artifact_dir, "state")
+    base = dict(getattr(base_config, "data", {}) or {})
     for i in range(runs):
-        config = AgentConfig(artifact_dir=artifact_dir, **overrides)
+        config = AgentConfig(**{**base, **overrides, "artifact_dir": artifact_dir})
         agent = Agent(config)
         sink = CollectorSink()
         print(f"  [{name}] run {i + 1}/{runs} ...", flush=True)
@@ -186,6 +193,7 @@ def main():
         default="微信中搜索兴蓉，打开正确的聊天",
     )
     ap.add_argument("--artifact-dir", default=os.path.expanduser("~/.mio_cua/artifacts"))
+    ap.add_argument("--config", help="yaml config (model/base_url/api_key_env); omit for defaults")
     ap.add_argument("--dry-run", action="store_true",
                     help="print the version matrix and exit (no desktop needed)")
     args = ap.parse_args()
@@ -208,18 +216,27 @@ def main():
 
     if args.dry_run:
         print("\n[dry-run] no execution. Run without --dry-run on a desktop with "
-              "WeChat open and OPENAI_API_KEY set.")
+              "WeChat open and a reachable LLM endpoint configured.")
         return
 
-    if not os.environ.get("OPENAI_API_KEY"):
-        print("ERROR: OPENAI_API_KEY not set. Aborting.", file=sys.stderr)
+    # The old check hard-coded OPENAI_API_KEY, which blocked every other
+    # endpoint (LAN proxy, Ollama, a different api_key_env). Ask the config
+    # instead: a key is required unless the endpoint is local/keyless.
+    base_cfg = AgentConfig.from_yaml(args.config) if args.config else AgentConfig()
+    local_endpoint = any(h in base_cfg.base_url for h in ("127.0.0.1", "localhost", "0.0.0.0"))
+    if not base_cfg.api_key() and not local_endpoint:
+        print(
+            f"ERROR: no API key in ${base_cfg.api_key_env} for {base_cfg.base_url}. Aborting.",
+            file=sys.stderr,
+        )
         sys.exit(2)
-    print("\nMake sure WeChat is OPEN and focused-capable on this desktop.\n")
+    print(f"\nmodel : {base_cfg.model}  @ {base_cfg.base_url}")
+    print("Make sure WeChat is OPEN and focused-capable on this desktop.\n")
 
     rows = []
     for name, ov in VERSIONS.items():
         print(f"\n### version {name}")
-        m = run_version(name, ov, task, args.runs, args.artifact_dir)
+        m = run_version(name, ov, task, args.runs, args.artifact_dir, base_config=base_cfg)
         rows.append({
             "version": name,
             "task_success_rate": _fmt(m.task_success_rate()),

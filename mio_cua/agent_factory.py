@@ -63,6 +63,10 @@ class Agent:
             base_url=self.config.base_url,
             api_key=self.config.api_key(),
             model=self.config.model,
+            timeout=getattr(self.config, "llm_timeout_s", 180),
+            attempts=getattr(self.config, "llm_attempts", 4),
+            backoff_s=getattr(self.config, "llm_backoff_s", 0.5),
+            backoff_max_s=getattr(self.config, "llm_backoff_max_s", 30.0),
         )
         planner = Planner(provider, DEFAULT_SYSTEM_PROMPT)
         safety = Safety(

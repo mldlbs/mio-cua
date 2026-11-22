@@ -8,6 +8,18 @@ work; released sections are tagged on `master`.
 
 ## [Unreleased]
 
+### Added
+
+- **LLM 调用韧性可配置**：`AgentConfig` 新增 `llm_timeout_s` / `llm_attempts` / `llm_backoff_s` / `llm_backoff_max_s`；
+  `mio_cua/llm/client.py::retrying_post` 改为指数退避（有上限）并遵守响应里的 `Retry-After`；新增
+  `mio_cua/providers/factory.py::provider_from_config` 统一构造 provider，CLI / agent factory / evaluation trace 三处共用一套策略。
+  背景：共享代理会成片返回 429/503，原来固定 ~3.5s 的重试预算会让整轮任务直接判失败。
+- **`experiments/real_sweep.py --config`**：A/B/C/D 四版本共用同一份 yaml 配置（模型/端点/重试预算），不用再改代码。
+
+### Fixed
+
+- `experiments/real_sweep.py` 不再硬编码检查 `OPENAI_API_KEY`——改为读配置的 `api_key_env`，并允许本地/免 key 端点（Ollama、局域网代理），否则除 OpenAI 官方之外的端点都会被开头拦死。
+
 ## [0.4.0] - 2026-11-22
 
 ### Added

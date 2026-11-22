@@ -6,7 +6,8 @@ from mio_cua.providers.base import Provider, LLMResponse
 
 
 class OpenAICompatProvider(Provider):
-    def __init__(self, base_url: str, api_key: str, model: str, timeout: float = 180):
+    def __init__(self, base_url: str, api_key: str, model: str, timeout: float = 180,
+                 attempts: int = 4, backoff_s: float = 0.5, backoff_max_s: float = 30.0):
         # 180s, not 60s: the default model is a reasoning model whose
         # responses measured 60-93s wall clock. At timeout=60 every plan
         # looked like a read timeout, burned all retries, and surfaced as a
@@ -15,6 +16,9 @@ class OpenAICompatProvider(Provider):
         self.api_key = api_key
         self.model = model
         self.timeout = timeout
+        self.attempts = max(1, attempts)
+        self.backoff_s = backoff_s
+        self.backoff_max_s = backoff_max_s
 
     def generate(self, messages: list, tools: list = None) -> LLMResponse:
         body = {"model": self.model, "messages": messages, "temperature": 0.2, "max_tokens": 4096}
@@ -22,7 +26,8 @@ class OpenAICompatProvider(Provider):
             body["tools"] = tools
         resp = client.retrying_post(
             f"{self.base_url}/chat/completions", body,
-            timeout=self.timeout, retries=3,
+            timeout=self.timeout, retries=self.attempts,
+            backoff_s=self.backoff_s, backoff_max_s=self.backoff_max_s,
             headers={
                 "Authorization": f"Bearer {self.api_key}",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",

@@ -42,7 +42,7 @@ def test_provider_base_raises():
 def test_openai_compat_parses_tool_calls(monkeypatch):
     tc = {"id": "t1", "type": "function", "function": {"name": "click", "arguments": json.dumps({"element_id": 3})}}
     resp = FakeResponse(_payload("", [tc]))
-    monkeypatch.setattr("mio_cua.llm.client.retrying_post", lambda url, json_body, timeout, retries, headers=None: resp)
+    monkeypatch.setattr("mio_cua.llm.client.retrying_post", lambda url, json_body, timeout, retries, headers=None, **kw: resp)
 
     p = OpenAICompatProvider("http://x/v1", "key", "gpt-4o")
     out = p.generate([{"role": "user", "content": "go"}], tools=[{"type": "function", "function": {}}])
@@ -55,7 +55,7 @@ def test_openai_compat_parses_tool_calls(monkeypatch):
 def test_openai_compat_sends_auth_header(monkeypatch):
     captured = {}
 
-    def fake_post(url, json_body, timeout, retries, headers):
+    def fake_post(url, json_body, timeout, retries, headers, **kw):
         captured["url"] = url
         captured["headers"] = headers
         return FakeResponse(_payload("", []))

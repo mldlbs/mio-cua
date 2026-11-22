@@ -1,0 +1,18 @@
+# mio-cua LLM 配置：局域网 OpenAI 兼容端点（192.168.31.123:8083）
+# key 放 .llm_env（gitignored），由 OPENAI_API_KEY 提供
+provider: openai
+model: default
+base_url: http://192.168.31.123:8083/v1
+api_key_env: OPENAI_API_KEY
+
+# 该代理会成片返回 429/503（实测），给足重试预算
+llm_timeout_s: 180
+llm_attempts: 6
+llm_backoff_s: 2.0
+llm_backoff_max_s: 30.0
+
+# 实验层：A/B/C/D sweep 会用这些开关逐层关闭
+runtime_v2: true
+enable_grounding: true
+enable_verification: true
+enable_recovery: true

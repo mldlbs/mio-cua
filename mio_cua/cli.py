@@ -258,7 +258,7 @@ def _simulate_command(config, task):
     from mio_cua.models.element import Element
     from mio_cua.models.observation import Observation
     from mio_cua.prompts import DEFAULT_SYSTEM_PROMPT
-    from mio_cua.providers.openai_compat import OpenAICompatProvider
+    from mio_cua.providers.factory import provider_from_config
     from mio_cua.tools.builtin import register_builtin_tools
     from mio_cua.tools.registry import ToolRegistry
 
@@ -266,7 +266,7 @@ def _simulate_command(config, task):
     field = Element(1, "uia", text="无标题", role="TabItem", bbox=(400, 200, 120, 20))
     obs = Observation(None, 1.0, "无标题 - 记事本", 1.0, [field, editor])
 
-    provider = OpenAICompatProvider(config.base_url, config.api_key(), config.model)
+    provider = provider_from_config(config)
     registry = ToolRegistry()
     register_builtin_tools(registry)
     planner = Planner(provider, DEFAULT_SYSTEM_PROMPT)
@@ -317,12 +317,12 @@ def _simulate_full_command(config, task, scenario="notepad"):
     from mio_cua.agent.safety import Safety
     from mio_cua.events import EventBus
     from mio_cua.prompts import DEFAULT_SYSTEM_PROMPT
-    from mio_cua.providers.openai_compat import OpenAICompatProvider
+    from mio_cua.providers.factory import provider_from_config
     from mio_cua.simulation import build_mock_desktop
     from mio_cua.tools.builtin import register_builtin_tools
     from mio_cua.tools.registry import ToolRegistry
 
-    provider = OpenAICompatProvider(config.base_url, config.api_key(), config.model)
+    provider = provider_from_config(config)
     registry = ToolRegistry()
     register_builtin_tools(registry)
     safety = Safety(max_steps=config.max_steps, timeout_s=config.task_timeout_s,
@@ -345,7 +345,7 @@ def _simulate_scenario_command(config, task, scenario_path):
     from mio_cua.agent.safety import Safety
     from mio_cua.events import EventBus
     from mio_cua.prompts import DEFAULT_SYSTEM_PROMPT
-    from mio_cua.providers.openai_compat import OpenAICompatProvider
+    from mio_cua.providers.factory import provider_from_config
     from mio_cua.scenario import load_scenario_yaml
     from mio_cua.simulation import build_simulation
     from mio_cua.tools.builtin import register_builtin_tools
@@ -356,7 +356,7 @@ def _simulate_scenario_command(config, task, scenario_path):
     except ValueError as e:
         print(f"error: {e}")
         sys.exit(1)
-    provider = OpenAICompatProvider(config.base_url, config.api_key(), config.model)
+    provider = provider_from_config(config)
     registry = ToolRegistry()
     register_builtin_tools(registry)
     safety = Safety(max_steps=config.max_steps, timeout_s=config.task_timeout_s,
