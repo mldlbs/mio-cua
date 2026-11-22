@@ -38,6 +38,7 @@ work; released sections are tagged on `master`.
 
 ### Docs
 
+- **文档计数校准（2026-11-22 实测）**：MCP 工具 36→**38**（README 分组表补 `mio_ask_web_chat` / `mio_health`，MCP.md 补 `mio_health`，两处表格现与 `mcp_server.py` 的 `@mcp.tool` 注册数逐一对应）；代码规模 102→**106** 个 `.py` / 12,087→**12,232** 行；测试 59→**75** 个文件 / 468→**682** 个用例；测试基线更新为 **680 passed / 2 skipped / 0 failed**（原记录 622/2/1，`test_mcp_clipboard_set_get_roundtrip` 失败为剪贴板被占用的环境干扰）。
 - **README 重写（中文，实测指标）**：纠正「32 工具」为实测 **36**；更正 Quick Start 的 `pip install mio-cua` 为源码安装（PyPI 尚未发布）；补全 `history` CLI 子命令、`MIO_CUA_*` 环境变量、A/B/C/D 实验层开关与 Phase 3 可观测性说明。
 - **MCP.md 工具表补全**：新增 `mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 四个 workflow MVP 工具，工具计数更新为 36。
 - `mcp_server.py` — `mio_kill_process` 在 `taskkill` 失败时不再因 `e.stderr` 为 `None`（GBK 输出解码失败）而崩溃；改为按字节捕获并以 `utf-8/replace` 解码，异常路径返回结构化错误字符串。

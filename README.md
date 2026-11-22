@@ -26,9 +26,9 @@
 | 版本 | `0.3.0`（`pyproject.toml` / `server.json`） |
 | 平台 | Windows 10+（依赖 `pywin32` / `pywinauto` / `pynput`） |
 | 模型接入 | OpenAI 兼容端点（单一 provider：`openai`；默认 `gpt-4o`） |
-| 对外能力 | CLI（6 个子命令）+ MCP server（**36** 个工具，stdio 传输） |
-| 代码规模 | `mio_cua/` 下 **102** 个 `.py` 文件 / **约 12,087** 行 |
-| 测试 | **59** 个测试文件 / **468** 个用例（详见「开发」节） |
+| 对外能力 | CLI（6 个子命令）+ MCP server（**38** 个工具，stdio 传输） |
+| 代码规模 | `mio_cua/` 下 **106** 个 `.py` 文件 / **约 12,232** 行 |
+| 测试 | **75** 个测试文件 / **682** 个用例（详见「开发」节） |
 | 发布状态 | 源码安装 `pip install -e .`；已构建 `dist/*.whl` 与 `*.tar.gz`；**尚未上传 PyPI**（见「已知限制」） |
 
 > ⚠️ **安装方式更正**：README 旧版写 `pip install mio-cua`，但 PyPI 发布仍是 `Unreleased` 待办项（见 `CHANGELOG.md`），当前 **PyPI 上还没有该包**。请改为从源码安装，见下方「快速开始」。
@@ -210,9 +210,9 @@ print(result.status, result.steps, result.duration)
 }
 ```
 
-> 详细接入与逐工具说明见 [MCP.md](MCP.md)。下表为实测的 **36** 个工具（按能力分组）。
+> 详细接入与逐工具说明见 [MCP.md](MCP.md)。下表为实测的 **38** 个工具（按能力分组）。
 
-### 工具分组表（共 36）
+### 工具分组表（共 38）
 
 | 分组 | 工具 | 说明 |
 |---|---|---|
@@ -236,6 +236,7 @@ print(result.status, result.steps, result.duration)
 | | `mio_scroll` | 活动窗口滚动（正下负上） |
 | | `mio_drag` | 从 A 拖到 B（图标/选范围/滑条） |
 | | `mio_select_element` | 拖拽选中指定元素单行文本 |
+| | `mio_ask_web_chat` | 在已打开的 ChatGPT/DeepSeek 标签页提问并读回回复（等流式结束、长回复滚动拼接） |
 | **感知** | `mio_observe_scene` | 感知活动窗口：元素列表（文本/类型/坐标/conf） |
 | | `mio_analyze_page` | 纯视觉解析网页为交互元素（OmniParser，无 DOM） |
 | | `mio_ocr_text` | OCR 读取活动窗口可见文本（带坐标） |
@@ -247,13 +248,14 @@ print(result.status, result.steps, result.duration)
 | | `mio_clipboard_set` | 设剪贴板文本（配合 ctrl+v 粘贴） |
 | | `mio_notify` | 桌面通知 |
 | | `mio_sleep` | 等待 N 秒（应用加载/异步窗口） |
+| | `mio_health` | 服务自检：依赖 / 权限 / 桌面可用性，返回结构化状态 |
 | | `mio_vdesk` | 管理虚拟桌面隔离（ensure/close/left/right/num） |
 | **工作流(MVP)** | `mio_discover` | 通用发现：search_input → 候选列表（app 仅作运行时上下文） |
 | | `mio_extract` | 通用抽取：scroll/select/clipboard，读当前剪贴板为数据集 |
 | | `mio_validate` | 通用校验：visual_compare/completeness_check，校验上次抽取 |
 | | `mio_report` | 通用报告：dataset → 证据 Markdown |
 
-> ⚠️ `mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 为 `workflow/` 下的 MVP 封装，依赖运行时上下文，尚未在 [MCP.md](MCP.md) 老表格中列出（见「已知限制」）。
+> ⚠️ `mio_discover` / `mio_extract` / `mio_validate` / `mio_report` 为 `workflow/` 下的 MVP 封装，依赖运行时上下文，稳定性弱于上表其余工具。
 
 ---
 
@@ -327,7 +329,7 @@ v0.3 引入真实轨迹录制 / 回放 / 失败归因 / 基准，让「去模型
 
 ```
 desktop-agent/
-├── mio_cua/                # 核心包（102 .py / ~12k 行）
+├── mio_cua/                # 核心包（106 .py / ~12.2k 行）
 │   ├── agent/              # Planner / 批量规划 / runtime 接入
 │   ├── automation/         # Grounding（实时 UIA 重匹配）、InputController
 │   ├── evaluation/         # Phase 3：schema/attribution/recorder/replay/benchmark
@@ -343,9 +345,9 @@ desktop-agent/
 │   ├── vision/             # OCR（rapidocr + DirectML）
 │   ├── workflow/           # 通用发现/抽取/校验/报告（MVP）
 │   ├── cli.py              # 6 个子命令
-│   ├── mcp_server.py       # 36 个 MCP 工具
+│   ├── mcp_server.py       # 38 个 MCP 工具
 │   └── config.py           # DEFAULTS + AgentConfig
-├── tests/                  # 59 文件 / 468 用例
+├── tests/                  # 75 文件 / 682 用例
 ├── experiments/            # A/B/C/D 真实 sweep 装置
 ├── scripts/  smoke/  phase3_demo/  trace/  traces/  models/
 ├── config.zen.yaml  config.proxy.yaml   # 代理接入样例
@@ -381,9 +383,9 @@ python3.12 -m venv .venv          # 或: uv venv .venv --python 3.12
 .\.venv\Scripts\python.exe -m pytest tests -q
 ```
 
-基线：**622 passed / 2 skipped / 1 failed**。唯一失败项是 `test_mcp_clipboard_set_get_roundtrip`——`OpenClipboard` 返回 Windows 错误 5（剪贴板被远程会话或其他进程占用），属于环境干扰，不是代码回归。
+基线（2026-11-22，Windows / Python 3.12.10）：**680 passed / 2 skipped / 0 failed**（约 3.5 分钟）。`test_mcp_clipboard_set_get_roundtrip` 偶发失败属环境干扰——`OpenClipboard` 返回 Windows 错误 5（剪贴板被远程会话或其他进程占用），不是代码回归；重跑即可。
 
-测试覆盖感知、规划、批处理、场景 Diff、输入控制、Grounding、Recovery、Phase 3 录制/回放/归因/基准等，共 **468** 个用例。确定性测试（simulation / record 集成）无需桌面或 LLM 即可运行。
+测试覆盖感知、规划、批处理、场景 Diff、输入控制、Grounding、Recovery、Phase 3 录制/回放/归因/基准等，共 **682** 个用例。确定性测试（simulation / record 集成）无需桌面或 LLM 即可运行。
 
 ### 打包
 
