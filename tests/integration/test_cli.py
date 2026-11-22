@@ -123,3 +123,130 @@ def test_simulate_scenario_runs_loop_without_real_input(tmp_path, monkeypatch, c
     out = capsys.readouterr().out
     assert "SUCCESS" in out
     assert "[act] click" in out
+
+
+# -- history ---------------------------------------------------------------
+
+def _write_history_traces(root):
+    """Two traces (one success, one failure) in the Phase 3 on-disk layout."""
+    import datetime as dt
+
+    from mio_cua.evaluation.recorder import JSONLTraceStore
+    from mio_cua.evaluation.schema import EventType, FailureAttribution, Trace, TraceEvent
+
+    store = JSONLTraceStore(str(root))
+
+    def make(task_id, success, started):
+        events = [
+            TraceEvent(event_type=EventType.TASK_STARTED.value, payload={"goal": "open calc"}),
+            TraceEvent(event_type=EventType.OBSERVATION.value, payload={"active_window": "Calculator"}),
+        ]
+        events.append(TraceEvent(
+            event_type=(EventType.TASK_COMPLETED if success else EventType.TASK_FAILED).value,
+            payload={"status": "SUCCESS" if success else "FAILURE"},
+        ))
+        return Trace(
+            trace_id=task_id, task_id=task_id, goal="open calc",
+            started_at=dt.datetime.fromisoformat(started),
+            finished_at=dt.datetime.fromisoformat(started) + dt.timedelta(seconds=12),
+            events=events,
+            result={"status": "SUCCESS" if success else "FAILURE", "summary": "done" if success else "boom"},
+            failure=None if success else FailureAttribution(category="planner", confidence=0.7,
+                                                            reason="no plan"),
+        )
+
+    store.save(make("ok001", True, "2026-08-20T10:00:00+00:00"))
+    store.save(make("bad002", False, "2026-08-21T10:00:00+00:00"))
+    return str(root)
+
+
+def test_history_subcommand_parses_filters():
+    p = build_parser()
+    args = p.parse_args(["history", "abc", "--dir", "traces", "--limit", "5",
+                         "--failed", "--json", "--events"])
+    assert args.cmd == "history"
+    assert args.task_id == "abc"
+    assert args.dir == "traces"
+    assert args.limit == 5
+    assert args.failed is True
+    assert args.json is True
+    assert args.events is True
+
+
+def test_history_lists_traces_newest_first(tmp_path, capsys):
+    from mio_cua.cli import _history_command
+
+    root = _write_history_traces(tmp_path / "traces")
+    args = build_parser().parse_args(["history", "--dir", root])
+    _history_command(args)
+
+    out = capsys.readouterr().out
+    lines = [ln for ln in out.splitlines() if ln.strip()]
+    assert lines[0].split()[:3] == ["DATE", "TASK_ID", "STATUS"]
+    assert "bad002" in lines[1]
+    assert "ok001" in lines[2]
+
+
+def test_history_failed_filter(tmp_path, capsys):
+    from mio_cua.cli import _history_command
+
+    root = _write_history_traces(tmp_path / "traces")
+    args = build_parser().parse_args(["history", "--dir", root, "--failed"])
+    _history_command(args)
+
+    out = capsys.readouterr().out
+    assert "bad002" in out
+    assert "ok001" not in out
+
+
+def test_history_detail_json(tmp_path, capsys):
+    import json
+
+    from mio_cua.cli import _history_command
+
+    root = _write_history_traces(tmp_path / "traces")
+    args = build_parser().parse_args(["history", "bad002", "--dir", root, "--json"])
+    _history_command(args)
+
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["task_id"] == "bad002"
+    assert payload["status"] == "FAILURE"
+    assert payload["steps"] == 3
+    assert payload["failure"]["category"] == "planner"
+
+
+def test_history_detail_events(tmp_path, capsys):
+    from mio_cua.cli import _history_command
+
+    root = _write_history_traces(tmp_path / "traces")
+    args = build_parser().parse_args(["history", "ok001", "--dir", root, "--events"])
+    _history_command(args)
+
+    out = capsys.readouterr().out
+    assert "task ok001" in out
+    assert "steps 3" in out
+    assert "task_started" in out
+    assert "active_window=Calculator" in out
+
+
+def test_history_empty_dir_message(tmp_path, capsys):
+    from mio_cua.cli import _history_command
+
+    args = build_parser().parse_args(["history", "--dir", str(tmp_path / "missing")])
+    _history_command(args)
+
+    assert "no traces found" in capsys.readouterr().out
+
+
+def test_history_unknown_task_exits_1(tmp_path, capsys):
+    import pytest
+
+    from mio_cua.cli import _history_command
+
+    root = _write_history_traces(tmp_path / "traces")
+    args = build_parser().parse_args(["history", "nope", "--dir", root])
+    with pytest.raises(SystemExit) as exc:
+        _history_command(args)
+
+    assert exc.value.code == 1
+    assert "no trace for task nope" in capsys.readouterr().out

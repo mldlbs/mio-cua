@@ -18,6 +18,13 @@ from mio_cua.evaluation.attribution import FailureAttributor
 from mio_cua.evaluation.recorder import JSONLTraceStore, Recorder, RuntimeEventSink
 from mio_cua.evaluation.replay import ReplayEngine, ReplayOutcome, compare_plans
 from mio_cua.evaluation.benchmark import benchmark
+from mio_cua.evaluation.inspect import (
+    TraceSummary,
+    format_detail,
+    format_table,
+    load_summaries,
+    summarize,
+)
 
 __all__ = [
     "BenchmarkTask",
@@ -42,4 +49,10 @@ __all__ = [
     "ReplayOutcome",
     "compare_plans",
     "benchmark",
+    # trace inspection (mio-cua history)
+    "TraceSummary",
+    "format_detail",
+    "format_table",
+    "load_summaries",
+    "summarize",
 ]

@@ -35,8 +35,13 @@ def build_parser() -> argparse.ArgumentParser:
     gen.add_argument("--name", default="", help="scenario name (default: file basename)")
     gen.add_argument("-o", "--output", required=True, help="output YAML path")
 
-    history = sub.add_parser("history", help="Show task history")
-    history.add_argument("task_id", nargs="?")
+    history = sub.add_parser("history", help="Show recorded task history (Phase 3 traces)")
+    history.add_argument("task_id", nargs="?", help="show one task in detail")
+    history.add_argument("--dir", help="trace root (default: <artifact_dir>/traces)")
+    history.add_argument("--limit", type=int, default=None, help="max entries to list (default 20)")
+    history.add_argument("--failed", action="store_true", help="only show non-SUCCESS traces")
+    history.add_argument("--json", action="store_true", help="machine-readable output")
+    history.add_argument("--events", action="store_true", help="with a task_id: print the event timeline")
 
     return parser
 
@@ -56,7 +61,62 @@ def main():
     elif args.cmd == "replay":
         _replay_command(args)
     elif args.cmd == "history":
-        print(f"history {args.task_id or ''}".strip())
+        _history_command(args)
+
+
+def _history_command(args):
+    """List recorded Phase 3 traces, or show one in detail.
+
+    Read-only: this never re-runs a task, never touches the desktop, and never
+    creates the trace directory just to look at it.
+    """
+    import json
+    import os
+    import sys
+
+    from mio_cua.config import AgentConfig
+    from mio_cua.evaluation.inspect import (
+        DEFAULT_LIMIT, format_detail, format_table, load_summaries, summarize, summarize_dir,
+    )
+    from mio_cua.evaluation.recorder import JSONLTraceStore
+
+    trace_dir = args.dir or os.path.join(AgentConfig().artifact_dir, "traces")
+
+    if args.task_id:
+        if not os.path.isdir(trace_dir):
+            print(f"no trace for task {args.task_id} in {trace_dir}")
+            sys.exit(1)
+        store = JSONLTraceStore(trace_dir)
+        match = ""
+        for path in store.list_traces():
+            try:
+                candidate = summarize_dir(path)
+            except Exception:
+                continue
+            if args.task_id in (candidate.task_id, os.path.basename(os.path.normpath(path))):
+                match = path
+                break
+        if not match:
+            print(f"no trace for task {args.task_id} in {trace_dir}")
+            sys.exit(1)
+        trace = store.load(match)
+        summary = summarize(trace, path=match)
+        if args.json:
+            print(json.dumps(summary.to_dict(), ensure_ascii=False, indent=2))
+            return
+        print(format_detail(summary, events=trace.events, include_events=args.events))
+        return
+
+    limit = DEFAULT_LIMIT if args.limit is None else max(0, args.limit)
+    summaries = load_summaries(trace_dir, limit=limit, failed_only=args.failed)
+    if not summaries:
+        print(f"no traces found in {trace_dir}")
+        return
+    if args.json:
+        payload = {"count": len(summaries), "traces": [s.to_dict() for s in summaries]}
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    print(format_table(summaries))
 
 
 def _replay_command(args):
@@ -146,6 +206,8 @@ def _run_command(args):
 
 def _analyze_recorded(agent):
     """Load the just-recorded trace, run failure attribution + benchmark, and print + save a report."""
+    import os
+
     recorder = getattr(agent, "last_recorder", None)
     trace_dir = getattr(agent, "last_trace_dir", None)
     if recorder is None or recorder.trace is None:
